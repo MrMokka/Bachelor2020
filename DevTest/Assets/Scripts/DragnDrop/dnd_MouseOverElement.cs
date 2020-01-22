@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class dnd_MouseOverElement : MonoBehaviour {
+public class Dnd_MouseOverElement : MonoBehaviour {
 
 
 
