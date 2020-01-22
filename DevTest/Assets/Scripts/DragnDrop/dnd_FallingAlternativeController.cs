@@ -5,16 +5,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class dnd_FallingAlternativeController : MonoBehaviour {
+public class Dnd_FallingAlternativeController : MonoBehaviour {
 
-	public GameObject textTemplate;
+	public GameObject alternativeTemplate;
 	public Transform parent;
 	public float fallingSpeed;
 	public float top, bottom;
 	public MinMax randomSpawn;
 	public MinMax randomSpeed;
 
-	private List<Alternative> alternatives = new List<Alternative>();
+	private List<GameObject> alternatives = new List<GameObject>();
 
 	void Start() {
 		string[] s = new string[] { "Alt 1", "Alt 2", "Alt 3" };
@@ -22,6 +22,7 @@ public class dnd_FallingAlternativeController : MonoBehaviour {
 	}
 
 	void Update() {
+		/*
 		foreach(Alternative alt in alternatives) {
 			alt.txt.text = alt.name + " : " + alt.speed;
 			alt.obj.Translate(Vector2.down * alt.speed * Time.deltaTime, Space.Self);
@@ -35,16 +36,31 @@ public class dnd_FallingAlternativeController : MonoBehaviour {
 				alt.speed = 35f;
 
 		}
+		*/
 	}
 
 	public void CreateAlternative(string[] texts) {
-		StartCoroutine("SpawnAlternatives", texts);
-		
+		//Can save as object to alow stopping when needed
+		StartCoroutine(SpawnAlternatives(texts, 1f));
 	}
 
-	private IEnumerator SpawnAlternatives(string[] texts) {
+	private IEnumerator SpawnAlternatives(string[] texts, float delay) {
 		yield return null;
 		foreach(string s in texts) {
+			GameObject g = Instantiate(alternativeTemplate, parent, false);
+			g.SetActive(true);
+			Dnd_FallingAlternative fall = g.GetComponent<Dnd_FallingAlternative>();
+			Dnd_FallingAlternative.Dnd_AltSettings settings = new Dnd_FallingAlternative.Dnd_AltSettings {
+				top = top,
+				bottom = bottom,
+				speed = Random.Range(randomSpeed.min, randomSpeed.max),
+				text = s,
+				startPos = new Vector2(Random.Range(randomSpawn.min, randomSpawn.max), top),
+				fallingParent = parent
+			};
+			fall.SetValues(settings);
+
+			/*
 			Alternative alt = new Alternative {
 				speed = Random.Range(randomSpeed.min, randomSpeed.max),
 				obj = Instantiate(textTemplate, parent, false).transform
@@ -52,26 +68,21 @@ public class dnd_FallingAlternativeController : MonoBehaviour {
 			alt.obj.gameObject.SetActive(true);
 			Vector2 v = new Vector2(Random.Range(randomSpawn.min, randomSpawn.max), top);
 			alt.obj.localPosition = v;
-			alt.txt = alt.obj.GetComponent<Text>();
+			alt.txt = alt.obj.GetChild(0).GetComponent<Text>();
 			alt.txt.text = s;
 			alt.name = s;
 			alternatives.Add(alt);
-			yield return new WaitForSeconds(1f);
+			*/
+			alternatives.Add(g);
+			yield return new WaitForSeconds(delay);
 		}
 	}
 
 	public void ClearAlternatives() {
-		foreach(Alternative g in alternatives) {
-			Destroy(g.obj);
+		foreach(GameObject g in alternatives) {
+			Destroy(g, 0.2f);
 		}
 		alternatives.Clear();
-	}
-
-	private class Alternative {
-		public string name;
-		public float speed;
-		public Transform obj;
-		public Text txt;
 	}
 
 	[Serializable]

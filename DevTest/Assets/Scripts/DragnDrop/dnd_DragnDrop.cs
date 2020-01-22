@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class dnd_DragnDrop : MonoBehaviour {
+public class Dnd_DragnDrop : MonoBehaviour {
 
 
 	private GameObject selectedText;
