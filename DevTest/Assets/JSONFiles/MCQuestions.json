@@ -1,6 +1,6 @@
 [
 	{
-		"How it works": "",
+		"How it works": "true",
 		"Type": "Type of game wanted",
 		"Mode": "Mode if more than one game with same type",
 		"Category": [ "Array of all categories for this question" ],
