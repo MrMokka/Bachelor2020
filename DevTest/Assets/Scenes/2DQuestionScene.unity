@@ -1004,6 +1004,7 @@ GameObject:
   - component: {fileID: 350089704}
   - component: {fileID: 350089703}
   - component: {fileID: 350089702}
+  - component: {fileID: 350089706}
   - component: {fileID: 350089700}
   - component: {fileID: 350089701}
   m_Layer: 5
@@ -1050,6 +1051,7 @@ MonoBehaviour:
   normalColor: {r: 0.59607846, g: 0.59607846, b: 0.59607846, a: 1}
   highlightColor: {r: 1, g: 0.78823537, b: 0.30588236, a: 1}
   dragParent: {fileID: 584654532}
+  canvasGroup: {fileID: 350089706}
 --- !u!114 &350089701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1198,6 +1200,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &350089706
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350089698}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &353629868
 GameObject:
   m_ObjectHideFlags: 0
