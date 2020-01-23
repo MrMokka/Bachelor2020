@@ -1004,6 +1004,7 @@ GameObject:
   - component: {fileID: 350089704}
   - component: {fileID: 350089703}
   - component: {fileID: 350089702}
+  - component: {fileID: 350089706}
   - component: {fileID: 350089700}
   - component: {fileID: 350089701}
   m_Layer: 5
@@ -1025,6 +1026,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1550905700}
+  - {fileID: 1501046851}
   m_Father: {fileID: 627858053}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1050,6 +1052,7 @@ MonoBehaviour:
   normalColor: {r: 0.59607846, g: 0.59607846, b: 0.59607846, a: 1}
   highlightColor: {r: 1, g: 0.78823537, b: 0.30588236, a: 1}
   dragParent: {fileID: 584654532}
+  canvasGroup: {fileID: 350089706}
 --- !u!114 &350089701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1198,6 +1201,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &350089706
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350089698}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &353629868
 GameObject:
   m_ObjectHideFlags: 0
@@ -3211,6 +3226,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4088e95246ace9f4880278707a160f06, type: 3}
+--- !u!1 &1501046850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1501046851}
+  m_Layer: 5
+  m_Name: CanRemoveLater
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1501046851
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501046850}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 350089699}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1541991218
 GameObject:
   m_ObjectHideFlags: 0
