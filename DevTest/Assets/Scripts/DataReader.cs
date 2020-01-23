@@ -2,17 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataReader : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public class DataReader : MonoBehaviour {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }

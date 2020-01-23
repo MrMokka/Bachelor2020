@@ -11,6 +11,8 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 	public Transform dragParent;
 	public CanvasGroup canvasGroup;
 
+	public static GameObject gettingDragged = null;
+
 	private bool isDragging = false;
 	private Text textObj;
 	private Dnd_AltSettings settings;
@@ -55,7 +57,12 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 		textObj.text = settings.text;
 	}
 
+	public string GetAlternativeValue() {
+		return textObj.text;
+	}
+
 	public void StartDrag() {
+		gettingDragged = gameObject;
 		isDragging = true;
 		transform.SetParent(dragParent);
 		outline.color = normalColor;
@@ -70,6 +77,8 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 		v.y = transform.localPosition.y;
 		transform.localPosition = v;
 		canvasGroup.blocksRaycasts = true;
+		if(Dnd_FillInnText.hoveredFillInnText != null)
+			Dnd_FillInnText.hoveredFillInnText.GetComponent<Dnd_FillInnText>().SetFilling(textObj.text);
 	}
 
 	public void MouseEnter() {
