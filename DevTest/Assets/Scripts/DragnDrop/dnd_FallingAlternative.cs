@@ -9,20 +9,26 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 	public float speedReduction;
 	public Color normalColor, highlightColor;
 	public Transform dragParent;
+	public CanvasGroup canvasGroup;
 
 	private bool isDragging = false;
 	private Text textObj;
 	private Dnd_AltSettings settings;
 	private Image outline;
+
+	private RectTransform rt;
 	
 	void Awake() {
 		textObj = transform.GetChild(0).GetComponent<Text>();
 		outline = GetComponent<Image>();
 		outline.color = normalColor;
+		rt = GetComponent<RectTransform>();
 	}
 
 	void Update() {
 		if(isDragging) {
+			Vector2 v = Input.mousePosition;
+			v.y -= rt.rect.height;// / 1.25f;
 			transform.position = Input.mousePosition;
 		} else {
 			//textObj.text = settings.text + " : " + settings.speed;
@@ -52,6 +58,9 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 	public void StartDrag() {
 		isDragging = true;
 		transform.SetParent(dragParent);
+		outline.color = normalColor;
+		canvasGroup.blocksRaycasts = false;
+		//transform.SetAsFirstSibling();
 	}
 
 	public void StopDrag() {
@@ -60,10 +69,12 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 		Vector2 v = settings.startPos;
 		v.y = transform.localPosition.y;
 		transform.localPosition = v;
+		canvasGroup.blocksRaycasts = true;
 	}
 
 	public void MouseEnter() {
-		outline.color = highlightColor;
+		if(!isDragging)
+			outline.color = highlightColor;
 	}
 
 	public void MouseExit() {
