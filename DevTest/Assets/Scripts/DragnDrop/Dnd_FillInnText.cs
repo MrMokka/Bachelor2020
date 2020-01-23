@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FillInnText : MonoBehaviour {
+public class Dnd_FillInnText : MonoBehaviour {
 
 	public Text textComp;
 
@@ -32,5 +32,7 @@ public class FillInnText : MonoBehaviour {
 	private void UpdateText() {
 		textComp.text = string.Format(text, filling);
 	}
+
+	
 
 }
