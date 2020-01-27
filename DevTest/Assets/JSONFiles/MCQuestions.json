@@ -1,136 +1,147 @@
-[
-	{
-		"How it works": "true",
-		"Type": "Type of game wanted",
-		"Mode": "Mode if more than one game with same type",
-		"Category": [ "Array of all categories for this question" ],
-		"Questions": [
-			"Array of Questions connected to the game"
-		{
-			"Question": "The question to be asked",
-			"Answers": ["Array of possible answers", "The correct one is the first"]
-		},
-		{
-			"If type is": "Dnd",
-			"Lines": [
-				"Array of all the lines of text in a question.",
-				"Usage of '{0}' indicates that user has to input",
-				"something here, oh and not make lines too long plz",
-				"Each line represents a single line when showed to",
-				"the user. And all inputfields {1} will be indicated",
-				"automaticly"
-			],
-			"Alternatives": [
-				"Array of all possible alternative answers for this question",
-				"Order dose not matter, since it will be randomized"
-			]
-			"CorrectAnswer": [
-				"Array of all correct answers",
-				"Write a correct answer for every input field {0} {1}",
-				"Every index in the CorrectAnswer array is the number",
-				"inside the inputfiled indicators {}",
-				"Having more correct answers than inputfields dont matter",
-				"since any extra is ignored"
-			]
-		},
-		{
-			"If type is": "FillEmpty",
-			"Lines": [
-				"Alot of the same as Dnd type",
-				"Each line is a single line shown to the user",
-				"Each line can be just text, spaceing, or have inputfield {}",
-				"With the FillEmpty type the user writes hes answer himself"
-			],
-			"Answers": [
-				"Array containing all correct answers",
-				"Each index in this array corresponds to the input id {0} {1}",
-				["correct answer 1", "correct answer 2"],
-				["correct answer 1"],
-				"This means a single input can have multiple correct answers",
-				"Please put the most correct one first, and least correct last",
-				"if there is no more correct than others, set AnswerGrade to false"
-			],
-			"AnswerGrade": "If true, answers gives points base on how correct they are"
-		}]
-		
-		
-	},
-	{
-		"Type": "MC",
-		"Mode": "Tetris",
-		"Category": [ "casual", "stress" ],
-		"Questions": [{
-			"Question": "What is Blue?",
-			"Answers": ["Blue", "Green", "Red", "Teal"]
-		},
-		{
-			"Question": "What is Green?",
-			"Answers": ["Green", "Blue", "Orange", "Yellow", "Lime"]
-		}]
-	},
-	{
-		"Type": "MC",
-		"Mode": "Lightbulb",
-		"Category": [ "math", "stress" ],
-		"Questions": [{
-			"Question": "5+2=?",
-			"Answers": [7, 5, 3, 8, 4]
-		},
-		{
-			"Question": "10*2=?",
-			"Answers": [20, 16, 33, 5, 100]
-		}]
-	},
-	{
-		"Type": "FillEmpty",
-		"Category": [ "uncerstand code", "write code" ],
-		"Questions": [{
-			"Lines": [
-				"public {0} counter = 0;"
-			],
-			"Answers": [
-				["int", "long", "var", "short"]
-			],
-			"AnswerGrade": "false"
-		},
-		{
-			"Lines": [
-				"public int counter = 0;",
-				" ",
-				"public {0} IncreaseCounter(int num){",
-				"    {1} += num;",
-				"    return counter;",
-				"}"
-			],
-			"Answers": [
-				["int", "long", "var"],
-				["counter"]
-			]
-			"AnswerGrade": "true"
-		}]
-	},
-	{
-		"Type": "DnD",
-		"Mode": "Falling",
-		"Category": [ "understand code", "input code", "stress" ],
-		"Questions": [{
-			"Lines": [
-				"{0} int counter = 0;"
-			],
-			"Alternatives": ["public", "Integer", "float", "variable"],
-			"CorrectAnswers": ["public"]
-		},
-		{
-			"Lines": [
-				"public int counter = 0;",
-				" ",
-				"public int IncreaseCounter(int num){",
-				"    counter += {0}",
-				"    return {1};",
-				"}"
-			],
-			"Alternatives": ["variable", "num", "float", "counter", "increment"],
-			"CorrectAnswers": ["num", "counter"]
-		}]
-	}
-]
+{
+  "Minigames": [
+    {
+      "How it works": "true",
+      "Type": "Type of game wanted",
+      "Mode": "Mode if more than one game with same type",
+      "Category": [ "Array of all categories for this question", "q" ],
+      "Questions": [
+        //"Array of Questions connected to the game",
+        {
+          "Question": "The question to be asked",
+          "Answers": [ "Array of possible answers", "The correct one is the first" ]
+        },
+        {
+          "If type is": "Dnd",
+          "Lines": [
+            "Array of all the lines of text in a question.",
+            "Usage of '{0}' indicates that user has to input",
+            "something here, oh and not make lines too long plz",
+            "Each line represents a single line when showed to",
+            "the user. And all inputfields {1} will be indicated",
+            "automaticly"
+          ],
+          "Alternatives": [
+            "Array of all possible alternative answers for this question",
+            "Order dose not matter, since it will be randomized"
+          ],
+          "CorrectAnswer": [
+            "Array of all correct answers",
+            "Write a correct answer for every input field {0} {1}",
+            "Every index in the CorrectAnswer array is the number",
+            "inside the inputfiled indicators {}",
+            "Having more correct answers than inputfields dont matter",
+            "since any extra is ignored"
+          ]
+        },
+        {
+          "If type is": "FillEmpty",
+          "Lines": [
+            "Alot of the same as Dnd type",
+            "Each line is a single line shown to the user",
+            "Each line can be just text, spaceing, or have inputfield {}",
+            "With the FillEmpty type the user writes hes answer himself"
+          ],
+          "Answers": [
+            "Array containing all correct answers",
+            "Each index in this array corresponds to the input id {0} {1}",
+            [ "correct answer 1", "correct answer 2" ],
+            [ "correct answer 1" ],
+            "This means a single input can have multiple correct answers",
+            "Please put the most correct one first, and least correct last",
+            "if there is no more correct than others, set AnswerGrade to false"
+          ],
+          "AnswerGrade": "If true, answers gives points base on how correct they are"
+        }
+      ]
+
+
+    },
+    {
+      "Type": "MC",
+      "Mode": "Tetris",
+      "Category": [ "casual", "stress" ],
+      "Questions": [
+        {
+          "Question": "What is Blue?",
+          "Answers": [ "Blue", "Green", "Red", "Teal" ]
+        },
+        {
+          "Question": "What is Green?",
+          "Answers": [ "Green", "Blue", "Orange", "Yellow", "Lime" ]
+        }
+      ]
+    },
+    {
+      "Type": "MC",
+      "Mode": "Lightbulb",
+      "Category": [ "math", "stress" ],
+      "Questions": [
+        {
+          "Question": "5+2=?",
+          "Answers": [ 7, 5, 3, 8, 4 ]
+        },
+        {
+          "Question": "10*2=?",
+          "Answers": [ 20, 16, 33, 5, 100 ]
+        }
+      ]
+    },
+    {
+      "Type": "FillEmpty",
+      "Category": [ "uncerstand code", "write code" ],
+      "Questions": [
+        {
+          "Lines": [
+            "public {0} counter = 0;"
+          ],
+          "Answers": [
+            [ "int", "long", "var", "short" ]
+          ],
+          "AnswerGrade": "false"
+        },
+        {
+          "Lines": [
+            "public int counter = 0;",
+            " ",
+            "public {0} IncreaseCounter(int num){",
+            "    {1} += num;",
+            "    return counter;",
+            "}"
+          ],
+          "Answers": [
+            [ "int", "long", "var" ],
+            [ "counter" ]
+          ],
+          "AnswerGrade": "true"
+        }
+      ]
+    },
+    {
+      "Type": "DnD",
+      "Mode": "Falling",
+      "Category": [ "understand code", "input code", "stress" ],
+      "Questions": [
+        {
+          "Lines": [
+            "{0} int counter = 0;"
+          ],
+          "Alternatives": [ "public", "Integer", "float", "variable" ],
+          "CorrectAnswers": [ "public" ]
+        },
+        {
+          "Lines": [
+            "public int counter = 0;",
+            " ",
+            "public int IncreaseCounter(int num){",
+            "    counter += {0}",
+            "    return {1};",
+            "}"
+          ],
+          "Alternatives": [ "variable", "num", "float", "counter", "increment" ],
+          "CorrectAnswers": [ "num", "counter" ]
+        }
+      ]
+    }
+  ]
+}
