@@ -33,11 +33,12 @@ public class Dnd_FillInnText : MonoBehaviour {
 	}
 
 	public void SetFillingFromDrag() {
-		return;
+		/*
 		print(Dnd_FallingAlternative.gettingDragged);
 		if(Dnd_FallingAlternative.gettingDragged == null)
 			return;
 		SetFilling(Dnd_FallingAlternative.gettingDragged.GetComponent<Dnd_FallingAlternative>().GetAlternativeValue());
+		*/
 	}
 
 	public string GetFilling() {
