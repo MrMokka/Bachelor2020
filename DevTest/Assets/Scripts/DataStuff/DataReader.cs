@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using Newtonsoft.Json;
 
 public class DataReader : MonoBehaviour {
 
@@ -15,7 +14,7 @@ public class DataReader : MonoBehaviour {
 
 	public void ReadJSON() {
 		string s = jsonFile.text;
-		JSONInfoObject obj = JsonConvert.DeserializeObject<JSONInfoObject>(s);
+		//JSONInfoObject obj = JsonConvert.DeserializeObject<JSONInfoObject>(s);
 		
 		//print(obj);
 	}
