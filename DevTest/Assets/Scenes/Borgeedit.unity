@@ -1251,8 +1251,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -187.5, y: -63.1}
-  m_SizeDelta: {x: 412.5, y: 308.7}
+  m_AnchoredPosition: {x: -187.5, y: -67.2}
+  m_SizeDelta: {x: 412.5, y: 300.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &956891600
 MonoBehaviour:
@@ -1524,7 +1524,7 @@ GameObject:
   - component: {fileID: 1071607191}
   - component: {fileID: 1071607190}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: HeaderPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1698,10 +1698,10 @@ RectTransform:
   m_Father: {fileID: 956891599}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.000013351}
-  m_SizeDelta: {x: 405, y: 308.7}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.17500305}
+  m_SizeDelta: {x: -7, y: 0.35001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1253142958
 MonoBehaviour:
@@ -1870,7 +1870,7 @@ GameObject:
   - component: {fileID: 1335650201}
   - component: {fileID: 1335650200}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: InformationPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2467,7 +2467,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 56660244}
   m_HandleRect: {fileID: 56660243}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
