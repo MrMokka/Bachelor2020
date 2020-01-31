@@ -17,8 +17,8 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 	private List<GameObject> alternatives = new List<GameObject>();
 
 	void Start() {
-		string[] s = new string[] { "Alt 1", "Alt 2", "Alt 3" };
-		CreateAlternative(s);
+		//string[] s = new string[] { "Alt 1", "Alt 2", "Alt 3" };
+		//CreateAlternative(s);
 	}
 
 	void Update() {
@@ -39,14 +39,14 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 		*/
 	}
 
-	public void CreateAlternative(string[] texts) {
+	public void CreateAlternative(List<Answer> answers) {
 		//Can save as object to alow stopping when needed
-		StartCoroutine(SpawnAlternatives(texts, 1f));
+		StartCoroutine(SpawnAlternatives(answers, 0.5f));
 	}
 
-	private IEnumerator SpawnAlternatives(string[] texts, float delay) {
+	private IEnumerator SpawnAlternatives(List<Answer> answers, float delay) {
 		yield return null;
-		foreach(string s in texts) {
+		foreach(Answer a in answers) {
 			GameObject g = Instantiate(alternativeTemplate, parent, false);
 			g.SetActive(true);
 			Dnd_FallingAlternative fall = g.GetComponent<Dnd_FallingAlternative>();
@@ -54,25 +54,11 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 				top = top,
 				bottom = bottom,
 				speed = Random.Range(randomSpeed.min, randomSpeed.max),
-				text = s,
+				text = a.text,
 				startPos = new Vector2(Random.Range(randomSpawn.min, randomSpawn.max), top),
 				fallingParent = parent
 			};
 			fall.SetValues(settings);
-
-			/*
-			Alternative alt = new Alternative {
-				speed = Random.Range(randomSpeed.min, randomSpeed.max),
-				obj = Instantiate(textTemplate, parent, false).transform
-			};
-			alt.obj.gameObject.SetActive(true);
-			Vector2 v = new Vector2(Random.Range(randomSpawn.min, randomSpawn.max), top);
-			alt.obj.localPosition = v;
-			alt.txt = alt.obj.GetChild(0).GetComponent<Text>();
-			alt.txt.text = s;
-			alt.name = s;
-			alternatives.Add(alt);
-			*/
 			alternatives.Add(g);
 			yield return new WaitForSeconds(delay);
 		}

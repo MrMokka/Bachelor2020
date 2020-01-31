@@ -11,6 +11,7 @@ public class Dnd_FillInnText : MonoBehaviour {
 	public static GameObject hoveredFillInnText = null;
 
 	private Image outline;
+	private bool interactable = true;
 	private string text;
 	private string filling = "[...]";
 
@@ -19,12 +20,22 @@ public class Dnd_FillInnText : MonoBehaviour {
 	}
 
 	void Start() {
-		SetText("Hello {0}, how are you?");
+		//SetText("Hello {0}, how are you?");
 	}
 
+	public void SetInteractable(bool _interactable) {
+		interactable = _interactable;
+		if(!_interactable)
+			outline.enabled = false;
+		else
+			outline.enabled = true;
+	}
 	public void SetText(string _text) {
 		text = _text;
-		SetFilling("[...]");
+		if(text.Contains("{0}"))
+			SetFilling("[...]");
+		else
+			UpdateText();
 	}
 
 	public void SetFilling(string _filling) {
@@ -32,29 +43,27 @@ public class Dnd_FillInnText : MonoBehaviour {
 		UpdateText();
 	}
 
-	public void SetFillingFromDrag() {
-		/*
-		print(Dnd_FallingAlternative.gettingDragged);
-		if(Dnd_FallingAlternative.gettingDragged == null)
-			return;
-		SetFilling(Dnd_FallingAlternative.gettingDragged.GetComponent<Dnd_FallingAlternative>().GetAlternativeValue());
-		*/
-	}
-
 	public string GetFilling() {
 		return filling;
 	}
 
 	private void UpdateText() {
-		textComp.text = string.Format(text, filling);
+		if(text.Contains("{0}"))
+			textComp.text = string.Format(text, filling);
+		else
+			textComp.text = text;
 	}
 
 	public void PointerEnter() {
+		if(!interactable)
+			return;
 		outline.color = highlightColor;
 		hoveredFillInnText = gameObject;
 	}
 
 	public void PointerExit() {
+		if(!interactable)
+			return;
 		outline.color = normalColor;
 		if(hoveredFillInnText == gameObject)
 			hoveredFillInnText = null;
