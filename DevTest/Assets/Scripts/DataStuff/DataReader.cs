@@ -5,7 +5,7 @@ using System.IO;
 
 public class DataReader : MonoBehaviour {
 
-
+	/*
 	public TextAsset jsonFile;
 
 	void Start() {
@@ -37,5 +37,5 @@ public class DataReader : MonoBehaviour {
 	private class Answer {
 		public List<string> AnswerText;
 	}
-
+	*/
 }

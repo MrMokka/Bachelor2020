@@ -8,12 +8,12 @@ public class MCScript : MonoBehaviour {
 
 	public Text questionText;
 
-	private List<Question> questionList = new List<Question>();
-	private Question activeQuestion;
+	private List<MS_Question> questionList = new List<MS_Question>();
+	private MS_Question activeQuestion;
 
 
 	void Start() {
-		Question q1 = new Question {
+		MS_Question q1 = new MS_Question {
 			QuestionText = "Hvilken er blå?",
 			Answers = { "Blå", "Grønn", "Gul", "Rød", "Lilla" }
 		};
@@ -47,7 +47,7 @@ public class MCScript : MonoBehaviour {
 	}
 
 
-	public void AddQuestion(Question question) {
+	public void AddQuestion(MS_Question question) {
 		questionList.Add(question);
 	}
 
@@ -69,14 +69,14 @@ public class MCScript : MonoBehaviour {
 /// <summary>
 /// First answer is the correct answer.
 /// </summary>
-public class Question {
+public class MS_Question {
 	public string QuestionText { get; set; }
 
 	public List<string> Answers = new List<string>();
 
 	public string RightAnswer;
 
-	public Question() {
+	public MS_Question() {
 
 	}
 	public void RandomizeAnswerPositions() {
