@@ -31,7 +31,7 @@ public class GameLoader : MonoBehaviour {
 
 	public void StartGame() {
 		StartScreen.SetActive(false);
-		TCS.SetTime(10);
+		TCS.SetTime(100);
 		LoadMinigame();
 	}
 
