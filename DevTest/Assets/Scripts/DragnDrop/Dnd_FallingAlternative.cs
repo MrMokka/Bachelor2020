@@ -73,8 +73,8 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 	public void StopDrag() {
 		isDragging = false;
 		transform.SetParent(settings.fallingParent);
-		Vector2 v = settings.startPos;
-		v.y = transform.localPosition.y;
+		Vector2 v = transform.localPosition;
+		v.x = Mathf.Clamp(v.x, settings.left, settings.right);
 		transform.localPosition = v;
 		canvasGroup.blocksRaycasts = true;
 		if(Dnd_FillInnText.hoveredFillInnText != null)
@@ -91,7 +91,7 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 	}
 
 	public struct Dnd_AltSettings {
-		public float top, bottom, speed;
+		public float top, bottom, left, right, speed;
 		public string text;
 		public Vector2 startPos;
 		public Transform fallingParent;

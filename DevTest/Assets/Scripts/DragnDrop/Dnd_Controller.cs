@@ -23,12 +23,17 @@ public class Dnd_Controller : MinigameController {
 		public TextLine textLine;
 		public Answer answer;
 	}
-	
-	public override void LoadQuestion(Question question) {
+
+	/// <summary>
+	/// Returns the number of possible answers
+	/// </summary>
+	/// <param name="question"></param>
+	public override int LoadQuestion(Question question) {
 		QuestionText.text = question.QuestionText;
-		LoadTextLines(question.TextLines);
+		int i = LoadTextLines(question.TextLines);
 		AlternativeController.ClearAlternatives();
 		AlternativeController.CreateAlternative(question.Answers);
+		return i;
 	}
 
 	public override string GetMinigameMode() {
@@ -39,8 +44,34 @@ public class Dnd_Controller : MinigameController {
 		return Type;
 	}
 
-	private void LoadTextLines(List<TextLine> textLines) {
+	public override int CheckCorrectAnswers() {
+		int score = 0;
+		string s = "";
+		//Check directly to Dnd_FillInnText script
+		//Is point of having TextLineAnswer?
+		foreach(TextLineAnswer tla in textLineAnswerList) {
+			if(tla.textLine.correctAnswer != null) {
+				if(tla.textLine.correctAnswer.answer != null) {
+					//s = tla.answer.text + " - ";
+					if(tla.textLine.correctAnswer.answer == tla.answer) {
+						score++;
+						//s += tla.textLine.correctAnswer.answer.text + " Score!";
+					}
+					//print(s);
+				}
+			}
+		}
+		return score;
+	}
+
+	/// <summary>
+	/// Returns the number of possible answers
+	/// </summary>
+	/// <param name="textLines"></param>
+	/// <returns></returns>
+	private int LoadTextLines(List<TextLine> textLines) {
 		ClearTextLines();
+		int i = 0;
 		foreach(TextLine tl in textLines) {
 			GameObject g = Instantiate(QuestionTextTemplate, QuestionParent, false);
 			g.SetActive(true);
@@ -51,12 +82,15 @@ public class Dnd_Controller : MinigameController {
 				textLineObj = g,
 				textLine = tl
 			};
-			if(tl.correctAnswer == null)
+			if(tl.correctAnswer == null) {
 				l.answer = null;
-			else
-				l.answer = tl.correctAnswer.answer;
+			} else {
+				//l.answer = tl.correctAnswer.answer;
+				i++;
+			}
 			textLineAnswerList.Add(l);
 		}
+		return i;
 	}
 
 	private void ClearTextLines() {

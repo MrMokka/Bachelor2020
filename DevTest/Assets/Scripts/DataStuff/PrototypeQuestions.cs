@@ -27,7 +27,7 @@ public class PrototypeQuestions : MonoBehaviour {
 		m.AddQuestions("What is the range of this loop?",
 					new List<string> {
 						"Answer: {0}",
-						"for(int i = 2; i < 200; i++) {"					
+						"for(int i = 2; i < 200; i++) {"
 					},
 					new List<string> { "0-200", "1-200", "2-200", "0-199", "1-199", "2-199" },
 					new List<int> { 5 }
@@ -35,12 +35,11 @@ public class PrototypeQuestions : MonoBehaviour {
 		m.AddQuestions("Int x = 5, int y = 17, int z = 3",
 					new List<string> {
 						"Answer: {0}",
-						"x * y - z  = ?"
+						"x * z - y  = ?"
 					},
 					new List<string> { "70", "2", "-36", "-3", "-2", "-1" },
 					new List<int> { 4 }
 		);
-
 		m.AddQuestions("A rope.. ",
 					new List<string> {
 						"Answer: {0}",
