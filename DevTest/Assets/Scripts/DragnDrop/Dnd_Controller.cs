@@ -21,6 +21,7 @@ public class Dnd_Controller : MinigameController {
 	private struct TextLineAnswer {
 		public GameObject textLineObj;
 		public TextLine textLine;
+		public Dnd_FillInnText fill;
 		public Answer answer;
 	}
 
@@ -52,12 +53,12 @@ public class Dnd_Controller : MinigameController {
 		foreach(TextLineAnswer tla in textLineAnswerList) {
 			if(tla.textLine.correctAnswer != null) {
 				if(tla.textLine.correctAnswer.answer != null) {
-					//s = tla.answer.text + " - ";
-					if(tla.textLine.correctAnswer.answer == tla.answer) {
+					s = tla.fill.GetFilling() + " - " + tla.textLine.correctAnswer.answer.text;
+					if(tla.textLine.correctAnswer.answer.text == tla.fill.GetFilling()) {
 						score++;
-						//s += tla.textLine.correctAnswer.answer.text + " Score!";
+						s += " Score!";
 					}
-					//print(s);
+					print(s);
 				}
 			}
 		}
@@ -80,7 +81,8 @@ public class Dnd_Controller : MinigameController {
 			fill.SetInteractable(tl.interactable);
 			TextLineAnswer l = new TextLineAnswer {
 				textLineObj = g,
-				textLine = tl
+				textLine = tl,
+				fill = fill
 			};
 			if(tl.correctAnswer == null) {
 				l.answer = null;
