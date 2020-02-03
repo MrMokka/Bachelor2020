@@ -10,8 +10,7 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 	public GameObject alternativeTemplate;
 	public Transform parent;
 	public float fallingSpeed;
-	public float top, bottom;
-	public MinMax randomSpawn;
+	public float top, bottom, left, right;
 	public MinMax randomSpeed;
 
 	private List<GameObject> alternatives = new List<GameObject>();
@@ -53,9 +52,11 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 			Dnd_FallingAlternative.Dnd_AltSettings settings = new Dnd_FallingAlternative.Dnd_AltSettings {
 				top = top,
 				bottom = bottom,
+				left = left,
+				right = right,
 				speed = Random.Range(randomSpeed.min, randomSpeed.max),
 				text = a.text,
-				startPos = new Vector2(Random.Range(randomSpawn.min, randomSpawn.max), top),
+				startPos = new Vector2(Random.Range(left, right), top),
 				fallingParent = parent
 			};
 			fall.SetValues(settings);
@@ -66,7 +67,7 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 
 	public void ClearAlternatives() {
 		foreach(GameObject g in alternatives) {
-			Destroy(g, 0.2f);
+			Destroy(g);
 		}
 		alternatives.Clear();
 	}

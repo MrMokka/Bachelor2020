@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameLoader : MonoBehaviour {
-	
+
+	public TimeController TCS;
+	public ScoreController SC;
+	public GameObject StartScreen;
 	public List<MinigameController> MinigameControllers = new List<MinigameController>();
 
 	private Dictionary<string, MinigameController> MinigameDict = new Dictionary<string, MinigameController>();
@@ -14,6 +17,7 @@ public class GameLoader : MonoBehaviour {
 	private Minigame ActiveMinigame;
 
 	void Start() {
+		StartScreen.SetActive(true);
 		pq = GetComponent<PrototypeQuestions>();
 		foreach(MinigameController mc in MinigameControllers) {
 			//ValidatePanel();
@@ -23,14 +27,19 @@ public class GameLoader : MonoBehaviour {
 			mc.gameObject.SetActive(false);
 			ActiveMinigameController = null;
 		}
+	}
 
+	public void StartGame() {
+		StartScreen.SetActive(false);
+		TCS.SetTime(10);
 		LoadMinigame();
 	}
 
 	private void LoadMinigame() {
 		ActiveMinigame = pq.GetMinigame();
 		if(ActiveMinigame == null) {
-			print("Error: No minigame to load");
+			print("Warning: No minigame loaded, out of minigames?");
+			GameOver();
 			return;
 		}
 		MinigameController mc;
@@ -46,16 +55,25 @@ public class GameLoader : MonoBehaviour {
 	}
 
 	public void NextQuestion() {
+		SC.AddScore(ActiveMinigameController.CheckCorrectAnswers());
+		if(ActiveMinigame == null)
+			print("ERROR: No active minigame loaded!");
 		if(questionCounter >= ActiveMinigame.Questions.Count) {
 			LoadMinigame();
 		} else {
-			ActiveMinigameController.LoadQuestion(ActiveMinigame.Questions[questionCounter]);
+			int i = ActiveMinigameController.LoadQuestion(ActiveMinigame.Questions[questionCounter]);
+			SC.AddAnswersToComplet(i);
 			questionCounter++;
 		}
 	}
 
 
-
+	public void GameOver() {
+		ActiveMinigameController.gameObject.SetActive(false);
+		SC.gameObject.SetActive(true);
+		SC.ShowScore();
+		TCS.StopTimer();
+	}
 
 
 }
