@@ -74,11 +74,14 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 		isDragging = false;
 		transform.SetParent(settings.fallingParent);
 		Vector2 v = transform.localPosition;
-		v.x = Mathf.Clamp(v.x, settings.left, settings.right);
+		if(v.x < settings.left || v.x > settings.right)
+			v.x = Random.Range(settings.left, settings.right);
 		transform.localPosition = v;
 		canvasGroup.blocksRaycasts = true;
-		if(Dnd_FillInnText.hoveredFillInnText != null)
-			Dnd_FillInnText.hoveredFillInnText.GetComponent<Dnd_FillInnText>().SetFilling(textObj.text);
+		//Check static hover variable if mouse is over any hover fill text
+		if(Dnd_QuestionInput.hoveredFillInnText != null) {
+			Dnd_QuestionInput.hoveredFillInnText.GetComponent<Dnd_QuestionInput>().SetFilling(textObj.text);
+		}
 	}
 
 	public void MouseEnter() {

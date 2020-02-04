@@ -12,17 +12,18 @@ public class Dnd_Controller : MinigameController {
 
 	[Space(20f)]
 	public Transform QuestionParent;
-	public GameObject QuestionTextTemplate;
+	public GameObject InputFieldTemplate;
+	public GameObject TextFieldTemplate;
 	public Dnd_FallingAlternativeController AlternativeController;
 
-	private List<TextLineAnswer> textLineAnswerList = new List<TextLineAnswer>();
+	private List<TextField> TextFieldList = new List<TextField>();
 
 
-	private struct TextLineAnswer {
+	private struct TextField {
 		public GameObject textLineObj;
 		public TextLine textLine;
-		public Dnd_FillInnText fill;
-		public Answer answer;
+		public Dnd_QuestionInput questionInput;
+		//public Answer answer;
 	}
 
 	/// <summary>
@@ -47,20 +48,20 @@ public class Dnd_Controller : MinigameController {
 
 	public override int CheckCorrectAnswers() {
 		int score = 0;
-		string s = "";
-		//Check directly to Dnd_FillInnText script
-		//Is point of having TextLineAnswer?
-		foreach(TextLineAnswer tla in textLineAnswerList) {
-			if(tla.textLine.correctAnswer != null) {
-				if(tla.textLine.correctAnswer.answer != null) {
-					s = tla.fill.GetFilling() + " - " + tla.textLine.correctAnswer.answer.text;
-					if(tla.textLine.correctAnswer.answer.text == tla.fill.GetFilling()) {
-						score++;
-						s += " Score!";
-					}
-					print(s);
-				}
+		//Check directly to Dnd_questionInputInnText script
+		//Is point of having TextLineAnswer? Hmmm dont think so
+		foreach(TextField tf in TextFieldList) {
+			if(tf.textLine.correctAnswer == null)
+				continue;
+			if(tf.textLine.correctAnswer.answer == null)
+				continue;
+
+			//string s = tf.questionInput.GetquestionInputing() + " - " + tf.textLine.correctAnswer.answer.text;
+			if(tf.textLine.correctAnswer.answer.text == tf.questionInput.GetFilling()) {
+				score++;
+				//s += " Correct!";
 			}
+			//print(s);
 		}
 		return score;
 	}
@@ -74,32 +75,52 @@ public class Dnd_Controller : MinigameController {
 		ClearTextLines();
 		int i = 0;
 		foreach(TextLine tl in textLines) {
-			GameObject g = Instantiate(QuestionTextTemplate, QuestionParent, false);
+			GameObject g;
+			TextField tf = new TextField();
+			if(tl.text.Contains("{0}")) {
+				g = Instantiate(InputFieldTemplate, QuestionParent, false);
+				i++;
+				Dnd_QuestionInput questionInput = g.GetComponent<Dnd_QuestionInput>();
+				questionInput.SetText(tl.text);
+				questionInput.SetInteractable(true);
+				tf.questionInput = questionInput;
+			} else {
+				g = Instantiate(TextFieldTemplate, QuestionParent, false);
+				g.GetComponent<Dnd_QuestionText>().SetText(tl.text);
+			}
 			g.SetActive(true);
-			Dnd_FillInnText fill = g.GetComponent<Dnd_FillInnText>();
-			fill.SetText(tl.text);
-			fill.SetInteractable(tl.interactable);
+			
+			tf.textLineObj = g;
+			tf.textLine = tl;
+
+			TextFieldList.Add(tf);
+
+			/*
+			GameObject g = Instantiate(InputFieldTemplate, QuestionParent, false);
+			g.SetActive(true);
+			Dnd_questionInputInnText questionInput = g.GetComponent<Dnd_questionInputInnText>();
+			questionInput.SetText(tl.text);
+			questionInput.SetInteractable(tl.interactable);
 			TextLineAnswer l = new TextLineAnswer {
 				textLineObj = g,
 				textLine = tl,
-				fill = fill
+				questionInput = questionInput
 			};
 			if(tl.correctAnswer == null) {
 				l.answer = null;
 			} else {
 				//l.answer = tl.correctAnswer.answer;
 				i++;
-			}
-			textLineAnswerList.Add(l);
+			}*/
 		}
 		return i;
 	}
 
 	private void ClearTextLines() {
-		foreach(TextLineAnswer line in textLineAnswerList) {
+		foreach(TextField line in TextFieldList) {
 			Destroy(line.textLineObj);
 		}
-		textLineAnswerList.Clear();
+		TextFieldList.Clear();
 	}
 
 

@@ -14,33 +14,16 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 	public MinMax randomSpeed;
 
 	private List<GameObject> alternatives = new List<GameObject>();
+	private IEnumerator spawnAlterativesRoutine = null;
 
-	void Start() {
-		//string[] s = new string[] { "Alt 1", "Alt 2", "Alt 3" };
-		//CreateAlternative(s);
-	}
-
-	void Update() {
-		/*
-		foreach(Alternative alt in alternatives) {
-			alt.txt.text = alt.name + " : " + alt.speed;
-			alt.obj.Translate(Vector2.down * alt.speed * Time.deltaTime, Space.Self);
-			if(alt.obj.localPosition.y < bottom) {
-				Vector2 v = alt.obj.localPosition;
-				v.y = top;
-				alt.obj.localPosition = v;
-			}
-			alt.speed -= Time.deltaTime;
-			if(alt.speed < 35f)
-				alt.speed = 35f;
-
-		}
-		*/
-	}
 
 	public void CreateAlternative(List<Answer> answers) {
 		//Can save as object to alow stopping when needed
-		StartCoroutine(SpawnAlternatives(answers, 0.5f));
+		if(spawnAlterativesRoutine != null) {
+			StopCoroutine(spawnAlterativesRoutine);
+		}
+		spawnAlterativesRoutine = SpawnAlternatives(answers, 0.5f);
+		StartCoroutine(spawnAlterativesRoutine);
 	}
 
 	private IEnumerator SpawnAlternatives(List<Answer> answers, float delay) {
