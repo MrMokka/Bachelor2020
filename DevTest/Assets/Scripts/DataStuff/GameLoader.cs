@@ -11,14 +11,13 @@ public class GameLoader : MonoBehaviour {
 
 	private Dictionary<string, MinigameController> MinigameDict = new Dictionary<string, MinigameController>();
 
-	private PrototypeQuestions pq;
+	private QuestionController QController;
 	private MinigameController ActiveMinigameController;
-	private int questionCounter = 0;
-	private Minigame ActiveMinigame;
+	private Question ActiveQuestion;
 
 	void Start() {
 		StartScreen.SetActive(true);
-		pq = GetComponent<PrototypeQuestions>();
+		QController = GetComponent<QuestionController>();
 		foreach(MinigameController mc in MinigameControllers) {
 			//ValidatePanel();
 			if(mc == null)
@@ -36,35 +35,32 @@ public class GameLoader : MonoBehaviour {
 	}
 
 	private void LoadMinigame() {
-		ActiveMinigame = pq.GetMinigame();
-		if(ActiveMinigame == null) {
-			print("Warning: No minigame loaded, out of minigames?");
-			GameOver();
-			return;
-		}
+		//ActiveQuestion = QController.GetRandomQuestion();
+		//if(ActiveQuestion == null) {
+		//	print("Warning: No Question2 loaded, out of questions?");
+		//	GameOver();
+		//	return;
+		//}
 		MinigameController mc;
-		if(MinigameDict.TryGetValue(ActiveMinigame.Mode, out mc)) {
+		if(MinigameDict.TryGetValue("MC", out mc)) {
 			//Check for type also
 			if(ActiveMinigameController != null)
 				ActiveMinigameController.gameObject.SetActive(false);
 			ActiveMinigameController = mc;
 			ActiveMinigameController.gameObject.SetActive(true);
-			questionCounter = 0;
 			NextQuestion();
 		}
 	}
 
 	public void NextQuestion() {
 		SC.AddScore(ActiveMinigameController.CheckCorrectAnswers());
-		if(ActiveMinigame == null)
-			print("ERROR: No active minigame loaded!");
-		if(questionCounter >= ActiveMinigame.Questions.Count) {
-			LoadMinigame();
-		} else {
-			int i = ActiveMinigameController.LoadQuestion(ActiveMinigame.Questions[questionCounter]);
-			SC.AddAnswersToComplet(i);
-			questionCounter++;
+		ActiveQuestion = QController.GetRandomQuestion();
+		if(ActiveQuestion == null) {
+			GameOver();
+			return;
 		}
+		int i = ActiveMinigameController.LoadQuestion(ActiveQuestion);
+		SC.AddAnswersToComplet(i);
 	}
 
 
