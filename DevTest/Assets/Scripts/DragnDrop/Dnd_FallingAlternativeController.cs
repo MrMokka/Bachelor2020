@@ -13,22 +13,22 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 	public float top, bottom, left, right;
 	public MinMax randomSpeed;
 
-	private List<GameObject> alternatives = new List<GameObject>();
-	private IEnumerator spawnAlterativesRoutine = null;
+	private List<GameObject> Alternatives = new List<GameObject>();
+	private IEnumerator SpawnAlterativesRoutine = null;
 
 
-	public void CreateAlternative(List<Answer> answers) {
+	public void CreateAlternative(List<Alternative> alternatives) {
 		//Can save as object to alow stopping when needed
-		if(spawnAlterativesRoutine != null) {
-			StopCoroutine(spawnAlterativesRoutine);
+		if(SpawnAlterativesRoutine != null) {
+			StopCoroutine(SpawnAlterativesRoutine);
 		}
-		spawnAlterativesRoutine = SpawnAlternatives(answers, 0.5f);
-		StartCoroutine(spawnAlterativesRoutine);
+		SpawnAlterativesRoutine = SpawnAlternatives(alternatives, 0.5f);
+		StartCoroutine(SpawnAlterativesRoutine);
 	}
 
-	private IEnumerator SpawnAlternatives(List<Answer> answers, float delay) {
+	private IEnumerator SpawnAlternatives(List<Alternative> alternatives, float delay) {
 		yield return null;
-		foreach(Answer a in answers) {
+		foreach(Alternative a in alternatives) {
 			GameObject g = Instantiate(alternativeTemplate, parent, false);
 			g.SetActive(true);
 			Dnd_FallingAlternative fall = g.GetComponent<Dnd_FallingAlternative>();
@@ -38,21 +38,21 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 				left = left,
 				right = right,
 				speed = Random.Range(randomSpeed.min, randomSpeed.max),
-				text = a.text,
+				text = a.Text,
 				startPos = new Vector2(Random.Range(left, right), top),
 				fallingParent = parent
 			};
 			fall.SetValues(settings);
-			alternatives.Add(g);
+			Alternatives.Add(g);
 			yield return new WaitForSeconds(delay);
 		}
 	}
 
 	public void ClearAlternatives() {
-		foreach(GameObject g in alternatives) {
+		foreach(GameObject g in Alternatives) {
 			Destroy(g);
 		}
-		alternatives.Clear();
+		Alternatives.Clear();
 	}
 
 	[Serializable]

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Dnd_Controller : MinigameController {
 
 	public string Mode;
-	public string Type;
 	public Transform InfoPanel;
 	public Text QuestionText;
 
@@ -17,24 +16,24 @@ public class Dnd_Controller : MinigameController {
 	public Dnd_FallingAlternativeController AlternativeController;
 
 	private List<TextField> TextFieldList = new List<TextField>();
-
+	private QuestionObject QObject;
 
 	private struct TextField {
-		public GameObject textLineObj;
-		public TextLine textLine;
+		public GameObject questionLineObj;
+		public QuestionLine questionLine;
 		public Dnd_QuestionInput questionInput;
-		//public Answer answer;
 	}
 
 	/// <summary>
 	/// Returns the number of possible answers
 	/// </summary>
-	/// <param name="question"></param>
-	public override int LoadQuestion(Question question) {
-		QuestionText.text = question.QuestionText;
-		int i = LoadTextLines(question.TextLines);
+	/// <param name="Question2"></param>
+	public override int LoadQuestion(Question Question2) {
+		QuestionText.text = Question2.QuestionText;
+		QObject = Question2.GetQuestionObject();
+		int i = LoadquestionLines(QObject.QuestionLines);
 		AlternativeController.ClearAlternatives();
-		AlternativeController.CreateAlternative(question.Answers);
+		AlternativeController.CreateAlternative(QObject.Alternatives);
 		return i;
 	}
 
@@ -42,22 +41,19 @@ public class Dnd_Controller : MinigameController {
 		return Mode;
 	}
 
-	public override string GetMinigameType() {
-		return Type;
-	}
-
 	public override int CheckCorrectAnswers() {
 		int score = 0;
 		//Check directly to Dnd_questionInputInnText script
-		//Is point of having TextLineAnswer? Hmmm dont think so
+		//Is point of having questionLineAnswer? Hmmm dont think so
 		foreach(TextField tf in TextFieldList) {
-			if(tf.textLine.correctAnswer == null)
-				continue;
-			if(tf.textLine.correctAnswer.answer == null)
+			if(tf.questionLine.CorrectAlternative == null)
 				continue;
 
-			//string s = tf.questionInput.GetquestionInputing() + " - " + tf.textLine.correctAnswer.answer.text;
-			if(tf.textLine.correctAnswer.answer.text == tf.questionInput.GetFilling()) {
+			//string s = tf.questionInput.GetquestionInputing() + " - " + tf.questionLine.correctAnswer.answer.text;
+			string s1 = tf.questionLine.CorrectAlternative.Text;
+			print(tf.questionLine.Text + ": " + s1);
+			string s2 = tf.questionInput.GetFilling();
+			if(s1 == s2) {
 				score++;
 				//s += " Correct!";
 			}
@@ -69,29 +65,30 @@ public class Dnd_Controller : MinigameController {
 	/// <summary>
 	/// Returns the number of possible answers
 	/// </summary>
-	/// <param name="textLines"></param>
+	/// <param name="questionLines"></param>
 	/// <returns></returns>
-	private int LoadTextLines(List<TextLine> textLines) {
-		ClearTextLines();
+	private int LoadquestionLines(List<QuestionLine> questionLines) {
+		ClearquestionLines();
 		int i = 0;
-		foreach(TextLine tl in textLines) {
+		foreach(QuestionLine ql in questionLines) {
 			GameObject g;
 			TextField tf = new TextField();
-			if(tl.text.Contains("{0}")) {
+			if(ql.Text.Contains("{0}")) {
 				g = Instantiate(InputFieldTemplate, QuestionParent, false);
 				i++;
 				Dnd_QuestionInput questionInput = g.GetComponent<Dnd_QuestionInput>();
-				questionInput.SetText(tl.text);
+				questionInput.SetText(ql.Text);
 				questionInput.SetInteractable(true);
 				tf.questionInput = questionInput;
 			} else {
 				g = Instantiate(TextFieldTemplate, QuestionParent, false);
-				g.GetComponent<Dnd_QuestionText>().SetText(tl.text);
+				g.GetComponent<Dnd_QuestionText>().SetText(ql.Text);
+				ql.CorrectAlternative = null;
 			}
 			g.SetActive(true);
 			
-			tf.textLineObj = g;
-			tf.textLine = tl;
+			tf.questionLineObj = g;
+			tf.questionLine = ql;
 
 			TextFieldList.Add(tf);
 
@@ -99,26 +96,26 @@ public class Dnd_Controller : MinigameController {
 			GameObject g = Instantiate(InputFieldTemplate, QuestionParent, false);
 			g.SetActive(true);
 			Dnd_questionInputInnText questionInput = g.GetComponent<Dnd_questionInputInnText>();
-			questionInput.SetText(tl.text);
-			questionInput.SetInteractable(tl.interactable);
-			TextLineAnswer l = new TextLineAnswer {
-				textLineObj = g,
-				textLine = tl,
+			questionInput.SetText(ql.text);
+			questionInput.SetInteractable(ql.interactable);
+			questionLineAnswer l = new questionLineAnswer {
+				questionLineObj = g,
+				questionLine = ql,
 				questionInput = questionInput
 			};
-			if(tl.correctAnswer == null) {
+			if(ql.correctAnswer == null) {
 				l.answer = null;
 			} else {
-				//l.answer = tl.correctAnswer.answer;
+				//l.answer = ql.correctAnswer.answer;
 				i++;
 			}*/
 		}
 		return i;
 	}
 
-	private void ClearTextLines() {
+	private void ClearquestionLines() {
 		foreach(TextField line in TextFieldList) {
-			Destroy(line.textLineObj);
+			Destroy(line.questionLineObj);
 		}
 		TextFieldList.Clear();
 	}

@@ -7,7 +7,7 @@ public class Dnd_QuestionInput : MonoBehaviour {
 
 	public Color normalColor, highlightColor;
 	public Image outline;
-	public Dnd_QuestionText questionText;
+	public Dnd_QuestionText QuestionText;
 
 	public static GameObject hoveredFillInnText = null;
 
@@ -46,9 +46,9 @@ public class Dnd_QuestionInput : MonoBehaviour {
 
 	private void UpdateText() {
 		if(text.Contains("{0}"))
-			questionText.SetText(string.Format(text, filling));
+			QuestionText.SetText(string.Format(text, filling));
 		else
-			questionText.SetText(text);
+			QuestionText.SetText(text);
 	}
 
 	public void PointerEnter() {

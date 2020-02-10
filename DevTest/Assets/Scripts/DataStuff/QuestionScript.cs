@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class QuestionScript : MonoBehaviour {
+public class Question2Script : MonoBehaviour {
 
-	public Text QuestionTextLine;
+	public Text Question2TextLine;
 
 
 

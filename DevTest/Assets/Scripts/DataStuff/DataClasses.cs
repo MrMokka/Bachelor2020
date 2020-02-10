@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DataClasses {
-	
+
 	private Dictionary<string, Minigame> MinigameDict = new Dictionary<string, Minigame>();
 
 	public List<Minigame> Minigames = new List<Minigame>();
@@ -39,14 +41,16 @@ public class DataClasses {
 
 }
 
+[Serializable]
 public class Minigame {
 	public List<string> Categories = new List<string>();
 	public string Type;
 	public string Mode;
-	public List<Question> Questions = new List<Question>();
+	public List<Question2> Questions = new List<Question2>();
 	public void AddQuestions(string questionText, List<string> questionLines, List<string> answers, List<int> correctAnswers) {
-		Question q = new Question();
-		q.QuestionText = questionText;
+		Question2 q = new Question2 {
+			QuestionText = questionText
+		};
 		foreach(string s in answers) {
 			q.Answers.Add(new Answer { text = s });
 		}
@@ -72,24 +76,76 @@ public class Minigame {
 		Questions.Add(q);
 	}
 }
-
-public class Question {
+#region Old Classes
+[Serializable]
+public class Question2 {
 	public string QuestionText;
 	public List<Answer> Answers = new List<Answer>();
 	public List<TextLine> TextLines = new List<TextLine>();
 	public bool grading;
 }
 
+[Serializable]
 public class Answer {
 	public string text;
 }
 
+[Serializable]
 public class TextLine {
 	public string text;
 	public bool interactable;
 	public CorrectAnswer correctAnswer;
 }
 
+[Serializable]
 public class CorrectAnswer {
 	public Answer answer;
 }
+#endregion
+
+[Serializable]
+public class Question {
+	public int Id;
+	public Type Type;
+	public string QuestionText;
+	public List<Category> CategoryList = new List<Category>();
+	public string QuestionObject;
+	public int Weight;
+	public bool Active;
+
+	public QuestionObject GetQuestionObject() {
+		return JsonUtility.FromJson<QuestionObject>(QuestionObject);
+	}
+}
+
+[Serializable]
+public class Type {
+	public int Id;
+	public string Name;
+}
+
+[Serializable]
+public class Category {
+	public int Id;
+	public string Name;
+}
+
+[Serializable]
+public class QuestionObject {
+	public List<QuestionLine> QuestionLines = new List<QuestionLine>();
+	public List<Alternative> Alternatives = new List<Alternative>();
+
+}
+
+[Serializable]
+public class QuestionLine {
+	public string Text;
+	public Alternative CorrectAlternative;
+}
+
+[Serializable]
+public class Alternative {
+	public string Text;
+}
+
+

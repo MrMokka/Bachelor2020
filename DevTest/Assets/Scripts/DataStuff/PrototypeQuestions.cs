@@ -10,6 +10,17 @@ public class PrototypeQuestions : MonoBehaviour {
 		dc = new DataClasses();
 		Minigame m = dc.CreateNewMinigame("DnD", "Fill");
 		m.AddQuestions("Calculate",
+					new List<string> {
+						"1 + 1 = {0}",
+						"25 * 2 = {0}",
+						"x = 5, y = 10",
+						"x * 2 + y = {0}",
+						"x + y * 1.5 = {0}"
+					},
+					new List<string> { "11", "2", "32", "46", "50", "62", "79", "80", "94", "20" },
+					new List<int> { 1, 4, 9, 9 }
+		);
+		m.AddQuestions("Calculate",
 					new List<string> { "10 + 10 = {0}" },
 					new List<string> { "56", "105", "20", "0" },
 					new List<int> { 2 }
@@ -98,39 +109,7 @@ public class PrototypeQuestions : MonoBehaviour {
 		);
 	}
 
-	private void AddQuestions_Remove(string questionText, List<string> questionLines, List<string> answers, List<int> correctAnswers) {
-		Minigame mg = new Minigame();
-		mg.Mode = "DnD";
-		mg.Type = "Fill";
-
-		Question q = new Question();
-		q.QuestionText = questionText;
-		foreach(string s in answers) {
-			q.Answers.Add(new Answer { text = s });
-		}
-		int i = 0;
-		foreach(string ql in questionLines) {
-			if(ql.Contains("{0}")) {
-				q.TextLines.Add(new TextLine {
-					text = ql,
-					interactable = true,
-					correctAnswer = new CorrectAnswer { answer = q.Answers[correctAnswers[i]] }
-				});
-				i++;
-			} else {
-				q.TextLines.Add(new TextLine {
-					text = ql,
-					interactable = true,
-					correctAnswer = null
-				});
-			}
-			
-		}
-		q.grading = false;
-		mg.Questions.Add(q);
-		dc.Minigames.Add(mg);
-	}
-
+	
 	public Minigame GetMinigame() {
 		return dc.GetRandomMinigame();
 	}

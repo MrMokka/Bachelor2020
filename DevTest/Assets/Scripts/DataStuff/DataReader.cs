@@ -26,11 +26,11 @@ public class DataReader : MonoBehaviour {
 	private class Minigames {
 		public string Type, Mode;
 		public List<string> Category;
-		public List<Questions> Questions;
+		public List<Question2s> Question2s;
 	}
 
-	private class Questions {
-		public string Question;
+	private class Question2s {
+		public string Question2;
 		public List<Answer> Answers;
 	}
 

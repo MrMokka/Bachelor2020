@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6644002182151273601
 RectTransform:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   normalColor: {r: 1, g: 0.79215693, b: 0, a: 1}
   highlightColor: {r: 0, g: 0.08627451, b: 1, a: 1}
   outline: {fileID: 6644002182151273615}
-  questionText: {fileID: 6487337245740788199}
+  QuestionText: {fileID: 6487337245740788199}
 --- !u!114 &6487337245740788199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,10 +223,10 @@ RectTransform:
   m_Father: {fileID: 6644002182151273601}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.69, y: -22.391304}
-  m_SizeDelta: {x: 275.38, y: 34.782608}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6644002182897765680
 CanvasRenderer:
