@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Dnd_FillInnText : MonoBehaviour {
+public class Dnd_QuestionInput : MonoBehaviour {
 
-	public Text textComp;
 	public Color normalColor, highlightColor;
+	public Image outline;
+	public Dnd_QuestionText QuestionText;
 
 	public static GameObject hoveredFillInnText = null;
 
-	private Image outline;
 	private bool interactable = true;
 	private string text;
 	private string filling = "[...]";
-
-	void Awake() {
-		outline = GetComponent<Image>();
-	}
 
 	void Start() {
 		//SetText("Hello {0}, how are you?");
@@ -25,13 +21,14 @@ public class Dnd_FillInnText : MonoBehaviour {
 
 	public void SetInteractable(bool _interactable) {
 		interactable = _interactable;
-		if(!_interactable)
-			outline.enabled = false;
-		else
+		if(_interactable)
 			outline.enabled = true;
+		else
+			outline.enabled = false;
 	}
 	public void SetText(string _text) {
 		text = _text;
+		//Switch this to regex
 		if(text.Contains("{0}"))
 			SetFilling("[...]");
 		else
@@ -49,15 +46,16 @@ public class Dnd_FillInnText : MonoBehaviour {
 
 	private void UpdateText() {
 		if(text.Contains("{0}"))
-			textComp.text = string.Format(text, filling);
+			QuestionText.SetText(string.Format(text, filling));
 		else
-			textComp.text = text;
+			QuestionText.SetText(text);
 	}
 
 	public void PointerEnter() {
 		if(!interactable)
 			return;
 		outline.color = highlightColor;
+		//Set static hover variable to self to indicate mouse is over
 		hoveredFillInnText = gameObject;
 	}
 

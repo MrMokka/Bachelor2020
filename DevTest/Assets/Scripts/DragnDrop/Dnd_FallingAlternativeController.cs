@@ -13,39 +13,22 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 	public float top, bottom, left, right;
 	public MinMax randomSpeed;
 
-	private List<GameObject> alternatives = new List<GameObject>();
+	private List<GameObject> Alternatives = new List<GameObject>();
+	private IEnumerator SpawnAlterativesRoutine = null;
 
-	void Start() {
-		//string[] s = new string[] { "Alt 1", "Alt 2", "Alt 3" };
-		//CreateAlternative(s);
-	}
 
-	void Update() {
-		/*
-		foreach(Alternative alt in alternatives) {
-			alt.txt.text = alt.name + " : " + alt.speed;
-			alt.obj.Translate(Vector2.down * alt.speed * Time.deltaTime, Space.Self);
-			if(alt.obj.localPosition.y < bottom) {
-				Vector2 v = alt.obj.localPosition;
-				v.y = top;
-				alt.obj.localPosition = v;
-			}
-			alt.speed -= Time.deltaTime;
-			if(alt.speed < 35f)
-				alt.speed = 35f;
-
-		}
-		*/
-	}
-
-	public void CreateAlternative(List<Answer> answers) {
+	public void CreateAlternative(List<Alternative> alternatives) {
 		//Can save as object to alow stopping when needed
-		StartCoroutine(SpawnAlternatives(answers, 0.5f));
+		if(SpawnAlterativesRoutine != null) {
+			StopCoroutine(SpawnAlterativesRoutine);
+		}
+		SpawnAlterativesRoutine = SpawnAlternatives(alternatives, 0.5f);
+		StartCoroutine(SpawnAlterativesRoutine);
 	}
 
-	private IEnumerator SpawnAlternatives(List<Answer> answers, float delay) {
+	private IEnumerator SpawnAlternatives(List<Alternative> alternatives, float delay) {
 		yield return null;
-		foreach(Answer a in answers) {
+		foreach(Alternative a in alternatives) {
 			GameObject g = Instantiate(alternativeTemplate, parent, false);
 			g.SetActive(true);
 			Dnd_FallingAlternative fall = g.GetComponent<Dnd_FallingAlternative>();
@@ -55,21 +38,21 @@ public class Dnd_FallingAlternativeController : MonoBehaviour {
 				left = left,
 				right = right,
 				speed = Random.Range(randomSpeed.min, randomSpeed.max),
-				text = a.text,
+				text = a.Text,
 				startPos = new Vector2(Random.Range(left, right), top),
 				fallingParent = parent
 			};
 			fall.SetValues(settings);
-			alternatives.Add(g);
+			Alternatives.Add(g);
 			yield return new WaitForSeconds(delay);
 		}
 	}
 
 	public void ClearAlternatives() {
-		foreach(GameObject g in alternatives) {
+		foreach(GameObject g in Alternatives) {
 			Destroy(g);
 		}
-		alternatives.Clear();
+		Alternatives.Clear();
 	}
 
 	[Serializable]

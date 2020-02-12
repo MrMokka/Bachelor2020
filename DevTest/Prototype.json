@@ -1,0 +1,66 @@
+{
+    "QuestionLines": [
+        {
+            "Text": "1 + 1 = {0}",
+            "CorrectAlternative": {
+                "Text": "2"
+            }
+        },
+        {
+            "Text": "25 * 2 = {0}",
+            "CorrectAlternative": {
+                "Text": "50"
+            }
+        },
+        {
+            "Text": "x = 5, y = 10",
+            "CorrectAlternative": {
+                "Text": ""
+            }
+        },
+        {
+            "Text": "x * 2 + y = {0}",
+            "CorrectAlternative": {
+                "Text": "20"
+            }
+        },
+        {
+            "Text": "x + y * 1.5 = {0}",
+            "CorrectAlternative": {
+                "Text": "20"
+            }
+        }
+    ],
+    "Alternatives": [
+        {
+            "Text": "11"
+        },
+        {
+            "Text": "2"
+        },
+        {
+            "Text": "32"
+        },
+        {
+            "Text": "46"
+        },
+        {
+            "Text": "50"
+        },
+        {
+            "Text": "62"
+        },
+        {
+            "Text": "79"
+        },
+        {
+            "Text": "80"
+        },
+        {
+            "Text": "94"
+        },
+        {
+            "Text": "20"
+        }
+    ]
+}
