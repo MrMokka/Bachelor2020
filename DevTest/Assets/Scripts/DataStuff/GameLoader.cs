@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameLoader : MonoBehaviour {
 
-	public TimeController TCS;
-	public ScoreController SC;
+	public CountdownController Countdown;
+	public ScoreController ScoreControllerScript;
 	public GameObject StartScreen;
 	public List<MinigameController> MinigameControllers = new List<MinigameController>();
 
@@ -30,7 +30,7 @@ public class GameLoader : MonoBehaviour {
 
 	public void StartGame() {
 		StartScreen.SetActive(false);
-		TCS.SetTime(1000);
+		Countdown.SetTime(1000);
 		LoadMinigame();
 	}
 
@@ -53,22 +53,22 @@ public class GameLoader : MonoBehaviour {
 	}
 
 	public void NextQuestion() {
-		SC.AddScore(ActiveMinigameController.CheckCorrectAnswers());
+		ScoreControllerScript.AddScore(ActiveMinigameController.CheckCorrectAnswers());
 		ActiveQuestion = QController.GetRandomQuestion();
 		if(ActiveQuestion == null) {
 			GameOver();
 			return;
 		}
 		int i = ActiveMinigameController.LoadQuestion(ActiveQuestion);
-		SC.AddAnswersToComplet(i);
+		ScoreControllerScript.AddAnswersToComplet(i);
 	}
 
 
 	public void GameOver() {
 		ActiveMinigameController.gameObject.SetActive(false);
-		SC.gameObject.SetActive(true);
-		SC.ShowScore();
-		TCS.StopTimer();
+		ScoreControllerScript.gameObject.SetActive(true);
+		ScoreControllerScript.ShowScore();
+		Countdown.StopTimer();
 	}
 
 
