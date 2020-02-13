@@ -42,6 +42,7 @@ public class Admin_NewQuestion : MonoBehaviour {
 			Weight = Difficulty.value + 1
 		};
 		DatabaseConnection.WriteQuestionToDatabase(question);
+		ResetFields();
 	}
 
 	private QuestionObject CreateQuestionObject() {
@@ -75,7 +76,9 @@ public class Admin_NewQuestion : MonoBehaviour {
 
 
 	public void ResetFields() {
-
+		QuestionTextInput.text = "";
+		LineController.CleanAlternatives();
+		LineController.CleanQuestionLines();
 	}
 
 

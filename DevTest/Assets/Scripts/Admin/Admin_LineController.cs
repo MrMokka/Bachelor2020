@@ -82,21 +82,21 @@ public class Admin_LineController : MonoBehaviour {
 	}
 
 
-	/*
-	public void AddLine() {
-		GameObject line = Instantiate(Line, transform, false);
-		LineList.Add(line);
-		SettingsButtonHolder.SetAsLastSibling();
+	public void CleanQuestionLines() {
+		foreach(GameObject obj in QuestionLineList) {
+			DestroyImmediate(obj);
+		}
+		QuestionLineList.Clear();
 	}
 
-	public void RemoveLine() {
-		if(LineList.Count > 0) {
-			GameObject toDelete = LineList[LineList.Count - 1];
-			LineList.Remove(toDelete);
-			DestroyImmediate(toDelete);
+	public void CleanAlternatives() {
+		foreach(GameObject obj in AlternativeLineList) {
+			DestroyImmediate(obj);
 		}
+		AlternativeLineList.Clear();
+		AlternativeTexts.Clear();
+		UpdateAlternativeDropdowns();
 	}
-	*/
 
 
 }
