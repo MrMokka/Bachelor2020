@@ -23,10 +23,12 @@ public class Admin_NewQuestion : MonoBehaviour {
 
 
 	public void UpdateDropdowns() {
+		int index = Category.value;
 		Category.ClearOptions();
 		foreach(Category cat in DatabaseConnection.GetCategories()) {
 			Category.options.Add(new Dropdown.OptionData { text = cat.Name });
 		}
+		Category.value = index;
 	}
 
 	public void SaveQuestion() {
@@ -39,8 +41,8 @@ public class Admin_NewQuestion : MonoBehaviour {
 			Type = new Type { Name = QuestionType },
 			Weight = Difficulty.value + 1
 		};
-
-		DatabaseConnection.WriteDataToDatabase(question);
+		DatabaseConnection.WriteQuestionToDatabase(question);
+		ResetFields();
 	}
 
 	private QuestionObject CreateQuestionObject() {
@@ -70,6 +72,13 @@ public class Admin_NewQuestion : MonoBehaviour {
 		};
 
 		return qObj;
+	}
+
+
+	public void ResetFields() {
+		QuestionTextInput.text = "";
+		LineController.CleanAlternatives();
+		LineController.CleanQuestionLines();
 	}
 
 
