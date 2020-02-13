@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class DataClasses {
 
+	/*
 	private Dictionary<string, Minigame> MinigameDict = new Dictionary<string, Minigame>();
 
 	public List<Minigame> Minigames = new List<Minigame>();
@@ -37,10 +38,12 @@ public class DataClasses {
 		MinigameDict.TryGetValue(mode, out Minigame m);
 		return m;
 	}
-
+	*/
 
 }
 
+#region Old Classes
+/*
 [Serializable]
 public class Minigame {
 	public List<string> Categories = new List<string>();
@@ -76,7 +79,7 @@ public class Minigame {
 		Questions.Add(q);
 	}
 }
-#region Old Classes
+
 [Serializable]
 public class Question2 {
 	public string QuestionText;
@@ -101,6 +104,7 @@ public class TextLine {
 public class CorrectAnswer {
 	public Answer answer;
 }
+*/
 #endregion
 
 [Serializable]
@@ -111,7 +115,7 @@ public class Question {
 	public List<Category> CategoryList = new List<Category>();
 	public string QuestionObject;
 	public int Weight;
-	public bool Active;
+	public int Active;
 
 	public QuestionObject GetQuestionObject() {
 		return JsonUtility.FromJson<QuestionObject>(QuestionObject);

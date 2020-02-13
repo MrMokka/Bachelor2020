@@ -20,9 +20,11 @@ public class Admin_AddLine : MonoBehaviour {
 			GameObject toDelete = LineList[LineList.Count - 1];
 			LineList.Remove(toDelete);
 			DestroyImmediate(toDelete);
-
 		}
 	}
 
+	public List<GameObject> GetLineList() {
+		return LineList;
+	}
 
 }

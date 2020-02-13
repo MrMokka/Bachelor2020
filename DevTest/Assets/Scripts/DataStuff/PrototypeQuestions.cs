@@ -6,6 +6,7 @@ public class PrototypeQuestions : MonoBehaviour {
 
 	private DataClasses dc;
 
+	/*
 	void Awake() {
 		dc = new DataClasses();
 		Minigame m = dc.CreateNewMinigame("DnD", "Fill");
@@ -109,9 +110,10 @@ public class PrototypeQuestions : MonoBehaviour {
 		);
 	}
 
-	
+
 	public Minigame GetMinigame() {
 		return dc.GetRandomMinigame();
 	}
+	*/
 
 }
