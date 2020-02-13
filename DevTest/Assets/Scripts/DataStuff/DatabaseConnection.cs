@@ -127,7 +127,8 @@ public class DatabaseConnection : MonoBehaviour {
 	public static List<Question> ReadQuestionsFromDatabase(Category categoryFilter = null, int weightFilter = -1) {
 		using(SqlConnection connection = new SqlConnection(connectionStringReader)) {
 			string sqlString = 
-				$"SELECT Q.QuestionId, T.TypeId as TypeId, T.Name as TypeName, C.Name as CategoryName, Q.QuestionText, Q.Weight, Q.Active, Q.Json " +
+				$"SELECT Q.QuestionId, T.TypeId as TypeId, T.Name as TypeName, C.Name as CategoryName, " +
+				$"Q.QuestionText, Q.Weight, Q.Active, Q.Json " +
 				$"FROM Question as Q " +
 				$"left join Type as T on T.TypeId = Q.TypeId " +
 				$"left join Question_Category as QC on QC.QuestionId = Q.QuestionId " +
@@ -191,22 +192,22 @@ public class DatabaseConnection : MonoBehaviour {
 
 	#endregion
 
-	#region Write to database
+	#region Write question to database
 
-	public static void WriteDataToDatabase(Question Question) {
+	public static void WriteQuestionToDatabase(Question question) {
 		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
-			string insertSQL = $"INSERT INTO Question (TypeId, QuestionText, Active, Weight, Json)" +
-					$" OUTPUT inserted.QuestionId VALUES(" +
-					$" (SELECT TypeId FROM Type WHERE Type.Name = '{Question.Type.Name}'), '{Question.QuestionText}'," +
-					$" '{Question.Active}', '{Question.Weight}', '{Question.QuestionObject}')"; //CAST({Question.QuestionObject} as nvarchar(MAX))
+			string insertSQL = $"INSERT INTO question (TypeId, questionText, Active, Weight, Json)" +
+					$" OUTPUT inserted.questionId VALUES(" +
+					$" (SELECT TypeId FROM Type WHERE Type.Name = '{question.Type.Name}'), '{question.QuestionText}'," +
+					$" '{question.Active}', '{question.Weight}', '{question.QuestionObject}')";
 				
 			connection.Open();
 			int questionId = (int)new SqlCommand(insertSQL, connection).ExecuteScalar();
 			print(questionId);
 
-			foreach(Category c in Question.CategoryList) {
+			foreach(Category c in question.CategoryList) {
 				string categorySQL =
-					$"INSERT INTO Question_Category (QuestionId, CategoryId) VALUES ( " +
+					$"INSERT INTO question_Category (questionId, CategoryId) VALUES ( " +
 					$"{questionId}, (SELECT CategoryId FROM Category WHERE Category.Name = '{c.Name}'))";
 				new SqlCommand(categorySQL, connection).ExecuteNonQuery();
 			}
@@ -251,6 +252,21 @@ public class DatabaseConnection : MonoBehaviour {
 				reader.Close();
 			}
 			*/
+		}
+	}
+
+	#endregion
+
+	#region Write category to database
+
+	public static void WriteCategoryToDatabase(Category category) {
+		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
+			string insertSQL =
+					$"IF NOT EXISTS (SELECT * FROM Category WHERE Category.Name = '{category.Name}') " +
+					$"INSERT INTO Category (Name) VALUES ('{category.Name}')";
+
+			connection.Open();
+			new SqlCommand(insertSQL, connection).ExecuteNonQuery();
 		}
 	}
 
