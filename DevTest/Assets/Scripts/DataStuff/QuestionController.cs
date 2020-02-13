@@ -8,7 +8,7 @@ public class QuestionController : MonoBehaviour {
 	private List<Question> usedQuestions = new List<Question>();
 
 	void Awake() {
-		questions = DatabaseConnection.ReadQuestionsFromDatabase("Casual Speed");
+		questions = DatabaseConnection.ReadQuestionsFromDatabase("Simple Math");
 		print(questions.Count);
 	}
 
@@ -16,11 +16,11 @@ public class QuestionController : MonoBehaviour {
 		if(questions.Count == 0) 
 			return null;
 
-		Question Question2 = questions[Random.Range(0, questions.Count)];
-		print(Question2);
-		usedQuestions.Add(Question2);
-		questions.Remove(Question2);
-		return Question2;
+		Question Question = questions[Random.Range(0, questions.Count)];
+		usedQuestions.Add(Question);
+		questions.Remove(Question);
+		print("Questions left: " + questions.Count);
+		return Question;
 	}
 
 }
