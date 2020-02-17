@@ -79,6 +79,7 @@ public class Admin_NewQuestion : MonoBehaviour {
 		QuestionTextInput.text = "";
 		LineController.CleanAlternatives();
 		LineController.CleanQuestionLines();
+		LineController.AlternativeTexts.Add("None");
 	}
 
 
