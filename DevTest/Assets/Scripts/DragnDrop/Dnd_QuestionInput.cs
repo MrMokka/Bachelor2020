@@ -5,18 +5,19 @@ using UnityEngine.UI;
 
 public class Dnd_QuestionInput : MonoBehaviour {
 
-	public Color normalColor, highlightColor;
+	public Color normalColor, highlightColor, correctColor, wrongColor;
 	public Image outline;
 	public Dnd_QuestionText QuestionText;
 
 	public static GameObject hoveredFillInnText = null;
+	public bool ignoreMouse = false;
 
 	private bool interactable = true;
 	private string text;
 	private string filling = "[...]";
 
 	void Start() {
-		//SetText("Hello {0}, how are you?");
+
 	}
 
 	public void SetInteractable(bool _interactable) {
@@ -52,7 +53,7 @@ public class Dnd_QuestionInput : MonoBehaviour {
 	}
 
 	public void PointerEnter() {
-		if(!interactable)
+		if(!interactable || ignoreMouse)
 			return;
 		outline.color = highlightColor;
 		//Set static hover variable to self to indicate mouse is over
@@ -60,13 +61,14 @@ public class Dnd_QuestionInput : MonoBehaviour {
 	}
 
 	public void PointerExit() {
-		if(!interactable)
+		if(!interactable || ignoreMouse)
 			return;
 		outline.color = normalColor;
 		if(hoveredFillInnText == gameObject)
 			hoveredFillInnText = null;
 	}
 
+	
 	
 
 }

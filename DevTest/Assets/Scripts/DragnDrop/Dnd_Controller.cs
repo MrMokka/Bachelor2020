@@ -48,16 +48,14 @@ public class Dnd_Controller : MinigameController {
 		foreach(TextField tf in TextFieldList) {
 			if(tf.questionLine.CorrectAlternative == null)
 				continue;
-
-			//string s = tf.questionInput.GetquestionInputing() + " - " + tf.questionLine.correctAnswer.answer.text;
 			string s1 = tf.questionLine.CorrectAlternative.Text;
-			print(tf.questionLine.Text + ": " + s1);
 			string s2 = tf.questionInput.GetFilling();
 			if(s1 == s2) {
+				tf.questionInput.outline.color = tf.questionInput.correctColor;
 				score++;
-				//s += " Correct!";
-			}
-			//print(s);
+			} else
+				tf.questionInput.outline.color = tf.questionInput.wrongColor;
+			tf.questionInput.ignoreMouse = true;
 		}
 		return score;
 	}
