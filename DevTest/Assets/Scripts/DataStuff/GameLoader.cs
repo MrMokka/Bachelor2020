@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,14 +55,21 @@ public class GameLoader : MonoBehaviour {
 
 	public void NextQuestion() {
 		ScoreControllerScript.AddScore(ActiveMinigameController.CheckCorrectAnswers());
+		StartCoroutine("LoadNextQuestion");
+	}
+
+	private IEnumerator LoadNextQuestion() {
+		if(ActiveQuestion != null)
+			yield return new WaitForSeconds(1f);
 		ActiveQuestion = QController.GetRandomQuestion();
 		if(ActiveQuestion == null) {
 			GameOver();
-			return;
+			yield return null;
 		}
 		int i = ActiveMinigameController.LoadQuestion(ActiveQuestion);
 		ScoreControllerScript.AddAnswersToComplet(i);
 	}
+	
 
 
 	public void GameOver() {
