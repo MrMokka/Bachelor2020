@@ -5365,8 +5365,8 @@ MonoBehaviour:
   left: 20
   right: 300
   randomSpeed:
-    min: 150
-    max: 200
+    min: 500
+    max: 700
 --- !u!114 &1724374747
 MonoBehaviour:
   m_ObjectHideFlags: 0

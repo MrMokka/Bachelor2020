@@ -60,7 +60,7 @@ public class GameLoader : MonoBehaviour {
 
 	private IEnumerator LoadNextQuestion() {
 		if(ActiveQuestion != null)
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(0.6f);
 		ActiveQuestion = QController.GetRandomQuestion();
 		if(ActiveQuestion == null) {
 			GameOver();
