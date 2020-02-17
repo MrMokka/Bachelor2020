@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TimeRemainingScript : MonoBehaviour {
 
 	public Text TimerText;
-	public TimeController TCS;
+	public CountdownController TCS;
 
 	private string min, sec;
 
