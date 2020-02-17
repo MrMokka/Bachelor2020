@@ -47,6 +47,7 @@ public class Admin_NewQuestion : MonoBehaviour {
 
 	private QuestionObject CreateQuestionObject() {
 		List<Alternative> alternatives = new List<Alternative>();
+		LineController.AlternativeTexts.RemoveAt(0);
 		foreach(string alternative in LineController.AlternativeTexts) {
 			alternatives.Add(new Alternative {
 				Text = alternative
@@ -79,6 +80,7 @@ public class Admin_NewQuestion : MonoBehaviour {
 		QuestionTextInput.text = "";
 		LineController.CleanAlternatives();
 		LineController.CleanQuestionLines();
+		LineController.AlternativeTexts.Add("None");
 	}
 
 

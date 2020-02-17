@@ -8,7 +8,7 @@ public class QuestionController : MonoBehaviour {
 	private List<Question> usedQuestions = new List<Question>();
 
 	void Awake() {
-		questions = DatabaseConnection.ReadQuestionsFromDatabase("Simple Math");
+		questions = DatabaseConnection.ReadQuestionsFromDatabase();
 		print(questions.Count);
 	}
 

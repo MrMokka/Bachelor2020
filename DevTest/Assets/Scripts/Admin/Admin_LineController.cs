@@ -48,6 +48,7 @@ public class Admin_LineController : MonoBehaviour {
 		alternativeLine.SetActive(true);
 		AlternativeLineList.Add(alternativeLine);
 		buttonHolder.SetAsLastSibling();
+		AlternativeTexts.Add("");
 	}
 
 	public void RemoveAlternativeLine() {
@@ -96,6 +97,26 @@ public class Admin_LineController : MonoBehaviour {
 		AlternativeLineList.Clear();
 		AlternativeTexts.Clear();
 		UpdateAlternativeDropdowns();
+	}
+
+	public void CorrectAlternativeselected(Dropdown dropdown) {
+		InputField inputField = dropdown.transform.parent.GetChild(0).GetComponent<InputField>();
+		if(dropdown.value == 0 && inputField.text.Contains("{0}")) {
+			
+			inputField.text = inputField.text.Replace("{0}", "");
+			print("Replaced");
+		} else if(!inputField.text.Contains("{0}")) {
+			if(inputField.text[inputField.text.Length - 1] == ' ')
+				inputField.text += "{0}";
+			else
+				inputField.text += " {0}";
+		}
+		string str = inputField.text.Substring(0, inputField.text.IndexOf("{0}") + "{0}".Length);
+		inputField.text = str + inputField.text.Substring(str.Length).Replace("{0}", "");
+
+		//TODO: Remove unused space at end of inputField.text
+		//if(inputField.text[inputField.text.Length -1].ToString() == " ")
+		//	inputField.text.Remove(inputField.text.Length - 1);
 	}
 
 
