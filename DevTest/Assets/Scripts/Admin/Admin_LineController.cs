@@ -48,6 +48,7 @@ public class Admin_LineController : MonoBehaviour {
 		alternativeLine.SetActive(true);
 		AlternativeLineList.Add(alternativeLine);
 		buttonHolder.SetAsLastSibling();
+		AlternativeTexts.Add("");
 	}
 
 	public void RemoveAlternativeLine() {
