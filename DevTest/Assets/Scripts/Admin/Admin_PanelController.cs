@@ -7,6 +7,11 @@ public class Admin_PanelController : MonoBehaviour {
 
 	public GameObject ActivePanel;
 
+	void Start() {
+		if(ActivePanel != null)	
+			ActivePanel.SetActive(true);
+	}
+
 	public void SetActivePanel(GameObject newPanel) {
 		if(ActivePanel == null) {
 			Debug.LogError("No active panel!");
