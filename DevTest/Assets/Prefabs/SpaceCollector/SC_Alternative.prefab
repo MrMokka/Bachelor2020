@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 6826968037847274967}
   - component: {fileID: 6826968037847274920}
   m_Layer: 0
-  m_Name: Alternative
+  m_Name: SC_Alternative
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -392,9 +392,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6826968037847274965}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0b6e1ab7cad31642917823fed7a7d6d, type: 3}
+  m_Script: {fileID: 11500000, guid: f3c36b23e8be07840b7b23a17a1a291c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxFollowDistance: 0.6
+  MaxFollowDistance: 1
   DragSpeed: 3
   Following: {fileID: 0}

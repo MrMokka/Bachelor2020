@@ -8,7 +8,7 @@ public class SC_ShipController : MonoBehaviour {
 
 	[Header("DEBUG ONLY")]
 	public Vector2 velocity;
-	public SC_AlternativeScript Follower;
+	public SC_AlternativeMoveScript Follower;
 
 	private Rigidbody2D Rigidbody;
 	private float AccelerationTime = 0.5f;
@@ -36,14 +36,16 @@ public class SC_ShipController : MonoBehaviour {
 
 	}
 
-
-	void OnTriggerEnter2D(Collider2D other) {
+	public void SetFollower(Transform follower) {
+		if(follower == null) {
+			if(Follower != null)
+				Follower.ClearFollowing();
+			return;
+		}
 		if(Follower != null)
-			Follower.Following = null;
-		Follower = other.gameObject.GetComponent<SC_AlternativeScript>();
-		Follower.Following = transform;
+			Follower.ClearFollowing();
+		Follower = follower.GetComponent<SC_AlternativeMoveScript>();
 	}
-
 
 
 }
