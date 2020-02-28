@@ -4,8 +4,15 @@ using UnityEngine;
 
 public abstract class MinigameController : MonoBehaviour {
 
+	protected struct QuestionField<T> {
+		public GameObject LineObj;
+		public QuestionLine Line;
+		public T Script;
+	}
+
 	public abstract int LoadQuestion(Question Question);
 	public abstract string GetMinigameMode();
 	public abstract int CheckCorrectAnswers();
+	protected abstract int LoadQuestionLines(List<QuestionLine> questionLines);
 
 }

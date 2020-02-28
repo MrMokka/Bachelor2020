@@ -9,7 +9,7 @@ public class QuestionController : MonoBehaviour {
 
 	void Awake() {
 		questions = DatabaseConnection.ReadQuestionsFromDatabase();
-		print(questions.Count);
+		//print(questions.Count);
 	}
 
 	public Question GetRandomQuestion() {
@@ -19,7 +19,7 @@ public class QuestionController : MonoBehaviour {
 		Question Question = questions[Random.Range(0, questions.Count)];
 		usedQuestions.Add(Question);
 		questions.Remove(Question);
-		print("Questions left: " + questions.Count);
+		//print("Questions left: " + questions.Count);
 		return Question;
 	}
 
