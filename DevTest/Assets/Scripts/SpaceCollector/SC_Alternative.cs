@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SC_AlternativeMoveScript : MonoBehaviour {
+public class SC_Alternative : MonoBehaviour {
 
 	public float MaxFollowDistance, DragSpeed;
 	public Transform Following;
+	public Text TextObject;
+
+
 
 	void FixedUpdate() {
 		if(Following == null)
@@ -19,8 +23,15 @@ public class SC_AlternativeMoveScript : MonoBehaviour {
 
 	}
 
+	public void SetText(string text) {
+		TextObject.text = text;
+	}
+	public string GetText() {
+		return TextObject.text;
+	}
+
 	void OnTriggerEnter2D(Collider2D other) {
-		if(Following != null)
+		if(Following != null || !other.CompareTag("Player"))
 			return;
 		other.GetComponent<SC_ShipController>().SetFollower(transform);
 		Following = other.transform;
@@ -29,6 +40,5 @@ public class SC_AlternativeMoveScript : MonoBehaviour {
 	public void ClearFollowing() {
 		Following = null;
 	}
-
 
 }

@@ -15,23 +15,19 @@ public class Dnd_Controller : MinigameController {
 	public GameObject TextFieldTemplate;
 	public Dnd_FallingAlternativeController AlternativeController;
 
-	private List<TextField> TextFieldList = new List<TextField>();
+	private List<QuestionField<Dnd_QuestionInput>> QuestionFieldList = new List<QuestionField<Dnd_QuestionInput>>();
 	private QuestionObject QObject;
 
-	private struct TextField {
-		public GameObject questionLineObj;
-		public QuestionLine questionLine;
-		public Dnd_QuestionInput questionInput;
-	}
+	
 
 	/// <summary>
 	/// Returns the number of possible answers
 	/// </summary>
 	/// <param name="Question2"></param>
-	public override int LoadQuestion(Question Question2) {
-		QuestionText.text = Question2.QuestionText;
-		QObject = Question2.GetQuestionObject();
-		int i = LoadquestionLines(QObject.QuestionLines);
+	public override int LoadQuestion(Question question) {
+		QuestionText.text = question.QuestionText;
+		QObject = question.GetQuestionObject();
+		int i = LoadQuestionLines(QObject.QuestionLines);
 		AlternativeController.ClearAlternatives();
 		AlternativeController.CreateAlternative(QObject.Alternatives);
 		return i;
@@ -45,17 +41,17 @@ public class Dnd_Controller : MinigameController {
 		int score = 0;
 		//Check directly to Dnd_questionInputInnText script
 		//Is point of having questionLineAnswer? Hmmm dont think so
-		foreach(TextField tf in TextFieldList) {
-			if(tf.questionLine.CorrectAlternative == null)
+		foreach(QuestionField<Dnd_QuestionInput> questionField in QuestionFieldList) {
+			if(questionField.Line.CorrectAlternative == null)
 				continue;
-			string s1 = tf.questionLine.CorrectAlternative.Text;
-			string s2 = tf.questionInput.GetFilling();
+			string s1 = questionField.Line.CorrectAlternative.Text;
+			string s2 = questionField.Script.GetFilling();
 			if(s1 == s2) {
-				tf.questionInput.outline.color = tf.questionInput.correctColor;
+				questionField.Script.outline.color = questionField.Script.correctColor;
 				score++;
 			} else
-				tf.questionInput.outline.color = tf.questionInput.wrongColor;
-			tf.questionInput.ignoreMouse = true;
+				questionField.Script.outline.color = questionField.Script.wrongColor;
+			questionField.Script.ignoreMouse = true;
 		}
 		return score;
 	}
@@ -65,57 +61,39 @@ public class Dnd_Controller : MinigameController {
 	/// </summary>
 	/// <param name="questionLines"></param>
 	/// <returns></returns>
-	private int LoadquestionLines(List<QuestionLine> questionLines) {
+	protected override int LoadQuestionLines(List<QuestionLine> questionLines) {
 		ClearquestionLines();
 		int i = 0;
-		foreach(QuestionLine ql in questionLines) {
+		foreach(QuestionLine questionLine in questionLines) {
 			GameObject g;
-			TextField tf = new TextField();
-			if(ql.Text.Contains("{0}")) {
+			QuestionField<Dnd_QuestionInput> questionField = new QuestionField<Dnd_QuestionInput>();
+			if(questionLine.Text.Contains("{0}")) {
 				g = Instantiate(InputFieldTemplate, QuestionParent, false);
 				i++;
 				Dnd_QuestionInput questionInput = g.GetComponent<Dnd_QuestionInput>();
-				questionInput.SetText(ql.Text);
+				questionInput.SetText(questionLine.Text);
 				questionInput.SetInteractable(true);
-				tf.questionInput = questionInput;
+				questionField.Script = questionInput;
 			} else {
 				g = Instantiate(TextFieldTemplate, QuestionParent, false);
-				g.GetComponent<Dnd_QuestionText>().SetText(ql.Text);
-				ql.CorrectAlternative = null;
+				g.GetComponent<Dnd_QuestionText>().SetText(questionLine.Text);
+				questionLine.CorrectAlternative = null;
 			}
 			g.SetActive(true);
-			
-			tf.questionLineObj = g;
-			tf.questionLine = ql;
 
-			TextFieldList.Add(tf);
+			questionField.LineObj = g;
+			questionField.Line = questionLine;
 
-			/*
-			GameObject g = Instantiate(InputFieldTemplate, QuestionParent, false);
-			g.SetActive(true);
-			Dnd_questionInputInnText questionInput = g.GetComponent<Dnd_questionInputInnText>();
-			questionInput.SetText(ql.text);
-			questionInput.SetInteractable(ql.interactable);
-			questionLineAnswer l = new questionLineAnswer {
-				questionLineObj = g,
-				questionLine = ql,
-				questionInput = questionInput
-			};
-			if(ql.correctAnswer == null) {
-				l.answer = null;
-			} else {
-				//l.answer = ql.correctAnswer.answer;
-				i++;
-			}*/
+			QuestionFieldList.Add(questionField);
 		}
 		return i;
 	}
 
 	private void ClearquestionLines() {
-		foreach(TextField line in TextFieldList) {
-			Destroy(line.questionLineObj);
+		foreach(QuestionField<Dnd_QuestionInput> questionField in QuestionFieldList) {
+			Destroy(questionField.LineObj);
 		}
-		TextFieldList.Clear();
+		QuestionFieldList.Clear();
 	}
 
 

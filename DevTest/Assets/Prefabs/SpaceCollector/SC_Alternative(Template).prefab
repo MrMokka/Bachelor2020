@@ -334,7 +334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6826968037847274966}
   - component: {fileID: 6826968037847274967}
-  - component: {fileID: 6826968037847274920}
+  - component: {fileID: 4773082971547927264}
   m_Layer: 0
   m_Name: SC_Alternative
   m_TagString: Untagged
@@ -350,7 +350,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6826968037847274965}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.304, y: 1.346, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6826968037467945800}
@@ -383,7 +383,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0605199, y: 0.5268235}
   m_EdgeRadius: 0
---- !u!114 &6826968037847274920
+--- !u!114 &4773082971547927264
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -392,9 +392,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6826968037847274965}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3c36b23e8be07840b7b23a17a1a291c, type: 3}
+  m_Script: {fileID: 11500000, guid: 171b95c8880f2684c9c0d425ce1d9e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MaxFollowDistance: 1
   DragSpeed: 3
   Following: {fileID: 0}
+  TextObject: {fileID: 6826968035930524161}

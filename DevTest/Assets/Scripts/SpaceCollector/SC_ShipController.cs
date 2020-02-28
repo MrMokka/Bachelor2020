@@ -5,17 +5,18 @@ using UnityEngine;
 public class SC_ShipController : MonoBehaviour {
 
 	public float RotationSpeed, MaxSpeed, AccelerationSpeed, DecelerationSpeed;
+	public SC_AlternativeController AlternativeController;
 
 	[Header("DEBUG ONLY")]
 	public Vector2 velocity;
-	public SC_AlternativeMoveScript Follower;
+	public SC_Alternative Follower;
+	
 
 	private Rigidbody2D Rigidbody;
 	private float AccelerationTime = 0.5f;
 
 	void Awake() {
 		Rigidbody = GetComponent<Rigidbody2D>();
-
 	}
 
 
@@ -44,8 +45,22 @@ public class SC_ShipController : MonoBehaviour {
 		}
 		if(Follower != null)
 			Follower.ClearFollowing();
-		Follower = follower.GetComponent<SC_AlternativeMoveScript>();
+		Follower = follower.GetComponent<SC_Alternative>();
 	}
 
+	public void ClearFollower() {
+		if(Follower == null)
+			return;
+		Follower.ClearFollowing();
+		AlternativeController.RespawnAlternative(Follower.gameObject);
+	}
+
+	public SC_Alternative GetFollower() {
+		return Follower;
+	}
+
+	public void Respawn() {
+
+	}
 
 }

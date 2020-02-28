@@ -8,7 +8,7 @@ public class SC_AlternativeController : MonoBehaviour {
 	public Transform AlternativeParent;
 
 	private SC_AreaController AreaController;
-	private List<GameObject> Alternatives;
+	private List<GameObject> Alternatives = new List<GameObject>();
 
 	void Awake() {
 		AreaController = GetComponent<SC_AreaController>();
@@ -22,13 +22,31 @@ public class SC_AlternativeController : MonoBehaviour {
 			GameObject obj = Instantiate(AlternativeTemplate, AlternativeParent, false);
 			obj.SetActive(true);
 			Vector2 spawnPos = new Vector2 {
-				x = Random.Range(0, AreaController.Size.x) - AreaController.Size.x / 2,
-				y = Random.Range(0, AreaController.Size.y) - AreaController.Size.y / 2
+				x = Random.Range(0, AreaController.RectSize.x) - AreaController.RectSize.x / 2,
+				y = Random.Range(0, AreaController.RectSize.y) - AreaController.RectSize.y / 2
 			};
-			obj.transform.position += new Vector3(spawnPos.x, spawnPos.y, 0);
+			obj.transform.localPosition = new Vector3(spawnPos.x, spawnPos.y, 0);
+			obj.GetComponent<SC_Alternative>().SetText(alternative.Text);
 			Alternatives.Add(obj);
 		}
 
+	}
+
+	public void RespawnAlternative(GameObject alternative) {
+		Vector2 spawnPos = new Vector2 {
+			x = Random.Range(0, AreaController.RectSize.x) - AreaController.RectSize.x / 2,
+			y = Random.Range(0, AreaController.RectSize.y) - AreaController.RectSize.y / 2
+		};
+		alternative.transform.localPosition = new Vector3(spawnPos.x, spawnPos.y, 0);
+	}
+
+	public void RespawnAlternative(Transform alternative) {
+		alternative.transform.localPosition = Vector3.zero;
+		Vector2 spawnPos = new Vector2 {
+			x = Random.Range(0, AreaController.RectSize.x) - AreaController.RectSize.x / 2,
+			y = Random.Range(0, AreaController.RectSize.y) - AreaController.RectSize.y / 2
+		};
+		alternative.transform.localPosition += new Vector3(spawnPos.x, spawnPos.y, 0);
 	}
 
 	public void ClearAlternatives() {
