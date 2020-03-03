@@ -2,59 +2,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameLoader : MonoBehaviour {
 
 	public CountdownController Countdown;
 	public ScoreController ScoreControllerScript;
 	public GameObject StartScreen;
+	public int QuestionsForMinigameSwap;
 	public List<MinigameController> MinigameControllers = new List<MinigameController>();
 
-	private Dictionary<string, MinigameController> MinigameDict = new Dictionary<string, MinigameController>();
+	private List<Minigame> MinigameList = new List<Minigame>();
+	private List<Minigame> UsedMinigameList = new List<Minigame>();
+	private Minigame ActiveMinigame;
 
 	private QuestionController QController;
-	private MinigameController ActiveMinigameController;
 	private Question ActiveQuestion;
+	private int QuestionCounter;
+
+	private class Minigame {
+		public MinigameController Controller;
+	}
 
 	void Start() {
 		StartScreen.SetActive(true);
 		QController = GetComponent<QuestionController>();
 		foreach(MinigameController mc in MinigameControllers) {
-			//ValidatePanel();
 			if(mc == null)
 				continue;
-			MinigameDict.Add(mc.GetMinigameMode(), mc);
 			mc.gameObject.SetActive(false);
-			ActiveMinigameController = null;
+			MinigameList.Add(new Minigame { Controller = mc });
 		}
+		ActiveMinigame = null;
+		QuestionCounter = QuestionsForMinigameSwap;
 	}
 
 	public void StartGame() {
 		StartScreen.SetActive(false);
 		Countdown.SetTime(1000);
-		LoadMinigame();
+		NextQuestion();
 	}
 
 	private void LoadMinigame() {
-		//ActiveQuestion = QController.GetRandomQuestion();
-		//if(ActiveQuestion == null) {
-		//	print("Warning: No Question2 loaded, out of questions?");
-		//	GameOver();
-		//	return;
-		//}
-		MinigameController mc;
-		if(MinigameDict.TryGetValue("MC", out mc)) {
-			//Check for type also
-			if(ActiveMinigameController != null)
-				ActiveMinigameController.gameObject.SetActive(false);
-			ActiveMinigameController = mc;
-			ActiveMinigameController.gameObject.SetActive(true);
-			NextQuestion();
-		}
+		QuestionCounter = 0;
+		if(MinigameList.Count == 0) //Start random pick from used minigames
+			return;
+		if(ActiveMinigame != null)
+			ActiveMinigame.Controller.gameObject.SetActive(false);
+		Minigame minigame = MinigameList[Random.Range(0, MinigameList.Count - 1)];
+		UsedMinigameList.Add(minigame);
+		MinigameList.Remove(minigame);
+		ActiveMinigame = minigame;
+		ActiveMinigame.Controller.gameObject.SetActive(true);
 	}
 
 	public void NextQuestion() {
-		ScoreControllerScript.AddScore(ActiveMinigameController.CheckCorrectAnswers());
+		if(ActiveMinigame == null || QuestionCounter >= QuestionsForMinigameSwap)
+			LoadMinigame();
+		else
+			ScoreControllerScript.AddScore(ActiveMinigame.Controller.CheckCorrectAnswers());
+		QuestionCounter++;
 		StartCoroutine("LoadNextQuestion");
 	}
 
@@ -66,30 +73,16 @@ public class GameLoader : MonoBehaviour {
 			GameOver();
 			yield return null;
 		}
-		int i = ActiveMinigameController.LoadQuestion(ActiveQuestion);
+		int i = ActiveMinigame.Controller.LoadQuestion(ActiveQuestion);
 		ScoreControllerScript.AddAnswersToComplet(i);
 	}
-	
-
 
 	public void GameOver() {
-		ActiveMinigameController.gameObject.SetActive(false);
+		ActiveMinigame.Controller.gameObject.SetActive(false);
 		ScoreControllerScript.gameObject.SetActive(true);
 		ScoreControllerScript.ShowScore();
 		Countdown.StopTimer();
 	}
 
 
-}
-
-[Serializable]
-public class MinigamePanel {
-	public string Mode;
-	public string Type;
-	public Transform GameParent;
-	public Transform AlternativeParent;
-	public Transform QuestionParent;
-	public Transform InfoPanel;
-	public GameObject AlternativeTemplate;
-	public GameObject QuestionTextTemplate;
 }
