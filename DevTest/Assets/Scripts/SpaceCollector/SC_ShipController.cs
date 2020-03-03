@@ -53,6 +53,7 @@ public class SC_ShipController : MonoBehaviour {
 			return;
 		Follower.ClearFollowing();
 		AlternativeController.RespawnAlternative(Follower.gameObject);
+		Follower = null;
 	}
 
 	public SC_Alternative GetFollower() {
@@ -61,7 +62,7 @@ public class SC_ShipController : MonoBehaviour {
 
 	public void Respawn() {
 		ClearFollower();
-		Rigidbody.velocity = Vector3.zero;
+		AccelerationTime = 0;
 		transform.position = RespawnPoint.position;
 	}
 
