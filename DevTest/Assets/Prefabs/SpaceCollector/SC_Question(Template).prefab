@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.83413935, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 804d511e1ae9d53438c7940aad50d431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Delay: 0.1
 --- !u!61 &7403164055711784565
 BoxCollider2D:
   m_ObjectHideFlags: 0
