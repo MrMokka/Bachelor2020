@@ -9,16 +9,12 @@ public class SC_Question : MonoBehaviour {
 	public Color normalColor, correctColor, wrongColor;
 	public Text TextObj;
 	public Image Border;
+	public bool Interactable = true;
 
-	private bool Interactable = true;
 	private string Filling = "[...]";
 	private string QuestionText;
-	private BoxCollider2D Collider;
 
-
-	void Start() {
-		Collider = GetComponent<BoxCollider2D>();
-	}
+	
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if(!other.CompareTag("Player") || !Interactable)
@@ -49,7 +45,9 @@ public class SC_Question : MonoBehaviour {
 		UpdateText();
 	}
 
-
+	public string GetFilling() {
+		return Filling;
+	}
 
 
 }
