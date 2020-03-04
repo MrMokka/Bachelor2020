@@ -6,6 +6,7 @@ public class SC_ShipController : MonoBehaviour {
 
 	public float RotationSpeed, MaxSpeed, AccelerationSpeed, DecelerationSpeed;
 	public SC_AlternativeController AlternativeController;
+	public Transform RespawnPoint;
 
 	[Header("DEBUG ONLY")]
 	public Vector2 velocity;
@@ -32,7 +33,6 @@ public class SC_ShipController : MonoBehaviour {
 		Rigidbody.velocity = transform.up * Mathf.Lerp(0, MaxSpeed, AccelerationTime);
 		velocity = transform.up * Mathf.Lerp(0, MaxSpeed, AccelerationTime);
 
-
 		transform.Rotate(new Vector3(0, 0, Input.GetAxis("Horizontal") * RotationSpeed * Time.fixedDeltaTime * -1), Space.Self);
 
 	}
@@ -53,6 +53,7 @@ public class SC_ShipController : MonoBehaviour {
 			return;
 		Follower.ClearFollowing();
 		AlternativeController.RespawnAlternative(Follower.gameObject);
+		Follower = null;
 	}
 
 	public SC_Alternative GetFollower() {
@@ -60,7 +61,9 @@ public class SC_ShipController : MonoBehaviour {
 	}
 
 	public void Respawn() {
-
+		ClearFollower();
+		AccelerationTime = 0;
+		transform.position = RespawnPoint.position;
 	}
 
 }

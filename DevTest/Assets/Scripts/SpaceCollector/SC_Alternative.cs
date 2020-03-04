@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SC_Alternative : MonoBehaviour {
 
 	public float MaxFollowDistance, DragSpeed;
-	public Transform Following;
+	public Transform Following { get; private set; }
 	public Text TextObject;
 
 
@@ -40,5 +40,6 @@ public class SC_Alternative : MonoBehaviour {
 	public void ClearFollowing() {
 		Following = null;
 	}
+
 
 }

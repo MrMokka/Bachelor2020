@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ColliderFitter2D : MonoBehaviour {
 
+	public float Delay = 0.1f;
+
 	void Start() {
-		Invoke("SetColliderSize", 0.1f);
+		Invoke("SetColliderSize", Delay);
 	}
 	private void SetColliderSize() {
 		GetComponent<BoxCollider2D>().size = GetComponent<RectTransform>().rect.size;

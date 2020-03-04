@@ -26,6 +26,8 @@ public class SC_Controller : MinigameController {
 	}
 
 	public override int LoadQuestion(Question question) {
+		if(question == null) //Temp fix, must be better lol :p
+			return 0;
 		QObject = question.GetQuestionObject();
 		int i = LoadQuestionLines(QObject.QuestionLines);
 
