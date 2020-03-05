@@ -25,10 +25,10 @@ public class SC_Controller : MinigameController {
 			string s1 = questionField.Line.CorrectAlternative.Text;
 			string s2 = questionField.Script.GetFilling();
 			if(s1 == s2) {
-				questionField.Script.Border.color = questionField.Script.correctColor;
+				questionField.Script.Border.color = questionField.Script.CorrectColor;
 				score++;
 			} else
-				questionField.Script.Border.color = questionField.Script.wrongColor;
+				questionField.Script.Border.color = questionField.Script.WrongColor;
 			questionField.Script.Interactable = false;
 		}
 		return score;
