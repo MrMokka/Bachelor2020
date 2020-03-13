@@ -62,8 +62,10 @@ public class SC_Controller : MinigameController {
 				Script = g.GetComponent<SC_Question>()
 			};
 			questionField.Script.SetText(questionLine.Text);
-			if(questionLine.Text.Contains("{0}"))
+			if(questionLine.Text.Contains("{0}")) {
 				i++;
+				questionField.Script.SetInteractable(true);
+			}
 			QuestionFieldList.Add(questionField);
 		}
 		return i;
