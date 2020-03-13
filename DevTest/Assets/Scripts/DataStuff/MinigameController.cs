@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class MinigameController : MonoBehaviour {
 
-	protected struct QuestionField<T> {
+	[Serializable]
+	protected class QuestionField<T> {
 		public GameObject LineObj;
 		public QuestionLine Line;
 		public T Script;

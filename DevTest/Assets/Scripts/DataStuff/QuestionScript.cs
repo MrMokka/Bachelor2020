@@ -8,8 +8,8 @@ public class QuestionScript : MonoBehaviour {
 	public Text TextObj;
 	public bool Interactable;
 
-	private string Filling = "[...]";
-	private string QuestionText;
+	protected string Filling = "[...]";
+	protected string QuestionText;
 
 	public virtual void SetInteractable(bool interactable) {
 		Interactable = interactable;
