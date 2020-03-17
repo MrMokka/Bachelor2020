@@ -16,6 +16,13 @@ public class TimeController : MonoBehaviour {
 		SetTime(1);
 	}
 
+	public void ToggleTime() {
+		if(Time.timeScale != 0f)
+			Time.timeScale = 1;
+		else
+			Time.timeScale = 0;
+	}
+
 	private void SetTime(int timeScale) {
 		Time.timeScale = timeScale;
 	}
