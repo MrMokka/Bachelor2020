@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SC_AreaController : MonoBehaviour {
+public class AreaController : MonoBehaviour {
 
 
 	public bool DrawGizmo;

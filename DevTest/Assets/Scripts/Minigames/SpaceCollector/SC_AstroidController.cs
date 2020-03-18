@@ -15,10 +15,10 @@ public class SC_AstroidController : MonoBehaviour {
 
 	private List<SC_Astroid> AstroidList = new List<SC_Astroid>();
 	private float SpawnTimer = 0;
-	private SC_AreaController AreaController;
+	private AreaController AreaController;
 
 	void Awake() {
-		AreaController = GetComponent<SC_AreaController>();
+		AreaController = GetComponent<AreaController>();
 	}
 
 	void Update() {

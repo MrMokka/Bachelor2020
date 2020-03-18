@@ -18,7 +18,20 @@ public class SC_Controller : MinigameController {
 
 
 	public override int CheckCorrectAnswers() {
-		return -1;
+		int score = 0;
+		foreach(QuestionField<SC_Question> questionField in QuestionFieldList) {
+			if(questionField.Line.CorrectAlternative == null)
+				continue;
+			string s1 = questionField.Line.CorrectAlternative.Text;
+			string s2 = questionField.Script.GetFilling();
+			if(s1 == s2) {
+				questionField.Script.Border.color = questionField.Script.CorrectColor;
+				score++;
+			} else
+				questionField.Script.Border.color = questionField.Script.WrongColor;
+			questionField.Script.Interactable = false;
+		}
+		return score;
 	}
 
 	public override string GetMinigameMode() {
@@ -49,8 +62,10 @@ public class SC_Controller : MinigameController {
 				Script = g.GetComponent<SC_Question>()
 			};
 			questionField.Script.SetText(questionLine.Text);
-			if(questionLine.Text.Contains("{0}"))
+			if(questionLine.Text.Contains("{0}")) {
 				i++;
+				questionField.Script.SetInteractable(true);
+			}
 			QuestionFieldList.Add(questionField);
 		}
 		return i;

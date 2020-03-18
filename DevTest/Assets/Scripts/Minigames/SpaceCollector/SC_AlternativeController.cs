@@ -7,11 +7,11 @@ public class SC_AlternativeController : MonoBehaviour {
 	public GameObject AlternativeTemplate;
 	public Transform AlternativeParent;
 
-	private SC_AreaController AreaController;
+	private AreaController AreaController;
 	private List<GameObject> Alternatives = new List<GameObject>();
 
 	void Awake() {
-		AreaController = GetComponent<SC_AreaController>();
+		AreaController = GetComponent<AreaController>();
 	}
 
 

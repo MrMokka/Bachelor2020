@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SC_NextQuestionButton : MonoBehaviour {
+public class SC_HoverButton : MonoBehaviour {
+
 
 	public float TriggerTime;
 	public Image ProgressDisplay;
+
+	[Space(5f)]
+	public bool NextQuestion;
 	public GameLoader GameLoader;
+	[Space(5f)]
+	public bool ToggleGameobject;
+	public GameObject ToggleableObject;
+	[Space(5f)]
+	public bool ToggleTime;
+	public TimeController TimeController;
+
 
 	private float Timer;
 	private bool IsInside;
@@ -15,12 +26,20 @@ public class SC_NextQuestionButton : MonoBehaviour {
 
 
 	void Update() {
+		if(TriggerTime == -1) {
+			return;
+		}
 		if(IsInside) {
 			Timer += Time.deltaTime;
 			if(Timer >= TriggerTime) {
 				Timer = 0;
 				ShipController.Respawn();
-				GameLoader.NextQuestion();
+				if(NextQuestion)
+					NextQuesiton();
+				if(ToggleGameobject)
+					ToggleObject();
+				if(ToggleTime)
+					ToggleTheTime();
 			}
 		} else {
 			if(Timer >= 0) {
@@ -28,6 +47,18 @@ public class SC_NextQuestionButton : MonoBehaviour {
 			}
 		}
 		ProgressDisplay.fillAmount = Timer / TriggerTime;
+	}
+
+	public void NextQuesiton() {
+		GameLoader.NextQuestion();
+	}
+
+	public void ToggleObject() {
+		ToggleableObject.SetActive(!ToggleableObject.activeSelf);
+	}
+
+	public void ToggleTheTime() {
+		TimeController.ToggleTime();
 	}
 
 
@@ -44,7 +75,6 @@ public class SC_NextQuestionButton : MonoBehaviour {
 			return;
 		IsInside = false;
 	}
-
 
 
 }
