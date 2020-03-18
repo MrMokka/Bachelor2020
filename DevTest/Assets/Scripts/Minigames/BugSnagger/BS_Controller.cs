@@ -49,8 +49,8 @@ public class BS_Controller : MinigameController {
 
 		//QuestionText.text = question.QuestionText;
 		AlternativeController.ClearAlternatives();
-		AlternativeController.CreateAlternative(QObject.Alternatives);
-		BugController.SpawnBugs(QObject.Alternatives.Count);
+		List<string> bugAltList = AlternativeController.CreateAlternative(QObject.Alternatives);
+		BugController.SpawnBugs(bugAltList);
 		return i;
 	}
 
@@ -86,6 +86,7 @@ public class BS_Controller : MinigameController {
 		}
 		QuestionFieldList.Clear();
 		SelectableQuestionFields.Clear();
+		BugController.ClearBugs();
 	}
 
 	public void SelectNextLine() {
