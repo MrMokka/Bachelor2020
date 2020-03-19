@@ -6,10 +6,9 @@ public class BS_Question : QuestionScript {
 
 	public void SetHighlight(bool highlighted) {
 		if(highlighted) {
-			Border.enabled = true;
 			Border.color = HighlightColor;
 		} else {
-			Border.enabled = false;
+			Border.color = NormalColor;
 		}
 	}
 

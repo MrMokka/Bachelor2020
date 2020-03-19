@@ -18,7 +18,7 @@ public class BS_AlternativeController : MonoBehaviour {
 			obj.SetActive(true);
 			BS_Alternative alt = obj.GetComponent<BS_Alternative>();
 			alt.SetText(alternative.Text);
-			alt.SetNum(i);
+			alt.SetNum(i+1);
 			Alternatives.Add(obj);
 			bugAlternativeList.Add(alternative.Text);
 			i++;

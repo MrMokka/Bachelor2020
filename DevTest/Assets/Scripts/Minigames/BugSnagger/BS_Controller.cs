@@ -22,17 +22,17 @@ public class BS_Controller : MinigameController {
 
 	public override int CheckCorrectAnswers() {
 		int score = 0;
-		foreach(QuestionField<BS_Question> questionField in QuestionFieldList) {/*
+		foreach(QuestionField<BS_Question> questionField in QuestionFieldList) {
 			if(questionField.Line.CorrectAlternative == null)
 				continue;
 			string s1 = questionField.Line.CorrectAlternative.Text;
 			string s2 = questionField.Script.GetFilling();
 			if(s1 == s2) {
-				questionField.Script.Border.color = questionField.Script.correctColor;
+				questionField.Script.Border.color = questionField.Script.CorrectColor;
 				score++;
 			} else
-				questionField.Script.Border.color = questionField.Script.wrongColor;
-			questionField.Script.Interactable = false;*/
+				questionField.Script.Border.color = questionField.Script.WrongColor;
+			//questionField.Script.Interactable = false;
 		}
 		return score;
 	}
@@ -97,6 +97,10 @@ public class BS_Controller : MinigameController {
 		SelectedQuestion.Script.SetHighlight(false);
 		SelectedQuestion = SelectableQuestionFields[SelectedQuestionCounter];
 		SelectedQuestion.Script.SetHighlight(true);
+	}
+
+	public void SetQuestionFilling(string filling) {
+		SelectedQuestion.Script.SetFilling(filling);
 	}
 
 }
