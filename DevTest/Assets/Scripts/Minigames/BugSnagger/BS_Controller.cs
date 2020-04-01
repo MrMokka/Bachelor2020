@@ -12,6 +12,7 @@ public class BS_Controller : MinigameController {
 	public GameObject QuestionTemplate;
 	public BS_AlternativeController AlternativeController;
 	public BS_BugController BugController;
+	public BS_PlayerController PlayerController;
 
 
 	private QuestionObject QObject;
@@ -87,6 +88,7 @@ public class BS_Controller : MinigameController {
 		QuestionFieldList.Clear();
 		SelectableQuestionFields.Clear();
 		BugController.ClearBugs();
+		PlayerController.ClearBullets();
 	}
 
 	public void SelectNextLine() {

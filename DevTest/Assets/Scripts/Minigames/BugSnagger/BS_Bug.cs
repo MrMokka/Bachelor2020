@@ -11,7 +11,7 @@ public class BS_Bug : MonoBehaviour {
 	private string HiddenAlternativeText;
 
 	void Awake() {
-		BugController = transform.parent.GetComponent<BS_BugController>();
+		BugController = transform.parent.parent.GetComponent<BS_BugController>();
 	}
 
 	public void SetText(string text, int num) {
@@ -29,6 +29,13 @@ public class BS_Bug : MonoBehaviour {
 
 	public void BugClicked() {
 		BugController.BugClicked(this);
+	}
+
+	void OnTriggerEnter2D(Collider2D other) {
+		if(other.CompareTag("Bullet")) {
+			BugClicked();
+			Destroy(other.gameObject);
+		}
 	}
 
 }

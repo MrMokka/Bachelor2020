@@ -32,10 +32,12 @@ public class BS_BugController : MonoBehaviour {
 	}
 
 	private void MoveBugs() {
+		/* Move in circle
 		for(int i = 0; i < BugList.Count; i++) {
 			BugList[i].BugTransform.RotateAround(transform.position, Vector3.forward, BugRotateSpeed * 50 * Time.deltaTime);
 			BugList[i].BugTransform.localRotation = Quaternion.identity;
 		}
+		*/
 	}
 
 
