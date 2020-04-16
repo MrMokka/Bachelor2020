@@ -57,10 +57,10 @@ public class GameLoader : MonoBehaviour {
 	}
 
 	public void NextQuestion() {
+		if(ActiveMinigame != null)
+			ScoreControllerScript.AddScore(ActiveMinigame.Controller.CheckCorrectAnswers());
 		if(ActiveMinigame == null || QuestionCounter >= QuestionsForMinigameSwap)
 			LoadMinigame();
-		else
-			ScoreControllerScript.AddScore(ActiveMinigame.Controller.CheckCorrectAnswers());
 		QuestionCounter++;
 		StartCoroutine("LoadNextQuestion");
 	}

@@ -6,9 +6,16 @@ public class BS_BugController : MonoBehaviour {
 
 	public Transform BugPrefab;
 	public Transform BugParent;
+	public BS_Controller Controller;
+
+	[Space(5f)]
+	public float BugRotateSpeed;
 
 	private List<Bug> BugList = new List<Bug>();
 	private AreaController AreaController;
+
+	private float BugMoveDistance;
+	private float BugAngle;
 
 	struct Bug {
 		public BS_Bug Script;
@@ -19,19 +26,34 @@ public class BS_BugController : MonoBehaviour {
 		AreaController = GetComponent<AreaController>();
 	}
 
+	void Update() {
+		if(BugList.Count > 0)
+			MoveBugs();
+	}
+
+	private void MoveBugs() {
+		/* Move in circle
+		for(int i = 0; i < BugList.Count; i++) {
+			BugList[i].BugTransform.RotateAround(transform.position, Vector3.forward, BugRotateSpeed * 50 * Time.deltaTime);
+			BugList[i].BugTransform.localRotation = Quaternion.identity;
+		}
+		*/
+	}
+
 
 	public void SpawnBugs(List<string> bugs) {
-		float angle = 360f / bugs.Count;
+		BugAngle = 360f / bugs.Count;
 		for(int i = 0; i < bugs.Count; i++) {
 			Bug bug = new Bug();
 
 			bug.BugTransform = Instantiate(BugPrefab, BugParent, false);
+			bug.BugTransform.gameObject.SetActive(true);
 			bug.BugTransform.position = transform.position + new Vector3(0, AreaController.SphereRadius, 0);
-			bug.BugTransform.RotateAround(transform.position, Vector3.forward, angle * i);
+			bug.BugTransform.RotateAround(transform.position, Vector3.forward, BugAngle * i);
 			bug.BugTransform.localRotation = Quaternion.identity;
 
 			bug.Script = bug.BugTransform.GetComponent<BS_Bug>();
-			bug.Script.SetText(bugs[i]);
+			bug.Script.SetText(bugs[i], i+1);
 
 			BugList.Add(bug);
 		}
@@ -44,29 +66,8 @@ public class BS_BugController : MonoBehaviour {
 		BugList.Clear();
 	}
 
+	public void BugClicked(BS_Bug bug) {
+		Controller.SetQuestionFilling(bug.GetHiddenAlternativeText());
+	}
      
 }
-
-/*
-
-	for (int i = 0; i<pieceCount; i++)
-     {
-         Quaternion rotation = Quaternion.AngleAxis(i * angle, Vector3.up);
-	Vector3 direction = rotation * Vector3.forward;
-
-	Vector3 position = centerPos + (direction * radius);
-	Instantiate(prefab, position, rotation);
-
-
-	if(SpawnTimer >= SpawnInterval) {
-			GameObject obj = Instantiate(Astroid, transform, false);
-			SC_Astroid astroid = obj.GetComponent<SC_Astroid>();
-			astroid.MoveSpeed = Random.Range(AstroidMoveSpeed.min, AstroidMoveSpeed.max);
-			astroid.RotateSpeed = Random.Range(AstroidRotateSpeed.min, AstroidRotateSpeed.max);
-			obj.transform.position = transform.position + new Vector3(0, AreaController.SphereRadius + Random.Range(-1, 1), 0);
-			AstroidList.Add(astroid);
-			SpawnTimer = 0;
-		}
-		SpawnTimer += Time.deltaTime;
-
-*/
