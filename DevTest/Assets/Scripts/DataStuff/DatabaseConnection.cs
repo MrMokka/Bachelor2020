@@ -231,6 +231,7 @@ public class DatabaseConnection : MonoBehaviour {
 				new SqlCommand(categorySQL, connection).ExecuteNonQuery();
 			}
 
+			#region comments
 			/*
 			using(SqlCommand cmd = ) {
 				SqlDataReader reader = cmd.ExecuteReader();
@@ -271,6 +272,7 @@ public class DatabaseConnection : MonoBehaviour {
 				reader.Close();
 			}
 			*/
+			#endregion
 		}
 	}
 
@@ -294,6 +296,49 @@ public class DatabaseConnection : MonoBehaviour {
 				Debug.Log(e);
 				return false;
 			}
+		}
+	}
+
+	#endregion
+
+	#region Update question in database
+
+	public static void UpdateQuestionInDatabase(Question question) {
+		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
+			connection.Open();
+
+			//Update question_category link entity
+			string sqlClearCategoryLink = $"DELETE FROM Question_Category WHERE QuesitonId = {question.Id}";
+			SqlTransaction transaction = connection.BeginTransaction();
+			foreach(Category c in question.CategoryList) {
+				string sqlCategoryLink =
+					$"INSERT INTO question_Category (questionId, CategoryId) VALUES ( " +
+					$"{question.Id}, (SELECT CategoryId FROM Category WHERE Category.Name = '{c.Name}'))";
+				new SqlCommand(sqlCategoryLink, connection, transaction).ExecuteNonQuery();
+			}
+
+			string sqlUpdateQuestion = $"UPDATE Question" +
+				$" OUTPUT inserted.questionId" +
+				$" SET QuestionText = {question.QuestionText}, Active = {question.Active}," +
+				$" Weight = {question.Weight}, Json = {question.QuestionObject}" +
+				$" WHERE QuestionId = {question.Id}";
+
+			int updatedRow = (int)new SqlCommand(sqlUpdateQuestion, connection, transaction).ExecuteScalar();
+			transaction.Commit();
+
+			print(updatedRow);
+
+			/*
+			string insertSQL = $"INSERT INTO question (TypeId, questionText, Active, Weight, Json)" +
+					$" OUTPUT inserted.questionId VALUES(" +
+					$" (SELECT TypeId FROM Type WHERE Type.Name = '{question.Type.Name}'), '{question.QuestionText}'," +
+					$" '{question.Active}', '{question.Weight}', '{question.QuestionObject}')";
+
+			
+			int questionId = (int)new SqlCommand(insertSQL, connection).ExecuteScalar();
+			print(questionId);
+			*/
+
 		}
 	}
 

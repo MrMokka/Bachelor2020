@@ -168,7 +168,7 @@ public class Admin_EditQuestion : MonoBehaviour {
 		string jsonString = JsonUtility.ToJson(CreateQuestionObject());
 		Question question = new Question {
 			Active = 1,
-			CategoryList = new List<Category> { new Category { Name = Category.options[Category.value].text } },
+			CategoryList = new List<Category> { new Category { Name = CategoryDropdown.options[CategoryDropdown.value].text } },
 			QuestionObject = jsonString,
 			QuestionText = QuestionTextInput.text,
 			Type = new Type { Name = "MC" },
@@ -187,7 +187,7 @@ public class Admin_EditQuestion : MonoBehaviour {
 			});
 		}
 		List<QuestionLine> questionLines = new List<QuestionLine>();
-		foreach(GameObject questionLine in LineController.QuestionLineList) {
+		foreach(GameObject questionLine in QuestionLineList) {
 			Dropdown correctAlternativeDropdown = questionLine.transform.GetChild(1).GetComponent<Dropdown>();
 			QuestionLine ql = new QuestionLine {
 				Text = questionLine.transform.GetChild(0).GetComponent<InputField>().text
