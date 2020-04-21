@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class QuestionController : MonoBehaviour {
 
-	private List<Question> questions = new List<Question>();
-	private List<Question> usedQuestions = new List<Question>();
+	private List<Question> Questions = new List<Question>();
+	private List<Question> UsedQuestions = new List<Question>();
 
 	void Awake() {
-		questions = DatabaseConnection.ReadQuestionsFromDatabase();
-		//print(questions.Count);
+		
+	}
+
+	public void GetQuestionsFromDatabase(int num) {
+		DatabaseConnection.ReadQuestionOptions options = new DatabaseConnection.ReadQuestionOptions {
+			Number = num,
+			IsActive = true
+		};
+		Questions = DatabaseConnection.ReadQuestionsFromDatabase(options);
 	}
 
 	public Question GetRandomQuestion() {
-		if(questions.Count == 0) 
+		if(Questions.Count == 0) 
 			return null;
 
-		Question Question = questions[Random.Range(0, questions.Count)];
-		usedQuestions.Add(Question);
-		questions.Remove(Question);
+		Question Question = Questions[Random.Range(0, Questions.Count)];
+		UsedQuestions.Add(Question);
+		Questions.Remove(Question);
 		//print("Questions left: " + questions.Count);
 		return Question;
 	}

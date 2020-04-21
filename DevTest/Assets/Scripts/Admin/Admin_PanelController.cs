@@ -6,6 +6,7 @@ public class Admin_PanelController : MonoBehaviour {
 
 
 	public GameObject ActivePanel;
+	public GameObject LastActivePanel;
 
 	void Start() {
 		if(ActivePanel != null)	
@@ -13,14 +14,27 @@ public class Admin_PanelController : MonoBehaviour {
 	}
 
 	public void SetActivePanel(GameObject newPanel) {
-		if(ActivePanel == null) {
-			Debug.LogError("No active panel!");
-			return;
+		if(ActivePanel != null) {
+			LastActivePanel = ActivePanel;
+			ActivePanel.SetActive(false);
 		}
-		ActivePanel.SetActive(false);
 		ActivePanel = newPanel;
 		ActivePanel.SetActive(true);
 	}
 
+	public void DisableActivePanel() {
+		if(LastActivePanel == null) {
+			Debug.Log("No last active panel exist.");
+			return;
+		}
+		ActivePanel.SetActive(false);
+		LastActivePanel.SetActive(true);
+		ActivePanel = LastActivePanel;
+		LastActivePanel = null;
+	}
+
+	public void LogMessage(string msg) {
+		Debug.Log(msg);
+	}
 
 }
