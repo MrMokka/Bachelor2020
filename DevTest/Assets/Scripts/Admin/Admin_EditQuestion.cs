@@ -8,6 +8,7 @@ public class Admin_EditQuestion : MonoBehaviour {
 	public Dropdown DifficultyDropdown, CategoryDropdown;
 	public InputField QuestionTextInput;
 	public Admin_UpsertQuestion UpsertQuesiton;
+	public Admin_SaveFeedbackPanel SaveFeedbackPanel;
 
 	[Space(2f)]
 	[Header("Question line and alternatives")]
@@ -15,19 +16,15 @@ public class Admin_EditQuestion : MonoBehaviour {
 	public Transform QuestionLineParent;
 	public GameObject AlternativeLinePrefab;
 	public Transform AlternativeParent;
+	public Transform QuestionButtonHolder, AlternativeButtonHolder;
 
 	private List<GameObject> QuestionLineList = new List<GameObject>();
 	private List<GameObject> AlternativeLineList = new List<GameObject>();
 	private List<Dropdown> CorrectAlternativeDropdownList = new List<Dropdown>();
 	private List<string> AlternativeTexts = new List<string>();
 
-	#region hidefornow
-
-	public void OnOpen() {
-		ResetFields();
-		AddDifficultyDropdown(UpsertQuesiton.DifficultyOptions);
-		AddCategoryDropdowns(UpsertQuesiton.Categories);
-	}
+	private bool SettingStuffUp = false;
+	private Question Question;
 
 	public void AddDifficultyDropdown(int[] difficulties) {
 		DifficultyDropdown.ClearOptions();
@@ -37,7 +34,6 @@ public class Admin_EditQuestion : MonoBehaviour {
 			});
 		}
 	}
-
 
 	public void AddCategoryDropdowns(List<Category> categories) {
 		CategoryDropdown.ClearOptions();
@@ -121,6 +117,7 @@ public class Admin_EditQuestion : MonoBehaviour {
 			DestroyImmediate(obj);
 		}
 		QuestionLineList.Clear();
+		CorrectAlternativeDropdownList.Clear();
 	}
 
 	public void CleanAlternatives() {
@@ -132,15 +129,19 @@ public class Admin_EditQuestion : MonoBehaviour {
 		UpdateAlternativeDropdowns();
 	}
 
-	public void ResetFields() {
+	private void ResetSettings() {
 		QuestionTextInput.text = "";
 		CleanQuestionLines();
 		CleanAlternatives();
 		AlternativeTexts.Add("None");
+		AddDifficultyDropdown(UpsertQuesiton.DifficultyOptions);
+		AddCategoryDropdowns(UpsertQuesiton.Categories);
 	}
 	#endregion
 
-	public void CorrectAlternativeselected(Dropdown dropdown) {
+	public void CorrectAlternativeSelected(Dropdown dropdown) {
+		if(SettingStuffUp)
+			return;
 		InputField inputField = dropdown.transform.parent.GetChild(0).GetComponent<InputField>();
 		if(dropdown.value == 0 && inputField.text.Contains("{0}")) {
 			inputField.text = inputField.text.Replace("{0}", "");
@@ -157,16 +158,46 @@ public class Admin_EditQuestion : MonoBehaviour {
 		//if(inputField.text[inputField.text.Length -1].ToString() == " ")
 		//	inputField.text.Remove(inputField.text.Length - 1);
 	}
-	#endregion
 
-	public void SaveQuestionEdit() {
-		//Turn save button green/red
-
+	public void EditQuestion(Question question) {
+		Question = question;
+		SettingStuffUp = true;
+		ResetSettings();
+		QuestionObject qObj = question.GetQuestionObject();
+		foreach(Alternative alternative in qObj.Alternatives) {
+			Admin_AlternativeTemplate altTemplate = Instantiate(AlternativeLinePrefab, AlternativeParent, false).GetComponent<Admin_AlternativeTemplate>();
+			AlternativeTexts.Add(alternative.Text);
+			altTemplate.AlternativeText.text = alternative.Text;
+			AlternativeLineList.Add(altTemplate.gameObject);
+			altTemplate.gameObject.SetActive(true);
+		}
+		foreach(QuestionLine questionLine in qObj.QuestionLines) {
+			Admin_QuestionLineTemplate qLine = Instantiate(QuestionLinePrefab, QuestionLineParent, false).GetComponent<Admin_QuestionLineTemplate>();
+			qLine.LineText.text = questionLine.Text;
+			qLine.CorrectAlternativeDropdown.ClearOptions();
+			foreach(string s in AlternativeTexts) {
+				qLine.CorrectAlternativeDropdown.options.Add(new Dropdown.OptionData { text = s });
+			}
+			qLine.CorrectAlternativeDropdown.value = AlternativeTexts.IndexOf(questionLine.CorrectAlternative.Text);
+			CorrectAlternativeDropdownList.Add(qLine.CorrectAlternativeDropdown.GetComponent<Dropdown>());
+			qLine.gameObject.SetActive(true);
+			QuestionLineList.Add(qLine.gameObject);
+		}
+		AlternativeButtonHolder.SetAsLastSibling();
+		QuestionButtonHolder.SetAsLastSibling();
+		QuestionTextInput.text = question.QuestionText;
+		//WARNING: Need fix for non singlular category searches (only capeable of working with a single category atm)
+		CategoryDropdown.value = CategoryDropdown.options.FindIndex(i => i.text.Equals(question.CategoryList[0].Name));
+		CategoryDropdown.RefreshShownValue();
+		DifficultyDropdown.value = DifficultyDropdown.options.FindIndex(i => i.text.Equals(question.Weight.ToString()));
+		DifficultyDropdown.RefreshShownValue();
+		SettingStuffUp = false;
 	}
 	
-	public void SaveQuestion() {
+	public void SaveUpdatedQuestion() {
 		string jsonString = JsonUtility.ToJson(CreateQuestionObject());
 		Question question = new Question {
+			Id = Question.Id,
 			Active = 1,
 			CategoryList = new List<Category> { new Category { Name = CategoryDropdown.options[CategoryDropdown.value].text } },
 			QuestionObject = jsonString,
@@ -174,13 +205,12 @@ public class Admin_EditQuestion : MonoBehaviour {
 			Type = new Type { Name = "MC" },
 			Weight = DifficultyDropdown.value + 1
 		};
-		DatabaseConnection.WriteQuestionToDatabase(question);
-		ResetFields();
+		SaveFeedbackPanel.gameObject.SetActive(true);
+		SaveFeedbackPanel.ShowText(DatabaseConnection.UpdateQuestionInDatabase(question));
 	}
 	
 	private QuestionObject CreateQuestionObject() {
 		List<Alternative> alternatives = new List<Alternative>();
-		AlternativeTexts.RemoveAt(0);
 		foreach(string alternative in AlternativeTexts) {
 			alternatives.Add(new Alternative {
 				Text = alternative
@@ -192,19 +222,13 @@ public class Admin_EditQuestion : MonoBehaviour {
 			QuestionLine ql = new QuestionLine {
 				Text = questionLine.transform.GetChild(0).GetComponent<InputField>().text
 			};
-			if(correctAlternativeDropdown.value == 0) {
-				ql.CorrectAlternative = null;
-			} else {
-				ql.CorrectAlternative = alternatives[correctAlternativeDropdown.value - 1];
-			}
+			ql.CorrectAlternative = alternatives[correctAlternativeDropdown.value];
 			questionLines.Add(ql);
 		}
-
 		QuestionObject qObj = new QuestionObject {
 			Alternatives = alternatives,
 			QuestionLines = questionLines
 		};
-
 		return qObj;
 	}
 	

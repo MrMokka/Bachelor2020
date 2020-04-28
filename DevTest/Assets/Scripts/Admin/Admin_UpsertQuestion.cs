@@ -49,17 +49,17 @@ public class Admin_UpsertQuestion : MonoBehaviour {
 			weights[0] = Int32.Parse(value);
 		}
 		string selectedCat = EditQuestionPanel.GetSelectedCategory();
-		print(selectedCat);
 		List<Category> category = new List<Category>();
 		if(selectedCat == "All") {
 			category = Categories;
 		} else {
 			category.Add(new Category { Name = selectedCat });
 		}
-		
+
 		DatabaseConnection.ReadQuestionOptions options = new DatabaseConnection.ReadQuestionOptions {
 			CategoryFilter = category,
-			WeightFilter = weights
+			WeightFilter = weights,
+			RandomOrder = false
 		};
 		List<Question> questions = DatabaseConnection.ReadQuestionsFromDatabase(options);
 		EditQuestionPanel.RespawnQuestions(questions);

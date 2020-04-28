@@ -7,6 +7,7 @@ public class Admin_QuestionLineEdit : MonoBehaviour {
 
 	public Text Text;
 	public Admin_ConfirmDelete ConfirmDelete;
+	public Admin_EditQuestion EditQuestionPanel;
 
 	private Question Question;
 
@@ -17,7 +18,8 @@ public class Admin_QuestionLineEdit : MonoBehaviour {
 	}
 
 	public void EditQuestion() {
-
+		EditQuestionPanel.gameObject.SetActive(true);
+		EditQuestionPanel.EditQuestion(Question);
 	}
 
 	public void ConfirmDeleteQuestion() {

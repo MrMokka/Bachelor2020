@@ -121,6 +121,7 @@ public class DatabaseConnection : MonoBehaviour {
 		public List<Category> CategoryFilter = null;
 		public List<int> WeightFilter = null;
 		public bool IsActive = false;
+		public bool RandomOrder = true;
 	};
 
 	public static List<Question> ReadQuestionsFromDatabase(ReadQuestionOptions options) {
@@ -160,9 +161,8 @@ public class DatabaseConnection : MonoBehaviour {
 				sqlString += $")";
 			}
 
-			sqlString += " ORDER BY NEWID()";
-
-			print(sqlString);
+			if(options.RandomOrder)
+				sqlString += " ORDER BY NEWID()";
 
 			connection.Open();
 
@@ -177,7 +177,7 @@ public class DatabaseConnection : MonoBehaviour {
 			}
 
 			if(!reader.HasRows) {
-				Debug.LogError("No rows found");
+				Debug.LogWarning("No rows found");
 				return questions;
 			}
 
@@ -222,7 +222,6 @@ public class DatabaseConnection : MonoBehaviour {
 				
 			connection.Open();
 			int questionId = (int)new SqlCommand(insertSQL, connection).ExecuteScalar();
-			print(questionId);
 
 			foreach(Category c in question.CategoryList) {
 				string categorySQL =
@@ -303,30 +302,29 @@ public class DatabaseConnection : MonoBehaviour {
 
 	#region Update question in database
 
-	public static void UpdateQuestionInDatabase(Question question) {
+	public static bool UpdateQuestionInDatabase(Question question) {
+		int updatedRow = -1;
 		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
 			connection.Open();
 
 			//Update question_category link entity
-			string sqlClearCategoryLink = $"DELETE FROM Question_Category WHERE QuesitonId = {question.Id}";
-			SqlTransaction transaction = connection.BeginTransaction();
+			string sqlClearCategoryLink = $"DELETE FROM Question_Category WHERE QuestionId = {question.Id}";
+			new SqlCommand(sqlClearCategoryLink, connection).ExecuteNonQuery();
 			foreach(Category c in question.CategoryList) {
 				string sqlCategoryLink =
 					$"INSERT INTO question_Category (questionId, CategoryId) VALUES ( " +
 					$"{question.Id}, (SELECT CategoryId FROM Category WHERE Category.Name = '{c.Name}'))";
-				new SqlCommand(sqlCategoryLink, connection, transaction).ExecuteNonQuery();
+				new SqlCommand(sqlCategoryLink, connection).ExecuteNonQuery();
 			}
 
 			string sqlUpdateQuestion = $"UPDATE Question" +
-				$" OUTPUT inserted.questionId" +
-				$" SET QuestionText = {question.QuestionText}, Active = {question.Active}," +
-				$" Weight = {question.Weight}, Json = {question.QuestionObject}" +
+				$" SET QuestionText = '{question.QuestionText}', Active = {question.Active}," +
+				$" Weight = {question.Weight}, Json = '{question.QuestionObject}'" +
 				$" WHERE QuestionId = {question.Id}";
 
-			int updatedRow = (int)new SqlCommand(sqlUpdateQuestion, connection, transaction).ExecuteScalar();
-			transaction.Commit();
-
-			print(updatedRow);
+			updatedRow = new SqlCommand(sqlUpdateQuestion, connection).ExecuteNonQuery();
+			
+			
 
 			/*
 			string insertSQL = $"INSERT INTO question (TypeId, questionText, Active, Weight, Json)" +
@@ -340,6 +338,10 @@ public class DatabaseConnection : MonoBehaviour {
 			*/
 
 		}
+
+		if(updatedRow <= 0)
+			return false;
+		return true;
 	}
 
 	#endregion

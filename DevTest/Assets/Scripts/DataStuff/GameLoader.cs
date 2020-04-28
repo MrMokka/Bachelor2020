@@ -59,6 +59,8 @@ public class GameLoader : MonoBehaviour {
 		MinigameList.Remove(minigame);
 		ActiveMinigame = minigame;
 		ActiveMinigame.Controller.gameObject.SetActive(true);
+		ActiveMinigame.Controller.InfoPanel.SetActive(true);
+		Countdown.StopTimer();
 	}
 
 	public void NextQuestion() {
