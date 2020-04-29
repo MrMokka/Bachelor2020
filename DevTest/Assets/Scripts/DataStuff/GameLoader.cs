@@ -10,7 +10,11 @@ public class GameLoader : MonoBehaviour {
 	public ScoreController ScoreControllerScript;
 	public GameObject StartScreen;
 	public int QuestionsForMinigameSwap;
+	public int MaxQuesitons;
+
+	[Space(5f)]
 	public List<MinigameController> MinigameControllers = new List<MinigameController>();
+
 
 	private List<Minigame> MinigameList = new List<Minigame>();
 	private List<Minigame> UsedMinigameList = new List<Minigame>();
@@ -27,6 +31,7 @@ public class GameLoader : MonoBehaviour {
 	void Start() {
 		StartScreen.SetActive(true);
 		QController = GetComponent<QuestionController>();
+		QController.GetQuestionsFromDatabase(MaxQuesitons);
 		foreach(MinigameController mc in MinigameControllers) {
 			if(mc == null)
 				continue;
@@ -54,6 +59,8 @@ public class GameLoader : MonoBehaviour {
 		MinigameList.Remove(minigame);
 		ActiveMinigame = minigame;
 		ActiveMinigame.Controller.gameObject.SetActive(true);
+		ActiveMinigame.Controller.InfoPanel.SetActive(true);
+		Countdown.StopTimer();
 	}
 
 	public void NextQuestion() {

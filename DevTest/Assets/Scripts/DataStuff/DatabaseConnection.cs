@@ -116,35 +116,53 @@ public class DatabaseConnection : MonoBehaviour {
 
 	#region Get Question
 
-	public static List<Question> ReadQuestionsFromDatabase(string categoryName) {
-		return ReadQuestionsFromDatabase(new Category { Name = categoryName });
-	}
+	public class ReadQuestionOptions {
+		public int Number = 100;
+		public List<Category> CategoryFilter = null;
+		public List<int> WeightFilter = null;
+		public bool IsActive = false;
+		public bool RandomOrder = true;
+	};
 
-	public static List<Question> ReadQuestionsFromDatabase(int weightFilter) {
-		return ReadQuestionsFromDatabase(null, weightFilter);
-	}
-
-	public static List<Question> ReadQuestionsFromDatabase(Category categoryFilter = null, int weightFilter = -1) {
+	public static List<Question> ReadQuestionsFromDatabase(ReadQuestionOptions options) {
 		using(SqlConnection connection = new SqlConnection(connectionStringReader)) {
-			string sqlString = 
-				$"SELECT Q.QuestionId, T.TypeId as TypeId, T.Name as TypeName, C.Name as CategoryName, " +
+			string sqlString =
+				$"SELECT TOP {options.Number} Q.QuestionId, T.TypeId as TypeId, T.Name as TypeName, C.Name as CategoryName, " +
 				$"Q.QuestionText, Q.Weight, Q.Active, Q.Json " +
 				$"FROM Question as Q " +
 				$"left join Type as T on T.TypeId = Q.TypeId " +
 				$"left join Question_Category as QC on QC.QuestionId = Q.QuestionId " +
 				$"left join Category as C on QC.CategoryId = C.CategoryId ";
 
-			if(categoryFilter != null) {
-				sqlString += $"WHERE C.Name = '{categoryFilter.Name}'";
+			if(options.IsActive)
+				sqlString += $"WHERE Q.Active = 1";
+			else
+				sqlString += $"WHERE 1 = 1"; //Used for placing WHERE correctly at first, plus failsafe if no filters needed
+
+			//Builds: " AND (Q.Weight = '1' OR Q.Weight = '4' OR Q.Weight = '398475')
+			if(options.WeightFilter != null && options.WeightFilter[0] != -1) {
+				sqlString += $" AND (";
+				for(int i = 0; i < options.WeightFilter.Count; i++) {
+					sqlString += $"Q.Weight = {options.WeightFilter[i]}";
+					if(i != options.WeightFilter.Count - 1)
+						sqlString += $" OR ";
+				}
+				sqlString += $")";
 			}
 
-			if(weightFilter > 0) {
-				if(categoryFilter != null)
-					sqlString += " AND ";
-				else
-					sqlString += "WHERE ";
-				sqlString += $"Q.Weight = {weightFilter}";
+			//Builds: " AND (C.Name = 'Filter1' OR C.Name = 'Filter2' OR C.Name = 'Filter3')
+			if(options.CategoryFilter != null && options.CategoryFilter[0].Name != "All") {
+				sqlString += $" AND (";
+				for(int i = 0; i < options.CategoryFilter.Count; i++) {
+					sqlString += $"C.Name = '{options.CategoryFilter[i].Name}'";
+					if(i != options.CategoryFilter.Count - 1)
+						sqlString += $" OR ";
+				}
+				sqlString += $")";
 			}
+
+			if(options.RandomOrder)
+				sqlString += " ORDER BY NEWID()";
 
 			connection.Open();
 
@@ -159,7 +177,8 @@ public class DatabaseConnection : MonoBehaviour {
 			}
 
 			if(!reader.HasRows) {
-				Debug.LogError("No rows found");
+				Debug.LogWarning("No rows found");
+				return questions;
 			}
 
 			List<int> usedIds = new List<int>();
@@ -203,7 +222,6 @@ public class DatabaseConnection : MonoBehaviour {
 				
 			connection.Open();
 			int questionId = (int)new SqlCommand(insertSQL, connection).ExecuteScalar();
-			print(questionId);
 
 			foreach(Category c in question.CategoryList) {
 				string categorySQL =
@@ -212,6 +230,7 @@ public class DatabaseConnection : MonoBehaviour {
 				new SqlCommand(categorySQL, connection).ExecuteNonQuery();
 			}
 
+			#region comments
 			/*
 			using(SqlCommand cmd = ) {
 				SqlDataReader reader = cmd.ExecuteReader();
@@ -252,6 +271,7 @@ public class DatabaseConnection : MonoBehaviour {
 				reader.Close();
 			}
 			*/
+			#endregion
 		}
 	}
 
@@ -259,15 +279,69 @@ public class DatabaseConnection : MonoBehaviour {
 
 	#region Write category to database
 
-	public static void WriteCategoryToDatabase(Category category) {
+	public static bool WriteCategoryToDatabase(Category category) {
 		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
 			string insertSQL =
 					$"IF NOT EXISTS (SELECT * FROM Category WHERE Category.Name = '{category.Name}') " +
 					$"INSERT INTO Category (Name) VALUES ('{category.Name}')";
 
-			connection.Open();
-			new SqlCommand(insertSQL, connection).ExecuteNonQuery();
+			try {
+				connection.Open();
+				int rows = new SqlCommand(insertSQL, connection).ExecuteNonQuery();
+				if(rows > 0)
+					return true;
+				return false;
+			} catch(Exception e) {
+				Debug.Log(e);
+				return false;
+			}
 		}
+	}
+
+	#endregion
+
+	#region Update question in database
+
+	public static bool UpdateQuestionInDatabase(Question question) {
+		int updatedRow = -1;
+		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
+			connection.Open();
+
+			//Update question_category link entity
+			string sqlClearCategoryLink = $"DELETE FROM Question_Category WHERE QuestionId = {question.Id}";
+			new SqlCommand(sqlClearCategoryLink, connection).ExecuteNonQuery();
+			foreach(Category c in question.CategoryList) {
+				string sqlCategoryLink =
+					$"INSERT INTO question_Category (questionId, CategoryId) VALUES ( " +
+					$"{question.Id}, (SELECT CategoryId FROM Category WHERE Category.Name = '{c.Name}'))";
+				new SqlCommand(sqlCategoryLink, connection).ExecuteNonQuery();
+			}
+
+			string sqlUpdateQuestion = $"UPDATE Question" +
+				$" SET QuestionText = '{question.QuestionText}', Active = {question.Active}," +
+				$" Weight = {question.Weight}, Json = '{question.QuestionObject}'" +
+				$" WHERE QuestionId = {question.Id}";
+
+			updatedRow = new SqlCommand(sqlUpdateQuestion, connection).ExecuteNonQuery();
+			
+			
+
+			/*
+			string insertSQL = $"INSERT INTO question (TypeId, questionText, Active, Weight, Json)" +
+					$" OUTPUT inserted.questionId VALUES(" +
+					$" (SELECT TypeId FROM Type WHERE Type.Name = '{question.Type.Name}'), '{question.QuestionText}'," +
+					$" '{question.Active}', '{question.Weight}', '{question.QuestionObject}')";
+
+			
+			int questionId = (int)new SqlCommand(insertSQL, connection).ExecuteScalar();
+			print(questionId);
+			*/
+
+		}
+
+		if(updatedRow <= 0)
+			return false;
+		return true;
 	}
 
 	#endregion
