@@ -9,6 +9,7 @@ public class Admin_EditQuestion : MonoBehaviour {
 	public InputField QuestionTextInput;
 	public Admin_UpsertQuestion UpsertQuesiton;
 	public Admin_SaveFeedbackPanel SaveFeedbackPanel;
+	public Admin_EditQuestionPanel EditQuestionPanel;
 
 	[Space(2f)]
 	[Header("Question line and alternatives")]
@@ -232,6 +233,10 @@ public class Admin_EditQuestion : MonoBehaviour {
 		return qObj;
 	}
 	
+	public void CloseEditWindow() {
+		EditQuestionPanel.SearchQuestions();
+		gameObject.SetActive(false);
+	}
 	
 
 }

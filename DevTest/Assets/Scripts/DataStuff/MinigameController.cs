@@ -11,6 +11,8 @@ public abstract class MinigameController : MonoBehaviour {
 		public T Script;
 	}
 
+	public GameObject InfoPanel;
+
 	public abstract int LoadQuestion(Question Question);
 	public abstract string GetMinigameMode();
 	public abstract int CheckCorrectAnswers();
