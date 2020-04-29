@@ -18,7 +18,6 @@ public class BS_PlayerController : MonoBehaviour {
 	}
 
 	void Update() {
-
 		Vector3 pos = RectTrans.anchoredPosition;
 		pos.x += Input.GetAxis("Horizontal") * MoveSpeed * 100 * Time.deltaTime;
 		pos.x = Mathf.Clamp(pos.x, 0, ParentRect.rect.width - RectTrans.rect.width);
