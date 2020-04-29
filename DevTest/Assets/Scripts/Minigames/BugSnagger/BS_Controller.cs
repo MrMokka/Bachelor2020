@@ -5,7 +5,6 @@ using UnityEngine;
 public class BS_Controller : MinigameController {
 
 	public string Mode;
-	public Transform InfoPanel;
 
 	[Space(20f)]
 	public Transform QuestionParent;

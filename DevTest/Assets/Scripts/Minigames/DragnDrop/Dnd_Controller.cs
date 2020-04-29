@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Dnd_Controller : MinigameController {
 
 	public string Mode;
-	public Transform InfoPanel;
 	public Text QuestionText;
 
 	[Space(20f)]
