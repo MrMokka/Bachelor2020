@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Admin_QuestionLineEdit : MonoBehaviour {
 
-	public Text Text;
+	public Text QuestionText, DifficultyText, CategoryText;
 	public Admin_ConfirmDelete ConfirmDelete;
 	public Admin_EditQuestion EditQuestionPanel;
 
@@ -14,7 +14,9 @@ public class Admin_QuestionLineEdit : MonoBehaviour {
 
 	public void SetQuestion(Question question) {
 		Question = question;
-		Text.text = question.QuestionText;
+		QuestionText.text = question.QuestionText;
+		DifficultyText.text = question.Weight.ToString();
+		CategoryText.text = question.CategoryList[0].Name;
 	}
 
 	public void EditQuestion() {
