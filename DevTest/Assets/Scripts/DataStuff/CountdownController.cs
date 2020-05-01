@@ -8,6 +8,7 @@ public class CountdownController : MonoBehaviour {
 
 	private CountdownTime Time;
 	private float Counter;
+	private float TimeScale = 1;
 
 	public struct CountdownTime {
 		public int Sec, Min;
@@ -52,10 +53,22 @@ public class CountdownController : MonoBehaviour {
 
 	public void StopTimer() {
 		Time.Active = false;
+		UnityEngine.Time.timeScale = 0;
 	}
 
 	public void ResumeTimer() {
 		Time.Active = true;
+		UnityEngine.Time.timeScale = TimeScale;
+	}
+
+	public void ToggleTimer() {
+		if(Time.Active) {
+			Time.Active = false;
+			UnityEngine.Time.timeScale = 0;
+		} else {
+			Time.Active = true;
+			UnityEngine.Time.timeScale = TimeScale;
+		}
 	}
 
 	public int GetSec() {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BS_BulletRemover : MonoBehaviour {
+public class RS_BulletRemover : MonoBehaviour {
 
 
 	void OnTriggerExit2D(Collider2D other) {

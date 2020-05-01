@@ -14,28 +14,32 @@ public class SC_HoverButton : MonoBehaviour {
 	public GameLoader GameLoader;
 	[Space(5f)]
 	public bool ToggleGameobject;
-	public GameObject ToggleableObject;
-	[Space(5f)]
 	public bool ToggleTime;
-	public TimeController TimeController;
+	public GameObject ToggleableObject;
+	public CountdownController CountdownController;
 
 
 	private float Timer;
 	private bool IsInside;
 	private SC_ShipController ShipController;
+	private float ButtonActivationDelay = 5f;
+	private float ActivationTimer = 0f;
 
 
 	void Update() {
-		if(TriggerTime == -1) {
+		if(ActivationTimer >= 0) {
+			ActivationTimer -= UnityEngine.Time.deltaTime;
 			return;
 		}
 		if(IsInside) {
 			Timer += Time.deltaTime;
 			if(Timer >= TriggerTime) {
 				Timer = 0;
-				ShipController.Respawn();
-				if(NextQuestion)
+				ActivationTimer = ButtonActivationDelay;
+				if(NextQuestion) {
 					NextQuesiton();
+					ShipController.Respawn();
+				}
 				if(ToggleGameobject)
 					ToggleObject();
 				if(ToggleTime)
@@ -58,7 +62,7 @@ public class SC_HoverButton : MonoBehaviour {
 	}
 
 	public void ToggleTheTime() {
-		TimeController.ToggleTime();
+		CountdownController.ToggleTimer();
 	}
 
 

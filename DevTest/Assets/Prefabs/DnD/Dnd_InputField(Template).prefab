@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6644002182151273601}
   - component: {fileID: 6644002182151273615}
-  - component: {fileID: 6644002182151273612}
   - component: {fileID: 6644002182151273613}
   - component: {fileID: 6644002182151273603}
   - component: {fileID: 6487337245740788199}
   - component: {fileID: 6644002182151273600}
+  - component: {fileID: 1039618643705759443}
   m_Layer: 5
   m_Name: Dnd_InputField(Template)
   m_TagString: ClickableUI
@@ -31,7 +31,7 @@ RectTransform:
   m_GameObject: {fileID: 6644002182151273606}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3264488, y: 1.3761907, z: 1.3761907}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6644002182897765687}
   m_Father: {fileID: 0}
@@ -55,12 +55,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.7921569, b: 0, a: 1}
+  m_Color: {r: 0.13725491, g: 0.49411765, b: 0.5647059, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 206c4896d4a44dd43ab560c8aae9d45f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -70,31 +70,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6644002182151273612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6644002182151273606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 5
-    m_Right: 5
-    m_Top: 5
-    m_Bottom: 5
-  m_ChildAlignment: 0
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
 --- !u!222 &6644002182151273613
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -115,12 +90,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af1787dd3b74be4a913e62b34927088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalColor: {r: 1, g: 0.79215693, b: 0, a: 1}
-  highlightColor: {r: 0, g: 0.08627451, b: 1, a: 1}
+  normalColor: {r: 0.13725491, g: 0.49411768, b: 0.5647059, a: 1}
+  highlightColor: {r: 0.13725491, g: 0.35686275, b: 0.5647059, a: 1}
   correctColor: {r: 0, g: 1, b: 0, a: 1}
   wrongColor: {r: 1, g: 0, b: 0, a: 1}
   outline: {fileID: 6644002182151273615}
   QuestionText: {fileID: 6487337245740788199}
+  ignoreMouse: 0
 --- !u!114 &6487337245740788199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +153,31 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1039618643705759443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6644002182151273606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!1 &6644002182897765684
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,8 +243,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 16
+    m_Font: {fileID: 12800000, guid: c224a68115b4c344a8fb50949b602fe6, type: 3}
+    m_FontSize: 17
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -254,7 +255,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Hello, how are you! Input here if u want something! {0}
+  m_Text: What is 10 * 10? Drag the correct alternative here! [...]
 --- !u!114 &6644002182897765686
 MonoBehaviour:
   m_ObjectHideFlags: 0

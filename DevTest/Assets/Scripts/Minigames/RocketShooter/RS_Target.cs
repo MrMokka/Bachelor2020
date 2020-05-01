@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BS_Bug : MonoBehaviour {
+public class RS_Target : MonoBehaviour {
 
 	public Text Text;
 
-	private BS_BugController BugController;
+	private RS_TargetController TargetController;
 	private string HiddenAlternativeText;
 
 	void Awake() {
-		BugController = transform.parent.parent.GetComponent<BS_BugController>();
+		TargetController = transform.parent.parent.GetComponent<RS_TargetController>();
 	}
 
 	public void SetText(string text, int num) {
@@ -27,13 +27,13 @@ public class BS_Bug : MonoBehaviour {
 		return HiddenAlternativeText;
 	}
 
-	public void BugClicked() {
-		BugController.BugClicked(this);
+	public void TargetClicked() {
+		TargetController.TargetClicked(this);
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if(other.CompareTag("Bullet")) {
-			BugClicked();
+			TargetClicked();
 			Destroy(other.gameObject);
 		}
 	}

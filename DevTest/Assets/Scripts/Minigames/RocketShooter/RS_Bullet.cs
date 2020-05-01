@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BS_Bullet : MonoBehaviour {
+public class RS_Bullet : MonoBehaviour {
 
 	public float MoveSpeed = 2f;
 
