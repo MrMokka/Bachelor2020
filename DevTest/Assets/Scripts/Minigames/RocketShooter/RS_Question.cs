@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BS_Question : QuestionScript {
+public class RS_Question : QuestionScript {
 
 	public void SetHighlight(bool highlighted) {
 		if(highlighted) {

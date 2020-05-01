@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BS_PlayerController : MonoBehaviour {
+public class RS_PlayerController : MonoBehaviour {
 
 	public float MoveSpeed, ShootDelay;
 	public GameObject Bullet;
@@ -25,7 +25,9 @@ public class BS_PlayerController : MonoBehaviour {
 
 		if(Input.GetKeyUp(KeyCode.Space)) {
 			if(ShootTimer <= 0) {
-				Instantiate(Bullet, transform, false).transform.SetParent(BulletParent);
+				GameObject bullet = Instantiate(Bullet, transform, false);
+				bullet.transform.SetParent(BulletParent);
+				bullet.SetActive(true);
 				ShootTimer = ShootDelay;
 			}
 		}

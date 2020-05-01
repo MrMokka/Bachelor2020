@@ -67,10 +67,16 @@ public class GameLoader : MonoBehaviour {
 		if(ActiveMinigame != null)
 			ScoreControllerScript.AddScore(ActiveMinigame.Controller.CheckCorrectAnswers());
 		if(ActiveMinigame == null || QuestionCounter >= QuestionsForMinigameSwap)
-			LoadMinigame();
+			StartCoroutine("LoadNewMinigameAfterDelay");
 		QuestionCounter++;
 		StartCoroutine("LoadNextQuestion");
 	}
+
+	private IEnumerator LoadNewMinigameAfterDelay() {
+		yield return new WaitForSeconds(0.6f);
+		LoadMinigame();
+	}
+
 
 	private IEnumerator LoadNextQuestion() {
 		if(ActiveQuestion != null)

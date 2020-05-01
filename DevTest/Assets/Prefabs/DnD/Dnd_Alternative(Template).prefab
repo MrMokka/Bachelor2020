@@ -33,10 +33,10 @@ RectTransform:
   m_Father: {fileID: 4347833588752917385}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 18.447205, y: -18.447205}
-  m_SizeDelta: {x: 16.89441, y: 16.89441}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 24.285715, y: -18.57143}
+  m_SizeDelta: {x: 28.57143, y: 17.142859}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4347833587875533516
 CanvasRenderer:
@@ -65,7 +65,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: c224a68115b4c344a8fb50949b602fe6, type: 3}
     m_FontSize: 16
     m_FontStyle: 0
     m_BestFit: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ds
+  m_Text: 100
 --- !u!114 &4347833587875533518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 206c4896d4a44dd43ab560c8aae9d45f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpeed: 35
   speedReduction: 1
-  normalColor: {r: 0.59607846, g: 0.59607846, b: 0.59607846, a: 1}
+  normalColor: {r: 0.13725491, g: 0.49411768, b: 0.5647059, a: 1}
   highlightColor: {r: 1, g: 0.78823537, b: 0.30588236, a: 1}
   dragParent: {fileID: 0}
   canvasGroup: {fileID: 4347833588752917389}
