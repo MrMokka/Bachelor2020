@@ -100,6 +100,9 @@ public class Admin_EditQuestion : MonoBehaviour {
 		}
 		foreach(Dropdown dd in CorrectAlternativeDropdownList) {
 			dd.options = optionData;
+			if(dd.value >= optionData.Count) {
+				dd.value = optionData.Count - 1;
+			}
 		}
 	}
 	public void UpdateAlternativeTexts(InputField alternative) {
@@ -217,13 +220,18 @@ public class Admin_EditQuestion : MonoBehaviour {
 				Text = alternative
 			});
 		}
+		alternatives.RemoveAt(0);
 		List<QuestionLine> questionLines = new List<QuestionLine>();
 		foreach(GameObject questionLine in QuestionLineList) {
 			Dropdown correctAlternativeDropdown = questionLine.transform.GetChild(1).GetComponent<Dropdown>();
 			QuestionLine ql = new QuestionLine {
 				Text = questionLine.transform.GetChild(0).GetComponent<InputField>().text
 			};
-			ql.CorrectAlternative = alternatives[correctAlternativeDropdown.value];
+			//print(correctAlternativeDropdown.value + " : " + alternatives[correctAlternativeDropdown.value].Text);
+			if(correctAlternativeDropdown.value == 0)
+				ql.CorrectAlternative = null;
+			else
+				ql.CorrectAlternative = alternatives[correctAlternativeDropdown.value - 1];
 			questionLines.Add(ql);
 		}
 		QuestionObject qObj = new QuestionObject {

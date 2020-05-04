@@ -19,7 +19,6 @@ public class DatabaseConnection : MonoBehaviour {
 
 	void Start() {
 		//List<Question> questions = ReadQuestionsFromDatabase();
-		
 	}
 
 	/* Code from Anders
