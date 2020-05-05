@@ -28,4 +28,8 @@ public class Admin_QuestionLineEdit : MonoBehaviour {
 		ConfirmDelete.ConfirmDelete(this);
 	}
 
+	public bool DeleteQuestion() {
+		return DatabaseConnection.DeleteQuestionInDatabase(Question);
+	}
+
 }

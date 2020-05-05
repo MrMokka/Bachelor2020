@@ -11,6 +11,7 @@ public class Admin_EditQuestionPanel : MonoBehaviour {
 	public Admin_UpsertQuestion UpsertQuesiton;
 	public GameObject NoQuestionsText;
 	public GameObject QuestionListPanel;
+	public Admin_SaveFeedbackPanel DeleteFeedbackPanel;
 
 	private List<Admin_QuestionLineEdit> QuestionLineList = new List<Admin_QuestionLineEdit>();
 

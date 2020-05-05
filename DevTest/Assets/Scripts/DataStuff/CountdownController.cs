@@ -36,6 +36,8 @@ public class CountdownController : MonoBehaviour {
 			}
 			Counter = 1;
 			if(Time.Min == 0 && Time.Sec == 0) {
+				Time.Min = 10;
+				return;
 				Time.Active = false;
 				print("GameOver! Times up!");
 				GL.GameOver();

@@ -45,6 +45,7 @@ public class GameLoader : MonoBehaviour {
 	public void StartGame() {
 		StartScreen.SetActive(false);
 		Countdown.SetTime(1000);
+		LoadMinigame();
 		NextQuestion();
 	}
 
@@ -66,8 +67,9 @@ public class GameLoader : MonoBehaviour {
 	public void NextQuestion() {
 		if(ActiveMinigame != null)
 			ScoreControllerScript.AddScore(ActiveMinigame.Controller.CheckCorrectAnswers());
-		if(ActiveMinigame == null || QuestionCounter >= QuestionsForMinigameSwap)
+		if(QuestionCounter >= QuestionsForMinigameSwap) {
 			StartCoroutine("LoadNewMinigameAfterDelay");
+		}
 		QuestionCounter++;
 		StartCoroutine("LoadNextQuestion");
 	}
