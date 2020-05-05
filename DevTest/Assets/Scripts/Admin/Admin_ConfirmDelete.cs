@@ -5,6 +5,7 @@ using UnityEngine;
 public class Admin_ConfirmDelete : MonoBehaviour {
 
 	public Admin_EditQuestionPanel EditQuestionPanel;
+	public Admin_SaveFeedbackPanel DeleteFeedbackPanel;
 
 	private Admin_QuestionLineEdit QuestionToDelete;
 
@@ -21,7 +22,13 @@ public class Admin_ConfirmDelete : MonoBehaviour {
 
 	public void ConfirmButton() {
 		transform.GetChild(0).gameObject.SetActive(false);
-		EditQuestionPanel.DeleteQuestionLine(QuestionToDelete);
+		bool result = QuestionToDelete.DeleteQuestion();
+		if(result) {
+			EditQuestionPanel.DeleteQuestionLine(QuestionToDelete);
+		} else {
+			print("Something went wrong deleting from database");
+		}
+		DeleteFeedbackPanel.ShowText(result);
 	}
 
 	public void DeclineButton() {

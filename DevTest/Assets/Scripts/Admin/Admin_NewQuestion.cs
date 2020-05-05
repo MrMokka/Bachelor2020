@@ -9,7 +9,7 @@ public class Admin_NewQuestion : MonoBehaviour {
 	public InputField QuestionTextInput;
 	public Admin_LineController LineController;
 	public string QuestionType;
-
+	public Admin_SaveFeedbackPanel SaveFeedbackPanel;
 
 	void Awake() {
 		Difficulty.ClearOptions();
@@ -41,7 +41,8 @@ public class Admin_NewQuestion : MonoBehaviour {
 			Type = new Type { Name = QuestionType },
 			Weight = Difficulty.value + 1
 		};
-		DatabaseConnection.WriteQuestionToDatabase(question);
+		SaveFeedbackPanel.gameObject.SetActive(true);
+		SaveFeedbackPanel.ShowText(DatabaseConnection.WriteQuestionToDatabase(question));
 		ResetFields();
 	}
 

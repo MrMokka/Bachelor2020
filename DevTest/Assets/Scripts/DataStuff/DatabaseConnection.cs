@@ -17,9 +17,6 @@ public class DatabaseConnection : MonoBehaviour {
 		"Encrypt=True; TrustServerCertificate=False; Connection Timeout=30;";
 
 
-	void Start() {
-		//List<Question> questions = ReadQuestionsFromDatabase();
-	}
 
 	/* Code from Anders
 	void Connect() {
@@ -212,7 +209,8 @@ public class DatabaseConnection : MonoBehaviour {
 
 	#region Write question to database
 
-	public static void WriteQuestionToDatabase(Question question) {
+	public static bool WriteQuestionToDatabase(Question question) {
+		int updatedRow = -1;
 		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
 			string insertSQL = $"INSERT INTO question (TypeId, questionText, Active, Weight, Json)" +
 					$" OUTPUT inserted.questionId VALUES(" +
@@ -221,6 +219,7 @@ public class DatabaseConnection : MonoBehaviour {
 				
 			connection.Open();
 			int questionId = (int)new SqlCommand(insertSQL, connection).ExecuteScalar();
+			updatedRow = questionId;
 
 			foreach(Category c in question.CategoryList) {
 				string categorySQL =
@@ -272,6 +271,9 @@ public class DatabaseConnection : MonoBehaviour {
 			*/
 			#endregion
 		}
+		if(updatedRow <= 0)
+			return false;
+		return true;
 	}
 
 	#endregion
@@ -345,18 +347,31 @@ public class DatabaseConnection : MonoBehaviour {
 
 	#endregion
 
-	private static int GetRowId(SqlConnection connection, string tableName, string whereClause) {
-		int id = -1;
-		using(SqlCommand cmd = new SqlCommand($"SELECT {tableName}Id FROM {tableName} " + whereClause, connection)) {
-			SqlDataReader reader = cmd.ExecuteReader();
-			if(reader.HasRows) {
-				int.TryParse(reader[$"{tableName}Id"].ToString(), out id);
-			}
-			reader.Close();
+	#region Delete from database
+
+	public static bool DeleteQuestionInDatabase(Question question) {
+		int updatedRow = -1;
+		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
+			connection.Open();
+
+			//Update question_category link entity
+			string sqlClearCategoryLink = $"DELETE FROM Question_Category WHERE QuestionId = {question.Id}";
+
+			new SqlCommand(sqlClearCategoryLink, connection).ExecuteNonQuery();
+
+			string dqlDeleteQuestion = $"DELETE FROM Question" +
+				$" WHERE QuestionId = {question.Id}";
+
+			updatedRow = new SqlCommand(dqlDeleteQuestion, connection).ExecuteNonQuery();
+
 		}
-		return id;
+
+		if(updatedRow <= 0)
+			return false;
+		return true;
 	}
 
+	#endregion
 
 }
 
