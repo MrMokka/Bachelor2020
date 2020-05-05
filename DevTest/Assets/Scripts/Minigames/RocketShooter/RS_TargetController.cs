@@ -9,12 +9,12 @@ public class RS_TargetController : MonoBehaviour {
 	public RS_Controller Controller;
 
 	[Space(5f)]
-	public float TargetRotateSpeed;
+	public float TargetSwapDelay;
 
 	private List<Target> TargetList = new List<Target>();
 	private AreaController AreaController;
 
-	private float TargetMoveDistance;
+	private float TargetSwapTimer;
 	private float TargetAngle;
 
 	struct Target {
@@ -29,6 +29,12 @@ public class RS_TargetController : MonoBehaviour {
 	void Update() {
 		if(TargetList.Count > 0)
 			MoveTargets();
+
+		TargetSwapTimer += Time.deltaTime;
+		if(TargetSwapTimer >= TargetSwapDelay) {
+			TargetSwapTimer = 0;
+			TargetParent.GetChild(Random.Range(0, TargetParent.childCount - 1)).SetSiblingIndex(Random.Range(0, TargetParent.childCount - 1));
+		}
 	}
 
 	private void MoveTargets() {
