@@ -34,7 +34,8 @@ public class Dnd_FallingAlternative : MonoBehaviour {
 			transform.position = Input.mousePosition;
 		} else {
 			//textObj.text = settings.text + " : " + settings.speed;
-			transform.Translate(Vector2.down * settings.speed * Time.deltaTime, Space.Self);
+			//transform.Translate(Vector2.down * settings.speed * Time.deltaTime, Space.Self);
+			rt.anchoredPosition += Vector2.down * settings.speed * Time.deltaTime;
 			if(transform.localPosition.y < settings.bottom) {
 				Vector2 v = transform.localPosition;
 				v.y = settings.top;

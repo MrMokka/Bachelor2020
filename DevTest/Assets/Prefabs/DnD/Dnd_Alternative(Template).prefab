@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 4347833588752917391}
   - component: {fileID: 4347833588752917390}
   m_Layer: 5
-  m_Name: Alternative(Template)
+  m_Name: Dnd_Alternative(Template)
   m_TagString: ClickableUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
