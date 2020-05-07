@@ -61,7 +61,13 @@ public class GameLoader : MonoBehaviour {
 		ActiveMinigame = minigame;
 		ActiveMinigame.Controller.gameObject.SetActive(true);
 		ActiveMinigame.Controller.InfoPanel.SetActive(true);
+		StartCoroutine("StopTimescaleAfterDelay", 1f);
+	}
+	private IEnumerator StopTimescaleAfterDelay(float delay) {
 		Countdown.StopTimer();
+		Countdown.SetTimeScale(1);
+		yield return new WaitForSeconds(delay);
+		Countdown.ResumeTimer();
 	}
 
 	public void NextQuestion() {
@@ -69,16 +75,18 @@ public class GameLoader : MonoBehaviour {
 			ScoreControllerScript.AddScore(ActiveMinigame.Controller.CheckCorrectAnswers());
 		if(QuestionCounter >= QuestionsForMinigameSwap) {
 			StartCoroutine("LoadNewMinigameAfterDelay");
+		} else {
+			QuestionCounter++;
+			StartCoroutine("LoadNextQuestion");
 		}
-		QuestionCounter++;
-		StartCoroutine("LoadNextQuestion");
 	}
 
 	private IEnumerator LoadNewMinigameAfterDelay() {
 		yield return new WaitForSeconds(0.6f);
 		LoadMinigame();
+		QuestionCounter++;
+		StartCoroutine("LoadNextQuestion");
 	}
-
 
 	private IEnumerator LoadNextQuestion() {
 		if(ActiveQuestion != null)

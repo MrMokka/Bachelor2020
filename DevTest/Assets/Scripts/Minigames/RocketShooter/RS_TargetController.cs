@@ -33,7 +33,7 @@ public class RS_TargetController : MonoBehaviour {
 		TargetSwapTimer += Time.deltaTime;
 		if(TargetSwapTimer >= TargetSwapDelay) {
 			TargetSwapTimer = 0;
-			TargetParent.GetChild(Random.Range(0, TargetParent.childCount - 1)).SetSiblingIndex(Random.Range(0, TargetParent.childCount - 1));
+			TargetParent.GetChild(Random.Range(0, TargetParent.childCount)).SetSiblingIndex(Random.Range(0, TargetParent.childCount));
 		}
 	}
 

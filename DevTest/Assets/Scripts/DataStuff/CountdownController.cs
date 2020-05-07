@@ -58,6 +58,14 @@ public class CountdownController : MonoBehaviour {
 		UnityEngine.Time.timeScale = 0;
 	}
 
+	public void SetTimeScale(int i) {
+		UnityEngine.Time.timeScale = i;
+	}
+
+	public void ResetTimeScale() {
+		UnityEngine.Time.timeScale = TimeScale;
+	}
+
 	public void ResumeTimer() {
 		Time.Active = true;
 		UnityEngine.Time.timeScale = TimeScale;

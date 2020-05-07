@@ -11,6 +11,7 @@ public class SC_AstroidController : MonoBehaviour {
 	public float SpawnInterval;
 	public MinMaxFloat AstroidMoveSpeed;
 	public MinMaxFloat AstroidRotateSpeed;
+	public bool ReverseMovement;
 
 
 	private List<SC_Astroid> AstroidList = new List<SC_Astroid>();
@@ -43,7 +44,8 @@ public class SC_AstroidController : MonoBehaviour {
 
 	private void MoveAstroids() {
 		foreach(SC_Astroid astroid in AstroidList) {
-			astroid.transform.RotateAround(transform.position, Vector3.forward, astroid.MoveSpeed * Time.deltaTime);
+			Vector3 dir = ReverseMovement ? Vector3.back : Vector3.forward;
+			astroid.transform.RotateAround(transform.position, dir, astroid.MoveSpeed * Time.deltaTime);
 			astroid.transform.RotateAround(astroid.transform.position, Vector3.forward, astroid.RotateSpeed * Time.deltaTime);
 		}
 	}
