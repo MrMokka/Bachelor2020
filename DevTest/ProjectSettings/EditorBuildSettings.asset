@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/2DQuestionScene.unity
     guid: 800c691f7cec37d428fe5e475eadf991
+  - enabled: 0
+    path: Assets/Scenes/AdminInterface.unity
+    guid: 1be6f295154414a4f8af01dd0e527da9
   m_configObjects: {}
