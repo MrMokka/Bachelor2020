@@ -116,6 +116,8 @@ public class Question {
 	public string QuestionObject;
 	public int Weight;
 	public int Active;
+	public float Score;
+	public int MaxScore; //Score calculated with weight
 
 	public QuestionObject GetQuestionObject() {
 		return JsonUtility.FromJson<QuestionObject>(QuestionObject);

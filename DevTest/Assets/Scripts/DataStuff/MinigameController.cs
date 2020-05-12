@@ -12,10 +12,12 @@ public abstract class MinigameController : MonoBehaviour {
 	}
 
 	public GameObject InfoPanel;
+	protected Question Question;
+	protected int TotalAnswers;
 
-	public abstract int LoadQuestion(Question Question);
+	public abstract void LoadQuestion(Question Question);
 	public abstract string GetMinigameMode();
-	public abstract int CheckCorrectAnswers();
-	protected abstract int LoadQuestionLines(List<QuestionLine> questionLines);
+	public abstract ScoreController.QuestionScore CheckCorrectAnswers();
+	protected abstract void LoadQuestionLines(List<QuestionLine> questionLines);
 
 }

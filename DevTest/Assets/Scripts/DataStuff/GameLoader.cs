@@ -8,6 +8,7 @@ public class GameLoader : MonoBehaviour {
 
 	public CountdownController Countdown;
 	public ScoreController ScoreControllerScript;
+	public EndScreenController EndScreenController;
 	public GameObject StartScreen;
 	public int QuestionsForMinigameSwap;
 	public int MaxQuesitons;
@@ -15,6 +16,10 @@ public class GameLoader : MonoBehaviour {
 	[Space(5f)]
 	public List<MinigameController> MinigameControllers = new List<MinigameController>();
 
+
+	[Header("DEBUG")]
+	public string Email;
+	public bool UseDebugEmail;
 
 	private List<Minigame> MinigameList = new List<Minigame>();
 	private List<Minigame> UsedMinigameList = new List<Minigame>();
@@ -46,7 +51,7 @@ public class GameLoader : MonoBehaviour {
 		StartScreen.SetActive(false);
 		Countdown.SetTime(1000);
 		LoadMinigame();
-		NextQuestion();
+		NextQuestion(true);
 	}
 
 	private void LoadMinigame() {
@@ -63,6 +68,7 @@ public class GameLoader : MonoBehaviour {
 		ActiveMinigame.Controller.InfoPanel.SetActive(true);
 		StartCoroutine("StopTimescaleAfterDelay", 1f);
 	}
+	
 	private IEnumerator StopTimescaleAfterDelay(float delay) {
 		Countdown.StopTimer();
 		Countdown.SetTimeScale(1);
@@ -70,9 +76,9 @@ public class GameLoader : MonoBehaviour {
 		Countdown.ResumeTimer();
 	}
 
-	public void NextQuestion() {
-		if(ActiveMinigame != null)
-			ScoreControllerScript.AddScore(ActiveMinigame.Controller.CheckCorrectAnswers());
+	public void NextQuestion(bool skipAnswerCheck = false) {
+		if(ActiveMinigame != null && !skipAnswerCheck)
+			ScoreControllerScript.AddQuestionPoints(ActiveMinigame.Controller.CheckCorrectAnswers());
 		if(QuestionCounter >= QuestionsForMinigameSwap) {
 			StartCoroutine("LoadNewMinigameAfterDelay");
 		} else {
@@ -95,17 +101,23 @@ public class GameLoader : MonoBehaviour {
 		if(ActiveQuestion == null) {
 			GameOver();
 			yield return null;
+		} else {
+			ActiveMinigame.Controller.LoadQuestion(ActiveQuestion);
 		}
-		int i = ActiveMinigame.Controller.LoadQuestion(ActiveQuestion);
-		ScoreControllerScript.AddAnswersToComplet(i);
 	}
 
 	public void GameOver() {
 		ActiveMinigame.Controller.gameObject.SetActive(false);
-		ScoreControllerScript.gameObject.SetActive(true);
-		ScoreControllerScript.ShowScore();
-		Countdown.StopTimer();
+		EndScreenController.gameObject.SetActive(true);
+		EndScreenController.ShowScore();
+		Countdown.StopTimerWithoutScale();
 	}
 
+	public void SubmitScore(string email) {
+		if(UseDebugEmail) {
+			email = Email;
+		}
+		DatabaseConnection.WriteScoreToDatabase(ScoreControllerScript.GetAnsweredQuestions(), ScoreControllerScript.GetTotalScore(), email);
+	}
 
 }

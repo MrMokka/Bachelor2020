@@ -53,17 +53,21 @@ public class CountdownController : MonoBehaviour {
 		Time.Active = true;
 	}
 
-	public void StopTimer() {
-		Time.Active = false;
-		UnityEngine.Time.timeScale = 0;
-	}
-
 	public void SetTimeScale(int i) {
 		UnityEngine.Time.timeScale = i;
 	}
 
 	public void ResetTimeScale() {
 		UnityEngine.Time.timeScale = TimeScale;
+	}
+
+	public void StopTimerWithoutScale() {
+		Time.Active = false;
+	}
+
+	public void StopTimer() {
+		Time.Active = false;
+		UnityEngine.Time.timeScale = 0;
 	}
 
 	public void ResumeTimer() {
