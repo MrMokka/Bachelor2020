@@ -278,6 +278,33 @@ public class DatabaseConnection : MonoBehaviour {
 
 	#endregion
 
+	#region Write score to database
+
+	public static void WriteScoreToDatabase(List<Question> questions, float totalScore, string email = null) {
+		//int updatedRow = -1;
+		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
+
+			connection.Open();
+
+			string sqlInsertEmail = $"INSERT INTO Email (EmailString, DateAdded) OUTPUT inserted.emailId VALUES (@EmailVar, @Date)";
+			SqlCommand command = new SqlCommand(sqlInsertEmail, connection);
+			command.Parameters.AddWithValue("@EmailVar", email);
+			command.Parameters.AddWithValue("@Date", DateTime.Now.ToString("yyyy-MM-dd"));
+			int emailId = (int)command.ExecuteScalar();
+			
+			string sqlTotal = $"INSERT INTO TotalScore (EmailId, TotalScore) VALUES ({emailId}, {totalScore})";
+			new SqlCommand(sqlTotal, connection).ExecuteNonQuery();
+
+			foreach(Question question in questions) {
+				string sqlScore = $"INSERT INTO Score (Score, MaxScore, QuestionId, EmailId)" +
+					$"VALUES({question.Score}, {question.MaxScore}, {question.Id}, {emailId})";
+				new SqlCommand(sqlScore, connection).ExecuteNonQuery();
+			}
+		}
+	}
+
+	#endregion
+
 	#region Write category to database
 
 	public static bool WriteCategoryToDatabase(Category category) {

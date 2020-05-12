@@ -20,8 +20,11 @@ public class RS_Controller : MinigameController {
 	private QuestionField<RS_Question> SelectedQuestion;
 	private int SelectedQuestionCounter = 0;
 
-	public override int CheckCorrectAnswers() {
-		int score = 0;
+	public override ScoreController.QuestionScore CheckCorrectAnswers() {
+		ScoreController.QuestionScore questionScore = new ScoreController.QuestionScore {
+			Question = Question,
+			Points = 0
+		};
 		foreach(QuestionField<RS_Question> questionField in QuestionFieldList) {
 			if(questionField.Line.CorrectAlternative == null)
 				continue;
@@ -29,34 +32,34 @@ public class RS_Controller : MinigameController {
 			string s2 = questionField.Script.GetFilling();
 			if(s1 == s2) {
 				questionField.Script.Border.color = questionField.Script.CorrectColor;
-				score++;
+				questionScore.Points++;
 			} else
 				questionField.Script.Border.color = questionField.Script.WrongColor;
 			//questionField.Script.Interactable = false;
 		}
-		return score;
+		questionScore.MaxPoints = TotalAnswers;
+		return questionScore;
 	}
 
 	public override string GetMinigameMode() {
 		return Mode;
 	}
 
-	public override int LoadQuestion(Question question) {
+	public override void LoadQuestion(Question question) {
+		Question = question;
 		if(question == null) //Temp fix, must be better lol :p
-			return 0;
+			return;
 		QObject = question.GetQuestionObject();
-		int i = LoadQuestionLines(QObject.QuestionLines);
+		LoadQuestionLines(QObject.QuestionLines);
 
 		//QuestionText.text = question.QuestionText;
 		AlternativeController.ClearAlternatives();
 		List<string> targetAltList = AlternativeController.CreateAlternative(QObject.Alternatives);
 		TargetController.SpawnTargets(targetAltList);
-		return i;
 	}
 
-	protected override int LoadQuestionLines(List<QuestionLine> questionLines) {
+	protected override void LoadQuestionLines(List<QuestionLine> questionLines) {
 		ClearQuestionLines();
-		int i = 0;
 		foreach(QuestionLine questionLine in questionLines) {
 			GameObject g = Instantiate(QuestionTemplate, QuestionParent, false);
 			g.SetActive(true);
@@ -68,7 +71,7 @@ public class RS_Controller : MinigameController {
 			questionField.Script.SetHighlight(false);
 			questionField.Script.SetText(questionLine.Text);
 			if(questionLine.Text.Contains("{0}")) {
-				i++;
+				TotalAnswers++;
 				SelectableQuestionFields.Add(questionField);
 			}
 			QuestionFieldList.Add(questionField);
@@ -76,7 +79,7 @@ public class RS_Controller : MinigameController {
 		SelectedQuestionCounter = 0;
 		SelectedQuestion = SelectableQuestionFields[0];
 		SelectedQuestion.Script.SetHighlight(true);
-		return i;
+		//print("Added total: " + TotalAnswers);
 	}
 
 	private void ClearQuestionLines() {

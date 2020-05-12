@@ -16,8 +16,11 @@ public class SC_Controller : MinigameController {
 	private List<QuestionField<SC_Question>> QuestionFieldList = new List<QuestionField<SC_Question>>();
 
 
-	public override int CheckCorrectAnswers() {
-		int score = 0;
+	public override ScoreController.QuestionScore CheckCorrectAnswers() {
+		ScoreController.QuestionScore questionScore = new ScoreController.QuestionScore {
+			Question = Question,
+			Points = 0
+		};
 		foreach(QuestionField<SC_Question> questionField in QuestionFieldList) {
 			if(questionField.Line.CorrectAlternative == null)
 				continue;
@@ -25,33 +28,33 @@ public class SC_Controller : MinigameController {
 			string s2 = questionField.Script.GetFilling();
 			if(s1 == s2) {
 				questionField.Script.Border.color = questionField.Script.CorrectColor;
-				score++;
+				questionScore.Points++;
 			} else
 				questionField.Script.Border.color = questionField.Script.WrongColor;
 			questionField.Script.Interactable = false;
 		}
-		return score;
+		questionScore.MaxPoints = TotalAnswers;
+		return questionScore;
 	}
 
 	public override string GetMinigameMode() {
 		return Mode;
 	}
 
-	public override int LoadQuestion(Question question) {
+	public override void LoadQuestion(Question question) {
+		Question = question;
 		if(question == null) //Temp fix, must be better lol :p
-			return 0;
+			return;
 		QObject = question.GetQuestionObject();
-		int i = LoadQuestionLines(QObject.QuestionLines);
+		LoadQuestionLines(QObject.QuestionLines);
 
 		//QuestionText.text = question.QuestionText;
 		AlternativeController.ClearAlternatives();
 		AlternativeController.CreateAlternative(QObject.Alternatives);
-		return i;
 	}
 
-	protected override int LoadQuestionLines(List<QuestionLine> questionLines) {
+	protected override void LoadQuestionLines(List<QuestionLine> questionLines) {
 		ClearquestionLines();
-		int i = 0;
 		foreach(QuestionLine questionLine in questionLines) {
 			GameObject g = Instantiate(QuestionTemplate, QuestionParent, false);
 			g.SetActive(true);
@@ -62,12 +65,12 @@ public class SC_Controller : MinigameController {
 			};
 			questionField.Script.SetText(questionLine.Text);
 			if(questionLine.Text.Contains("{0}")) {
-				i++;
+				TotalAnswers++;
 				questionField.Script.SetInteractable(true);
 			}
 			QuestionFieldList.Add(questionField);
 		}
-		return i;
+		//print("Added total: " + TotalAnswers);
 	}
 
 	private void ClearquestionLines() {
