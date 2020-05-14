@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minSpeed: 35
-  speedReduction: 1
+  speedReduction: 10
   normalColor: {r: 0.13725491, g: 0.49411768, b: 0.5647059, a: 1}
   highlightColor: {r: 1, g: 0.78823537, b: 0.30588236, a: 1}
   dragParent: {fileID: 0}
