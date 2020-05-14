@@ -108,6 +108,33 @@ public class CorrectAnswer {
 #endregion
 
 [Serializable]
+public class Score {
+	public int Id;
+	public ScoreQuestion ScoreQuestion;
+	public float QuestionScore;
+	public int MaxScore;
+}
+[Serializable]
+public class ScoreQuestion {
+	public int Id;
+	public string QuestionText;
+	public string QuestionObject;
+	public Category Category;
+}
+[Serializable]
+public class TotalScore {
+	public int Id;
+	public float CombinedScore;
+	public Email Email;
+}
+[Serializable]
+public class Email {
+	public int Id;
+	public string EmailString;
+}
+
+
+[Serializable]
 public class Question {
 	public int Id;
 	public Type Type;
