@@ -36,6 +36,18 @@ public class DatabaseConnection : MonoBehaviour {
 	}
 	*/
 
+	#region Sql Options
+
+	public class ReadQuestionOptions {
+		public int Number = 100;
+		public List<Category> CategoryFilter = null;
+		public List<int> WeightFilter = null;
+		public bool IsActive = false;
+		public bool RandomOrder = true;
+	};
+
+	#endregion
+
 	#region Get Category
 	public static List<Category> GetCategories() {
 		return GetCategories(-1);
@@ -111,14 +123,6 @@ public class DatabaseConnection : MonoBehaviour {
 	#endregion
 
 	#region Get Question
-
-	public class ReadQuestionOptions {
-		public int Number = 100;
-		public List<Category> CategoryFilter = null;
-		public List<int> WeightFilter = null;
-		public bool IsActive = false;
-		public bool RandomOrder = true;
-	};
 
 	public static List<Question> ReadQuestionsFromDatabase(ReadQuestionOptions options) {
 		using(SqlConnection connection = new SqlConnection(connectionStringReader)) {
@@ -202,6 +206,97 @@ public class DatabaseConnection : MonoBehaviour {
 			left join Question_Category as QC on QC.QuestionId = Q.QuestionId
 			left join Category as C on QC.CategoryId = C.CategoryId
 			*/
+		}
+	}
+
+	#endregion
+
+	#region Get Total Score
+
+	public static List<TotalScore> GetTotalScoreFromDatabase() {
+		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
+			string sqlGetTotalScore =
+				"SELECT TS.TotalScoreId, TS.TotalScore, TS.EmailId, E.EmailString " +
+				"FROM TotalScore as TS " +
+				"LEFT JOIN Email as E on E.EmailId = TS.EmailId";
+
+			connection.Open();
+
+			SqlDataReader reader = new SqlCommand(sqlGetTotalScore, connection).ExecuteReader();
+			List<TotalScore> totalScoreList = new List<TotalScore>();
+
+			if(reader == null) {
+				Debug.LogError("No reader found");
+				return totalScoreList;
+			}
+
+			if(!reader.HasRows) {
+				Debug.LogWarning("No rows found");
+				return totalScoreList;
+			}
+
+			while(reader.Read()) {
+				TotalScore TotalScore = new TotalScore {
+					Id = Convert.ToInt32(reader["TotalScoreId"]),
+					CombinedScore = Convert.ToInt32(reader["TotalScore"]),
+					Email = new Email {
+						Id = Convert.ToInt32(reader["EmailId"]),
+						EmailString = reader["EmailString"].ToString()
+					}
+				};
+				totalScoreList.Add(TotalScore);
+			}
+			return totalScoreList;
+		}
+	}
+
+	#endregion
+
+	#region Get Score
+
+	public static List<Score> GetScoreFromDatabase(int emailId) {
+		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
+			string sqlGetScore =
+				"SELECT S.ScoreId, S.Score, S.MaxScore, Q.Json, Q.QuestionId, Q.QuestionText, C.Name as CategoryName, C.CategoryId " +
+				"FROM Score as S " +
+				"LEFT JOIN Question as Q on S.QuestionId = Q.QuestionId " +
+				"LEFT JOIN Question_Category as QC on QC.QuestionId = Q.QuestionId " +
+				"LEFT JOIN Category as C on QC.CategoryId = C.CategoryId " +
+				$"WHERE S.EmailId = {emailId}";
+
+			connection.Open();
+
+			SqlDataReader reader = new SqlCommand(sqlGetScore, connection).ExecuteReader();
+			List<Score> scoreList = new List<Score>();
+
+			if(reader == null) {
+				Debug.LogError("No reader found");
+				return scoreList;
+			}
+
+			if(!reader.HasRows) {
+				Debug.LogWarning("No rows found");
+				return scoreList;
+			}
+
+			while(reader.Read()) {
+				Score score = new Score {
+					Id = Convert.ToInt32(reader["ScoreId"]),
+					QuestionScore = Convert.ToSingle(reader["Score"]),
+					MaxScore = Convert.ToInt32(reader["MaxScore"]),
+					ScoreQuestion = new ScoreQuestion {
+						Id = Convert.ToInt32(reader["QuestionId"]),
+						QuestionText = reader["QuestionText"].ToString(),
+						QuestionObject = reader["Json"].ToString(),
+						Category = new Category {
+							Id = Convert.ToInt32(reader["CategoryId"]),
+							Name = reader["CategoryName"].ToString()
+						}
+					}
+				};
+				scoreList.Add(score);
+			}
+			return scoreList;
 		}
 	}
 
