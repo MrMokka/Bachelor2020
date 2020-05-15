@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RS_Controller : MinigameController {
 
 	public string Mode;
+	public Text QuestionDescription;
 
 	[Space(20f)]
 	public Transform QuestionParent;
@@ -49,6 +51,7 @@ public class RS_Controller : MinigameController {
 		Question = question;
 		if(question == null) //Temp fix, must be better lol :p
 			return;
+		QuestionDescription.text = question.QuestionText;
 		QObject = question.GetQuestionObject();
 		LoadQuestionLines(QObject.QuestionLines);
 

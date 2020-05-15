@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Dnd_Controller : MinigameController {
 
 	public string Mode;
-	public Text QuestionText;
+	public Text QuestionDescription;
 
 	[Space(20f)]
 	public Transform QuestionParent;
@@ -24,7 +24,7 @@ public class Dnd_Controller : MinigameController {
 	/// <param name="Question2"></param>
 	public override void LoadQuestion(Question question) {
 		Question = question;
-		QuestionText.text = question.QuestionText;
+		QuestionDescription.text = question.QuestionText;
 		QObject = question.GetQuestionObject();
 		LoadQuestionLines(QObject.QuestionLines);
 		AlternativeController.ClearAlternatives();
