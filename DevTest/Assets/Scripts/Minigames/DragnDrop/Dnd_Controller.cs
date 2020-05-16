@@ -18,10 +18,6 @@ public class Dnd_Controller : MinigameController {
 	private QuestionObject QObject;
 
 
-	/// <summary>
-	/// Returns the number of possible answers
-	/// </summary>
-	/// <param name="Question2"></param>
 	public override void LoadQuestion(Question question) {
 		Question = question;
 		QuestionDescription.text = question.QuestionText;

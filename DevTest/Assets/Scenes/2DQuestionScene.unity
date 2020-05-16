@@ -7613,8 +7613,7 @@ MonoBehaviour:
   ScoreControllerScript: {fileID: 484701193}
   EndScreenController: {fileID: 738242231}
   StartScreen: {fileID: 415642779}
-  QuestionsForMinigameSwap: 3
-  MaxQuesitons: 9
+  QuestionsForCategory: 5
   MinigameControllers:
   - {fileID: 132488836}
   - {fileID: 1268614514}
