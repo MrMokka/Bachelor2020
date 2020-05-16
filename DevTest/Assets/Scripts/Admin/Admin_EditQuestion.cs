@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 public class Admin_EditQuestion : MonoBehaviour {
 
 	public Dropdown DifficultyDropdown, CategoryDropdown;
+	public Toggle ActiveToggle;
 	public InputField QuestionTextInput;
 	public Admin_UpsertQuestion UpsertQuesiton;
 	public Admin_SaveFeedbackPanel SaveFeedbackPanel;
@@ -195,6 +197,7 @@ public class Admin_EditQuestion : MonoBehaviour {
 		CategoryDropdown.RefreshShownValue();
 		DifficultyDropdown.value = DifficultyDropdown.options.FindIndex(i => i.text.Equals(question.Weight.ToString()));
 		DifficultyDropdown.RefreshShownValue();
+		ActiveToggle.isOn = Convert.ToBoolean(Question.Active);
 		SettingStuffUp = false;
 	}
 	
@@ -202,7 +205,7 @@ public class Admin_EditQuestion : MonoBehaviour {
 		string jsonString = JsonUtility.ToJson(CreateQuestionObject());
 		Question question = new Question {
 			Id = Question.Id,
-			Active = 1,
+			Active = Convert.ToInt32(ActiveToggle.isOn),
 			CategoryList = new List<Category> { new Category { Name = CategoryDropdown.options[CategoryDropdown.value].text } },
 			QuestionObject = jsonString,
 			QuestionText = QuestionTextInput.text,
