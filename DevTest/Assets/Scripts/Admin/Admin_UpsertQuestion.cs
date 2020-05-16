@@ -59,7 +59,9 @@ public class Admin_UpsertQuestion : MonoBehaviour {
 		DatabaseConnection.ReadQuestionOptions options = new DatabaseConnection.ReadQuestionOptions {
 			CategoryFilter = category,
 			WeightFilter = weights,
-			RandomOrder = false
+			RandomOrder = false,
+			CategoryActive = false,
+			IsActive = false
 		};
 		List<Question> questions = DatabaseConnection.ReadQuestionsFromDatabase(options);
 		EditQuestionPanel.RespawnQuestions(questions);

@@ -66,7 +66,8 @@ public class GameLoader : MonoBehaviour {
 		ActiveMinigame = minigame;
 		ActiveMinigame.Controller.gameObject.SetActive(true);
 		ActiveMinigame.Controller.InfoPanel.SetActive(true);
-		StartCoroutine("StopTimescaleAfterDelay", 1f);
+		Countdown.StopTimer();
+		//StartCoroutine("StopTimescaleAfterDelay", 1f);
 	}
 	
 	private IEnumerator StopTimescaleAfterDelay(float delay) {
