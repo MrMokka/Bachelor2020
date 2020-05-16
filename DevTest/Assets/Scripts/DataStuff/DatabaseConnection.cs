@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Data.SqlClient;
+using System.Linq;
 
 public class DatabaseConnection : MonoBehaviour {
 
@@ -41,8 +42,9 @@ public class DatabaseConnection : MonoBehaviour {
 	public class ReadQuestionOptions {
 		public int Number = 100;
 		public List<Category> CategoryFilter = null;
+		public bool CategoryActive = true;
 		public List<int> WeightFilter = null;
-		public bool IsActive = false;
+		public bool IsActive = true;
 		public bool RandomOrder = true;
 	};
 
@@ -58,12 +60,12 @@ public class DatabaseConnection : MonoBehaviour {
 		string categoryQuery = "";
 		
 		if(questionId != -1) {
-			categoryQuery += $"SELECT C.Name as CategoryName, C.CategoryId as CategoryId " +
+			categoryQuery += $"SELECT C.Name as CategoryName, C.Active, C.CategoryId as CategoryId " +
 			$"FROM Question_Category as QC " +
 			$"left join Category as C on QC.CategoryId = C.CategoryId " +
 			$"WHERE QC.QuestionId = {questionId}";
 		} else {
-			categoryQuery += $"SELECT C.Name as CategoryName, C.CategoryId as CategoryId " +
+			categoryQuery += $"SELECT C.Name as CategoryName, C.Active, C.CategoryId as CategoryId " +
 			$"FROM Category as C ";
 		}
 
@@ -75,7 +77,8 @@ public class DatabaseConnection : MonoBehaviour {
 					categoryList.Add(
 						new Category {
 							Id = (int)dataReader["CategoryId"],
-							Name = dataReader["CategoryName"].ToString()
+							Name = dataReader["CategoryName"].ToString(),
+							Active = Convert.ToBoolean(dataReader["Active"])
 						}
 					);
 				}
@@ -126,17 +129,80 @@ public class DatabaseConnection : MonoBehaviour {
 
 	public static List<Question> ReadQuestionsFromDatabase(ReadQuestionOptions options) {
 		using(SqlConnection connection = new SqlConnection(connectionStringReader)) {
-			string sqlString =
-				$"SELECT TOP {options.Number} Q.QuestionId, T.TypeId as TypeId, T.Name as TypeName, C.Name as CategoryName, " +
-				$"Q.QuestionText, Q.Weight, Q.Active, Q.Json " +
-				$"FROM Question as Q " +
-				$"left join Type as T on T.TypeId = Q.TypeId " +
-				$"left join Question_Category as QC on QC.QuestionId = Q.QuestionId " +
-				$"left join Category as C on QC.CategoryId = C.CategoryId ";
+			//Select * categories (with needed filters)
+			//Select * Questions from each category
+			connection.Open();
 
-			if(options.IsActive)
-				sqlString += $"WHERE Q.Active = 1";
+			string sqlCategories =
+				"SELECT C.CategoryId, C.Name as CategoryName, C.Active as CategoryActive " +
+				"FROM Category as C ";
+
+			if(options.CategoryActive)
+				sqlCategories += $"WHERE C.Active = 1";
 			else
+				sqlCategories += $"WHERE 1 = 1"; //Used for placing WHERE correctly at first, plus failsafe if no filters needed
+
+			 //Builds: " AND (C.Name = 'Filter1' OR C.Name = 'Filter2' OR C.Name = 'Filter3')
+			if(options.CategoryFilter != null && options.CategoryFilter[0].Name != "All") {
+				sqlCategories += " AND (";
+				for(int i = 0; i < options.CategoryFilter.Count; i++) {
+					sqlCategories += $"C.Name = '{options.CategoryFilter[i].Name}'";
+					if(i != options.CategoryFilter.Count - 1)
+						sqlCategories += " OR ";
+				}
+				sqlCategories += ")";
+			}
+
+			SqlCommand catCmd = new SqlCommand(sqlCategories, connection);
+			SqlDataReader catReader = catCmd.ExecuteReader();
+			List<Category> categories = new List<Category>();
+			List<Question> questions = new List<Question>();
+
+			while(catReader.Read()) {
+				categories.Add(new Category {
+					Id = Convert.ToInt32(catReader["CategoryId"]),
+					Name = catReader["CategoryName"].ToString(),
+					Active = Convert.ToBoolean(catReader["CategoryActive"])
+				});
+			}
+
+			foreach(Category category in categories) {
+				string sqlQuestion =
+					$"SELECT TOP {options.Number} Q.QuestionId, Q.Active, Q.QuestionText, " +
+					"Q.Weight, Q.Json, QC.CategoryId " +
+					"FROM Question as Q " +
+					"LEFT JOIN Question_Category as QC on QC.QuestionId = Q.QuestionId " +
+					$"WHERE QC.CategoryId = {Convert.ToInt32(category.Id)}";
+
+				SqlCommand questionCmd = new SqlCommand(sqlQuestion, connection);
+				SqlDataReader questionReader = questionCmd.ExecuteReader();
+
+				//Will probably create duplicate questions if u can have multiple categories
+				while(questionReader.Read()) {
+					Question question = new Question {
+						Id = Convert.ToInt32(questionReader["QuestionId"]),
+						Active = Convert.ToInt32(questionReader["Active"]),
+						Weight = Convert.ToInt32(questionReader["Weight"]),
+						QuestionText = questionReader["QuestionText"].ToString(),
+						//Type = new Type { Id = (int)questionReader["TypeId"], Name = questionReader["TypeName"].ToString() },
+						QuestionObject = questionReader["Json"].ToString(),
+						CategoryList = categories.Where(cat => cat.Id == Convert.ToInt32(questionReader["CategoryId"])).ToList()
+					};
+					questions.Add(question);
+				}
+			}
+			return questions;
+
+			string sqlString =
+				$"SELECT TOP {options.Number} Q.QuestionId, Q.Active as QuestionActive, C.Name as CategoryName, " +
+				"Q.QuestionText, Q.Weight, Q.Active, Q.Json " +
+				"FROM Question as Q " +
+				"LEFT JOIN Question_Category as QC on QC.QuestionId = Q.QuestionId " +
+				"LEFT JOIN Category as C on QC.CategoryId = C.CategoryId ";
+
+			if(options.IsActive) 
+				sqlString += $"WHERE Q.Active = 1";
+			else 
 				sqlString += $"WHERE 1 = 1"; //Used for placing WHERE correctly at first, plus failsafe if no filters needed
 
 			//Builds: " AND (Q.Weight = '1' OR Q.Weight = '4' OR Q.Weight = '398475')
@@ -161,6 +227,8 @@ public class DatabaseConnection : MonoBehaviour {
 				sqlString += $")";
 			}
 
+			if(options.CategoryActive)
+				sqlString += " AND C.Active = 1";
 			if(options.RandomOrder)
 				sqlString += " ORDER BY NEWID()";
 
@@ -169,7 +237,7 @@ public class DatabaseConnection : MonoBehaviour {
 			SqlCommand cmd = new SqlCommand(sqlString, connection);
 
 			SqlDataReader reader = cmd.ExecuteReader();
-			List<Question> questions = new List<Question>();
+			//List<Question> questions = new List<Question>();
 
 			if(reader == null) {
 				Debug.LogError("No reader found");
@@ -180,8 +248,8 @@ public class DatabaseConnection : MonoBehaviour {
 				Debug.LogWarning("No rows found");
 				return questions;
 			}
-
-			List<int> usedIds = new List<int>();
+			
+			/*List<int> usedIds = new List<int>();
 			while(reader.Read()) {
 				int Id = (int)reader["QuestionId"];
 				if(usedIds.Contains(Id))
@@ -198,7 +266,7 @@ public class DatabaseConnection : MonoBehaviour {
 				};
 				Question.CategoryList = GetCategories(Question.Id);
 				questions.Add(Question);
-			}
+			}*/
 			return questions;
 			/*
 			select Q.QuestionId, T.Name as Type, Q.QuestionText, C.Name as Category, Q.Weight, Q.Active, Q.Json from Question as Q
@@ -463,6 +531,28 @@ public class DatabaseConnection : MonoBehaviour {
 		}
 
 		if(updatedRow <= 0)
+			return false;
+		return true;
+	}
+
+	#endregion
+
+	#region Update question in database
+
+	public static bool UpdateCategoriesInDatabase(List<Category> categories) {
+		int updatedRows = -1;
+		using(SqlConnection connection = new SqlConnection(connectionStringWriter)) {
+			connection.Open();
+
+			foreach(Category category in categories) {
+				string sqlUpdateCategory = $"UPDATE Category" +
+				$" SET Active = {Convert.ToInt32(category.Active)}" +
+				$" WHERE CategoryId = {Convert.ToInt32(category.Id)}";
+				updatedRows += new SqlCommand(sqlUpdateCategory, connection).ExecuteNonQuery();
+			}
+		}
+
+		if(updatedRows <= 0)
 			return false;
 		return true;
 	}

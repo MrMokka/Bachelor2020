@@ -161,6 +161,7 @@ public class Type {
 public class Category {
 	public int Id;
 	public string Name;
+	public bool Active;
 }
 
 [Serializable]
