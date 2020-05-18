@@ -17,6 +17,10 @@ public class DatabaseConnection : MonoBehaviour {
 		"User ID=reader; Password=SuperLoader!; MultipleActiveResultSets=True;" +
 		"Encrypt=True; TrustServerCertificate=False; Connection Timeout=30;";
 
+	void Start() {
+		RemoveOldEmailsFromDatabase();
+	}
+	private static bool RemovedEmails = false;
 
 
 	/* Code from Anders
@@ -47,6 +51,26 @@ public class DatabaseConnection : MonoBehaviour {
 		public bool IsActive = true;
 		public bool RandomOrder = true;
 	};
+
+	#endregion
+
+	#region Remove old emails from database
+	
+	public static void RemoveOldEmailsFromDatabase() {
+		if(RemovedEmails)
+			return;
+		else
+			RemovedEmails = true;
+		using(SqlConnection connection = new SqlConnection(connectionStringReader)) {
+			connection.Open();
+
+			string sqlDeleteEmails = "UPDATE Email " +
+				"SET EmailString = NULL " +
+				"WHERE DateAdded >= DATE_ADD(CURDATE(), INTERVAL - 5 WEEK)";
+
+			new SqlCommand(sqlDeleteEmails, connection);
+		}
+	}
 
 	#endregion
 
@@ -537,7 +561,7 @@ public class DatabaseConnection : MonoBehaviour {
 
 	#endregion
 
-	#region Update question in database
+	#region Update category in database
 
 	public static bool UpdateCategoriesInDatabase(List<Category> categories) {
 		int updatedRows = -1;
