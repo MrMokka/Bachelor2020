@@ -42,6 +42,10 @@ public class RS_ButtonController : MonoBehaviour {
 		}
 	}
 
+	public void TriggerAction() {
+		Action();
+	}
+
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if(other.CompareTag("Bullet")) {
