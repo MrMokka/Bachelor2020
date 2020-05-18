@@ -28,6 +28,7 @@ public class Admin_ConfirmDelete : MonoBehaviour {
 		} else {
 			print("Something went wrong deleting from database");
 		}
+		DeleteFeedbackPanel.gameObject.SetActive(true);
 		DeleteFeedbackPanel.ShowText(result);
 	}
 
