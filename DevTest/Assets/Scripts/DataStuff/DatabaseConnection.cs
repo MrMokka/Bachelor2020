@@ -196,7 +196,10 @@ public class DatabaseConnection : MonoBehaviour {
 					"Q.Weight, Q.Json, QC.CategoryId " +
 					"FROM Question as Q " +
 					"LEFT JOIN Question_Category as QC on QC.QuestionId = Q.QuestionId " +
-					$"WHERE QC.CategoryId = {Convert.ToInt32(category.Id)}";
+					$"WHERE QC.CategoryId = {Convert.ToInt32(category.Id)} ";
+
+				if(options.IsActive)
+					sqlQuestion += "AND Q.Active = 1";
 
 				SqlCommand questionCmd = new SqlCommand(sqlQuestion, connection);
 				SqlDataReader questionReader = questionCmd.ExecuteReader();
