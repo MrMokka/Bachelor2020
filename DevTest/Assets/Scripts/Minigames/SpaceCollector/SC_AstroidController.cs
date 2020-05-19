@@ -11,6 +11,7 @@ public class SC_AstroidController : MonoBehaviour {
 	public float SpawnInterval;
 	public MinMaxFloat AstroidMoveSpeed;
 	public MinMaxFloat AstroidRotateSpeed;
+	public MinMaxFloat AstroidSizeMultiplier;
 	public bool ReverseMovement;
 
 
@@ -35,6 +36,7 @@ public class SC_AstroidController : MonoBehaviour {
 			SC_Astroid astroid = obj.GetComponent<SC_Astroid>();
 			astroid.MoveSpeed = Random.Range(AstroidMoveSpeed.min, AstroidMoveSpeed.max);
 			astroid.RotateSpeed = Random.Range(AstroidRotateSpeed.min, AstroidRotateSpeed.max);
+			astroid.transform.localScale *= Random.Range(AstroidSizeMultiplier.min, AstroidSizeMultiplier.max);
 			obj.transform.position = transform.position + new Vector3(0, AreaController.SphereRadius + Random.Range(-1, 1), 0);
 			AstroidList.Add(astroid);
 			SpawnTimer = 0;

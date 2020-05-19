@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SC_Astroid : MonoBehaviour {
-
-
+	
 	[HideInInspector]
 	public float RotateSpeed;
 	[HideInInspector]
 	public float MoveSpeed;
+
+	void Awake() {
+		PolygonCollider2D col = gameObject.AddComponent<PolygonCollider2D>();
+		col.isTrigger = true;
+	}
 
 	void Update() {
 		transform.Rotate(new Vector3(0, 0, RotateSpeed * Time.deltaTime), Space.Self);
