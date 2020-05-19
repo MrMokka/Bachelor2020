@@ -1227,6 +1227,9 @@ MonoBehaviour:
   AstroidRotateSpeed:
     min: -20
     max: 20
+  AstroidSizeMultiplier:
+    min: 0
+    max: 0
   ReverseMovement: 0
 --- !u!114 &60037921
 MonoBehaviour:
@@ -10585,8 +10588,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.0083, y: -0.457}
-  m_SizeDelta: {x: 236.626, y: 396.004}
+  m_AnchoredPosition: {x: -0.0083, y: 0.244}
+  m_SizeDelta: {x: 236.626, y: 325.881}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &625473117
 MonoBehaviour:
@@ -11608,6 +11611,9 @@ MonoBehaviour:
   AstroidRotateSpeed:
     min: -20
     max: 20
+  AstroidSizeMultiplier:
+    min: 0
+    max: 0
   ReverseMovement: 0
 --- !u!114 &682187034
 MonoBehaviour:
@@ -12010,10 +12016,10 @@ RectTransform:
   m_Father: {fileID: 132488833}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0062714, y: -0.049675}
-  m_SizeDelta: {x: 800, y: 449.96}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &700260642
 MonoBehaviour:
@@ -12028,7 +12034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8207547, g: 0.7975258, b: 0.7975258, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -14348,7 +14354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8235294, g: 0.8, b: 0.8, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -14966,7 +14972,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 4.4}
+  m_AnchoredPosition: {x: 0, y: 4.399994}
   m_SizeDelta: {x: 0, y: 8.81}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &881035982
@@ -21380,8 +21386,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222493142}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.16, y: -0.62, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalPosition: {x: 0.0021, y: -0.005, z: 0}
+  m_LocalScale: {x: 0.92953396, y: 0.71725386, z: 1}
   m_Children: []
   m_Father: {fileID: 1298397432}
   m_RootOrder: 2
@@ -21640,6 +21646,9 @@ MonoBehaviour:
   AstroidRotateSpeed:
     min: -20
     max: 20
+  AstroidSizeMultiplier:
+    min: 0.8
+    max: 1.2
   ReverseMovement: 1
 --- !u!114 &1234372680
 MonoBehaviour:
@@ -23688,6 +23697,9 @@ MonoBehaviour:
   AstroidRotateSpeed:
     min: -20
     max: 20
+  AstroidSizeMultiplier:
+    min: 0.8
+    max: 1.2
   ReverseMovement: 0
 --- !u!114 &1366892490
 MonoBehaviour:
@@ -28944,8 +28956,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658315864}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalPosition: {x: -0.1, y: 0.3, z: 0}
+  m_LocalScale: {x: 1.136843, y: 1.8007619, z: 1}
   m_Children: []
   m_Father: {fileID: 1082255431}
   m_RootOrder: 0
@@ -37573,7 +37585,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 624774106}
   m_HandleRect: {fileID: 624774105}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
