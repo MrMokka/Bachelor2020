@@ -57,6 +57,13 @@ public class SC_HoverButton : MonoBehaviour {
 		GameLoader.NextQuestion();
 	}
 
+	public void ShowInfo() {
+		if(ToggleGameobject)
+			ToggleObject();
+		if(ToggleTime)
+			ToggleTheTime();
+	}
+
 	public void ToggleObject() {
 		ToggleableObject.SetActive(!ToggleableObject.activeSelf);
 	}
