@@ -6,6 +6,9 @@ using Random = UnityEngine.Random;
 
 public class GameLoader : MonoBehaviour {
 
+	public float NextQuestionDelay;
+
+	[Space(3f)]
 	public CountdownController Countdown;
 	public ScoreController ScoreControllerScript;
 	public EndScreenController EndScreenController;
@@ -19,6 +22,8 @@ public class GameLoader : MonoBehaviour {
 	[Header("DEBUG")]
 	public string Email;
 	public bool UseDebugEmail;
+
+	private float NextQuestionDelayTimer = 0;
 
 	private List<Minigame> MinigameList = new List<Minigame>();
 	private List<Minigame> UsedMinigameList = new List<Minigame>();
@@ -51,6 +56,11 @@ public class GameLoader : MonoBehaviour {
 		CheckIfNeedMinigame(true);
 	}
 
+	void Update() {
+		if(NextQuestionDelayTimer > 0)
+			NextQuestionDelayTimer -= Time.deltaTime;
+	}
+
 	private void LoadMinigame() {
 		if(MinigameList.Count == 0) //Start random pick from used minigames
 			return;
@@ -74,6 +84,9 @@ public class GameLoader : MonoBehaviour {
 	}
 
 	public void NextQuestion(bool skipAnswerCheck = false) {
+		if(NextQuestionDelayTimer > 0)
+			return;
+		NextQuestionDelayTimer = NextQuestionDelay;
 		if(ActiveMinigame != null && !skipAnswerCheck)
 			ScoreControllerScript.AddQuestionPoints(ActiveMinigame.Controller.CheckCorrectAnswers());
 		CheckIfNeedMinigame();
