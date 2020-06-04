@@ -35,7 +35,7 @@ public class Dnd_Controller : MinigameController {
 		ScoreController.QuestionScore questionScore = new ScoreController.QuestionScore {
 			Question = Question,
 			Points = 0,
-			MaxPoints = TotalAnswers
+			MaxPoints = 1
 		};
 		//Check directly to Dnd_questionInputInnText script
 		//Is point of having questionLineAnswer? Hmmm dont think so

@@ -51,7 +51,7 @@ public class GameLoader : MonoBehaviour {
 
 	public void StartGame() {
 		StartScreen.SetActive(false);
-		Countdown.SetTime(1000);
+		Countdown.SetTime(900);
 		LoadMinigame();
 		CheckIfNeedMinigame(true);
 	}
@@ -66,7 +66,7 @@ public class GameLoader : MonoBehaviour {
 			return;
 		if(ActiveMinigame != null)
 			ActiveMinigame.Controller.gameObject.SetActive(false);
-		Minigame minigame = MinigameList[Random.Range(0, MinigameList.Count - 1)];
+		Minigame minigame = MinigameList[Random.Range(0, MinigameList.Count)];
 		UsedMinigameList.Add(minigame);
 		MinigameList.Remove(minigame);
 		ActiveMinigame = minigame;
@@ -84,6 +84,7 @@ public class GameLoader : MonoBehaviour {
 	}
 
 	public void NextQuestion(bool skipAnswerCheck = false) {
+		UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
 		if(NextQuestionDelayTimer > 0)
 			return;
 		NextQuestionDelayTimer = NextQuestionDelay;
